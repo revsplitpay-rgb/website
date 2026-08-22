@@ -2,8 +2,17 @@
 import { createClient } from '@supabase/supabase-js';
 import type { Database } from './types';
 
-const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
-const SUPABASE_PUBLISHABLE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || "https://placeholder.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY =
+  import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY ||
+  import.meta.env.VITE_SUPABASE_ANON_KEY ||
+  "sb_publishable_placeholder_key";
+
+if (!import.meta.env.VITE_SUPABASE_URL || (!import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY && !import.meta.env.VITE_SUPABASE_ANON_KEY)) {
+  console.warn(
+    "Supabase environment variables are missing. Marketing pages will still render, but auth/dashboard features need VITE_SUPABASE_URL and VITE_SUPABASE_PUBLISHABLE_KEY in Vercel."
+  );
+}
 
 
 function isNewSupabaseApiKey(value: string): boolean {
