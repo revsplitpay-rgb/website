@@ -1,271 +1,306 @@
-# RevSplitPay — Product Brief for Website Generation
+# RevSplitPay: Product Overview
 
-> Purpose of this document: give an AI website builder complete, accurate context
-> about RevSplitPay so it can generate marketing pages. Every fact here is drawn
-> from the production codebase. Do NOT invent features, numbers, or testimonials
-> beyond what this document states.
+A complete description of what RevSplitPay is, who it is for and what it does, to write a marketing website from. It covers the product only, not website structure.
 
 ---
 
-## 1. What RevSplitPay Is (one paragraph)
+## 1. In one sentence
 
-RevSplitPay is a commission and revenue-split platform for sales teams. A business
-owner (agency, coaching company, high-ticket sales org) runs a team of closers,
-setters, and partners. When a sale happens, RevSplitPay automatically splits the
-revenue, pays each team member their commission directly through Stripe, and keeps
-a verified ledger of every dollar. No spreadsheets, no manual transfers, no
-"I'll pay you Friday."
+**RevSplitPay is the payment and commission platform for sales teams: your customer pays once, and every closer, setter, partner and manager is paid their exact share automatically.**
 
-**One-liner:** Automatic, verified commission payouts for sales teams.
+### The short pitch
 
-**Tagline candidates:**
-- "Close the deal. We split the money."
-- "Commission payouts that run themselves."
-- "Verified pay for every role that earns — closers, setters, partners."
+High-ticket sales teams run on commissions, and paying them is a mess. There are spreadsheets of who closed what, arguments about splits, payouts sent by hand days or weeks late, and no clear record when a customer refunds.
 
----
+RevSplitPay removes all of that:
+1. You create a checkout link, choose who worked the deal, and send it to your customer.
+2. When the customer pays, RevSplitPay records the sale and works out every person's commission.
+3. Each person's money goes straight to their own payout account, with no spreadsheet and no manual transfer.
 
-## 2. The Problem It Solves
-
-- Businesses with commissioned sales teams track splits in **spreadsheets** and pay
-  reps by **manual bank transfers** — slow, error-prone, and a constant source of
-  disputes ("you shorted me", "where's my payout?").
-- Sales reps (closers/setters) have **no proof of their track record**. Anyone can
-  claim "$50K months" on social media; none of it is verifiable.
-- Owners waste hours every month reconciling who is owed what, and trust erodes
-  every time a payment is late or wrong.
-
-**Status quo competitor:** spreadsheets + Venmo/bank transfers + trust. Not another SaaS.
+Everyone sees their own deals, earnings and payouts in real time. Built-in awards, bonuses, badges and a leaderboard keep the team motivated.
 
 ---
 
-## 3. Who It's For (audiences for the website)
+## 2. Who it is for
 
-### Primary: Business owners
-Agencies, coaching/consulting businesses, and high-ticket sales organizations with
-3+ commissioned team members. They buy because it kills commission admin and
-payment disputes.
+- **High-ticket sales agencies and teams** that sell coaching, consulting, courses, programs, services or memberships, often through calls.
+- **Teams with split roles:** closers, setters (appointment setters), sales managers, partners/affiliates, and support staff.
+- **Owners who are tired of** calculating and paying commissions by hand, settling disputes, and chasing failed payments.
+- **Businesses that take payments through Stripe or Whop.**
 
-### Secondary: The earning team — closers, setters & rev-share partners
-Anyone who earns a cut of revenue: closers, setters, and revenue-share partners.
-They join because pay becomes guaranteed, transparent, and on-time — and their
-performance becomes a **verified public credential** they can show off. This is
-never a closers-only story: setters and partners get the same ledger, profile,
-tiers, and share cards.
-
-### Roles supported in the product
-- Business Owner, Business Admin, Sales Manager, Closer, Setter, Partner, Staff
+Typical customer: a sales agency or info-product business with between 2 and 100+ sales reps, taking anything from a few thousand to millions of dollars a month.
 
 ---
 
-## 4. Core Features (only these — do not invent others)
+## 3. The problems it solves
 
-### 4.1 Automatic revenue splitting
-- Owner creates products and checkout links with commission percentages per
-  participant (e.g. closer 12%, setter 8%).
-- Customer pays via a Stripe checkout link. The platform automatically calculates
-  and records each participant's commission on every sale.
-- Supports one-time, recurring (monthly/quarterly/annual), and installment deals.
-
-### 4.2 Direct Stripe payouts
-- Every team member connects their own Stripe account (Stripe Express onboarding).
-- Commissions are paid by direct Stripe transfer — money goes straight to the rep.
-- A 7-day settlement hold protects against refunds; after it, payouts can run
-  automatically or with one click.
-- Per-deal early payout: an admin can advance a single deal's commission early
-  when a rep requests it.
-
-### 4.3 Live ledger & transparency
-- Every rep sees their own earnings ledger in real time: what's locked, what's
-  pending, what's paid.
-- Owners see team-wide payout status, history, and failed-transfer recovery
-  (retry or pay by card).
-
-### 4.3b Deals pipeline
-- Every paid checkout link automatically becomes a tracked deal — no manual
-  pipeline entry.
-- Full lifecycle tracked: open → closed won / closed lost, plus expired,
-  churned, and refunded.
-- Deal record includes amount, deal type (one-time/recurring/installments),
-  customer name, and renewal cycle number.
-
-### 4.3c Team performance leaderboard
-- Ranks the team by revenue generated over 7/30/90-day windows.
-- Revenue credit is shared fairly — both the closer AND the setter on a deal
-  get credited, not just whoever created the checkout link.
-- Shows revenue generated and commission earned side by side per rep.
-
-### 4.4 Invoices (payment requests)
-- Team members can request one-off payments (e.g. a bonus, reimbursement, or
-  direct client work). Owner approves; a Stripe payment link is generated; the
-  member receives the money minus a small platform fee.
-
-### 4.5 Achievements, tiers & verified share cards
-- Reps climb an 8-tier ladder based on lifetime verified revenue:
-  First Deal → Bronze → Silver → Gold → Platinum → Diamond → Elite → Legendary.
-- Badges for milestones (streaks, deal counts, revenue clubs).
-- Every rep gets a **public profile** and a downloadable **verified performance
-  card** showing rank, tier, deals closed, and lifetime revenue — all backed by
-  real payment data. This is the credential a closer can post on LinkedIn/X.
-- Key phrase to use everywhere: **"Verified by real payment data."**
-
-### 4.6 Awards & bonuses
-- Owners can give public awards (title + optional cash bonus) to team members.
-  Cash awards carry **zero platform fee** — the rep gets the full amount.
-
-### 4.7 Analytics & reporting
-- Owner dashboard: revenue, top performers, deal status, payout health.
-- Platform-level analytics for administrators.
-
----
-
-## 5. How It Works (3-step story for the website)
-
-1. **Connect** — Owner connects the business Stripe account; team members join
-   with an invite code and connect theirs.
-2. **Sell** — Create a product, set the split percentages, share the checkout
-   link. Customers pay as usual.
-3. **Everyone gets paid** — The platform splits every sale automatically and
-   transfers each person's cut to their own Stripe account. The ledger proves it.
-
----
-
-## 6. Pricing (accurate — do not embellish)
-
-| Component | Price |
+| Without RevSplitPay | With RevSplitPay |
 |---|---|
-| Monthly platform subscription (metered by business revenue/month) | $300 (up to $100K) · $600 ($100K–$250K) · $900 ($250K–$500K) · $1,500 ($500K+) |
-| Platform fee on commissions | 3.5% of each team member's commission (owner's own share is exempt) |
-| Invoice / payment-request fee | 3% of the invoice amount |
-| Award bonuses | 0% platform fee |
-| Stripe processing | Standard Stripe rates apply (~2.9% + $0.30) |
-
-Positioning note: lead with the value (automation + trust + verified credential),
-not the fee table. The sweet spot customer is a business doing $20K+/month with
-3+ commissioned reps.
+| Commissions tracked in spreadsheets, prone to mistakes | Every split is calculated automatically from the sale |
+| Reps wait days or weeks to be paid by hand | Payouts go automatically to each person's own account |
+| "Who closed this deal?" arguments | Each deal records exactly who worked it and their % |
+| Refunds and chargebacks wreck the commission records | Refunds are handled and commissions adjusted automatically |
+| Failed instalments and subscriptions go unnoticed | Failed payments are flagged, retried, and the customer is sent a link to pay |
+| No visibility for reps | Every rep sees their deals, earnings and payout dates |
+| Motivating a team takes manual effort | Awards, automatic bonuses, badges, tiers and a leaderboard |
 
 ---
 
-## 7. Key Benefits (use these as marketing pillars)
+## 4. How it works
 
-**For business owners**
-1. Zero commission math — splits happen automatically on every sale.
-2. No more payment disputes — reps see the same verified ledger you do.
-3. Hours saved every month — no spreadsheets, no manual transfers.
-4. Refund-safe — the settlement hold protects you before money goes out.
-5. Retention — public achievements and awards keep top closers motivated.
-
-**For the earning team (closers, setters, partners)**
-1. Guaranteed, on-time pay — your cut can't be "forgotten," whatever your role.
-2. Full transparency — a live personal ledger of every dollar earned.
-3. A verified track record — rank, tier, and revenue backed by real Stripe
-   payments, shareable as a public profile and performance card.
-4. Your reputation travels with you — achievements live on your profile,
-   whether you close, set, or hold a rev-share.
-
-**The differentiator (the moat — emphasize this)**
-Anyone can claim numbers. RevSplitPay earnings are **verified by real payment
-data** — the only sales credential that can't be faked.
+1. **Create your workspace.** Choose a plan and connect your payment account (**Stripe or Whop**).
+2. **Invite your team.** Give each person a role (closer, setter, manager, partner, staff, admin, viewer) and their commission %. Each member connects their own payout account.
+3. **Create a checkout link.** Pick a product, the price and how the customer pays (one-time, recurring, instalments or a custom payment plan), and add who worked the deal.
+4. **Your customer pays.** The payment goes to your business through Stripe or Whop.
+5. **Everyone gets their share.** RevSplitPay records the sale and calculates each person's commission. After a 7-day safety hold (to protect against refunds), it pays each person automatically.
+6. **Track everything.** Owners see sales, deals, payouts and team performance. Reps see their own deals, earnings and upcoming payouts.
 
 ---
 
-## 7.5 Why RevSplitPay (banner / hero copy pool)
+## 5. Features
 
-Short, punchy lines for hero banners, feature strips, or rotating taglines.
-Split by audience — pull whichever fit the section.
+### 5.1 Selling and checkout
 
-### For business owners
-- Automatic Commission Splits
-- No More Commission Math
-- Every Deal, Auto-Tracked
-- Recurring Commissions, Handled Automatically
-- Refund-Safe Payouts
-- Full Audit Trail on Every Dollar
-- No More Payment Disputes
-- Live Team Leaderboard
-- One-Off Invoicing, Built In
-- Zero-Fee Bonuses & Awards
-- No Spreadsheets. No Guesswork.
-- From Deal Closed to Money Paid — Automatic
-- Same Ledger, Same Trust for Everyone
-- Your Team Closes. We Handle the Money.
-- Commission-Splitting, Solved
+- **Products:** your offer catalogue, with prices.
+- **Checkout links:** shareable payment links for a customer. Several payment types are available:
+  - **One-time payment.**
+  - **Recurring subscription:** weekly, every 2 weeks, monthly, quarterly or annual, with an optional end date.
+  - **Instalments:** split a price into equal payments, weekly, every 2 weeks or monthly.
+  - **Custom payment plans:** set your own amounts and dates for each payment (for example a deposit, then two payments).
+- **Deals pipeline:** every sale becomes a deal with its status (closed won, refunded, churned, expired), customer, product, cycles paid and everyone involved.
+- **Sales page:** all revenue in one place: gross sales, paid to the team, pending, and net to the business, filtered by date.
+- **Verified payment details:** each sale shows the customer's verified name, email and payment reference from the payment provider.
+- **Refunds:** refund a sale and the commissions are adjusted automatically.
+- **Failed-payment recovery:**
+  - failed renewals and instalments are flagged on the deal;
+  - they are retried automatically;
+  - for payment plans, the customer is emailed a link to pay;
+  - the team can close an issue or cancel the remaining payments.
 
-### For closers, setters & partners
-- Real-Time Payout Ledger
-- Paid Straight to Your Stripe Account
-- Verified by Real Payment Data
-- Verified Performance Cards
-- Public Sales Credential
-- Early Payout on Request
-- Your Track Record, Verifiable
-- Tier Ladder & Achievement Badges
-- Your Reputation, Not Locked to One Job
-- Nobody Chases Their Money Here
-- Built for Closers, Setters & Partners
-- Split the Revenue. Not the Trust.
-- Real Payouts. Real Proof. Real Fast.
-- Trust You Can Actually Prove
-- One Sale, You Get Paid — No Asking
+### 5.2 Commissions (automatic revenue splits)
 
-### The moat, in one line
-"RevSplitPay turns 'trust me' into 'here's the receipt' — for every deal, every
-payout, every person on the team."
+- **Split every sale automatically** between the people on the deal: closer, setter, partner, manager.
+- **Per-person rates:** each member has their own commission %, set by the owner or a manager.
+- **Override commission:** sales managers can earn an extra % on their team's deals.
+- **Business-wide partner %:** a partner can earn a share of every sale, regardless of who closed it.
+- **Recurring and instalment commissions:** every renewal or instalment pays the team its share again, automatically.
+- **Fixed history:** the split is recorded at the time of sale. Later team changes never rewrite past deals.
 
-### The bigger thesis (use sparingly — pitch decks, about page, not the hero)
-"This isn't just infrastructure for one business — it's a portable reputation
-system for an entire labor market. Remote sales and closing has never had a
-standard, verifiable credential. If RevSplitPay becomes that standard, every
-closer, setter, and partner's track record lives here — the way a Chess.com
-rating or a verified LinkedIn does for other fields."
+### 5.3 Payouts
 
----
+- **Automatic payouts** straight to each member's own Stripe or Whop account.
+- **7-day safety hold:** commissions are held 7 days before payout, so refunds and chargebacks can be handled cleanly.
+- **My Payouts:** every rep sees each commission, its status (locked, pending, paid, failed) and its payout date. A detailed breakdown is shown when they open a commission.
+- **Payouts (owner/admin view):** see what the whole team has earned and been paid.
+- **Early pay:** commissions can be paid before the hold ends, on request, arranged by the RevSplitPay team.
+- **Failed payout retry:** a payout that fails (for example a closed bank account) can be retried once the member fixes their account.
 
-## 8. Brand Identity (the website MUST follow this)
+### 5.4 Invoices and payment requests
 
-- **Logo:** `/logo.png` — rounded-square app icon, blue gradient, white "R" with
-  an angular cut. Lockup: logo 24–28px + "RevSplitPay" semibold.
-- **Brand gradient (signature):**
-  `linear-gradient(135deg, #003D82 0%, #0058B8 30%, #0072E4 60%, #3FC1FF 100%)`
-  Navy → electric cyan. Use for hero surfaces and key accents only — not
-  everywhere.
-- **Palette:** deep navy `#003D82`, brand blue `#0058B8` / `#0072E4`, cyan
-  `#3FC1FF`, page background `#f9fbfd`, white cards, dark text.
-- **Type:** clean sans-serif (system/Inter-like), semibold headings with tight
-  tracking; money always in tabular numerals.
-- **Feel:** premium fintech — trustworthy, precise, confident. Think "financial
-  credential," not "gamer graphics." Craft over decoration.
-- **Voice:** direct, concrete, builder-to-builder. Short sentences. Real numbers.
-  No hype words, no corporate filler.
-- Signature phrase: **"Verified by real payment data."**
+- **Team members can invoice the business** for anything outside a normal deal, such as extra work or a bonus that was agreed.
+- **The owner reviews and approves or rejects** each request.
+- **Pay in one click:**
+  - by card;
+  - by bank transfer (Stripe's lower bank fee: 0.8%, at most $5);
+  - or from the Whop balance for Whop businesses.
+- Invoices appear in the member's payouts and in the business records.
 
----
+### 5.5 Rewards and motivation
 
-## 9. Website Structure Suggestion (for the AI builder)
+- **Give awards:** reward a rep with a badge or a cash award. Cash awards come with a payment link, and the money goes straight to the rep.
+- **Award rules (automatic bonuses)** *(Growth and Scale)*: set goals like "hit $50K in sales this month and get a $500 bonus". RevSplitPay tracks progress and tells you when someone earns it.
+- **Commission boosts** *(Growth and Scale)*: reward a rep who hits a goal with a higher commission % on their next deals, for example +2%.
+- **Goal tracker for reps** *(Growth and Scale)*: reps see their progress toward every active goal.
+- **Achievements and badges:** earned automatically as reps hit milestones. Examples include *First Deal*, *Century*, *Half Million Club* and *Recurring King*.
+- **Performance tiers:** Bronze, Silver, Gold, Platinum, Diamond, Elite and Legendary, based on results.
+- **Leaderboard:** the team ranked by results.
+- **Public rep profile:** a shareable profile page showing a rep's verified results, rank and badges, which they can share on LinkedIn or Facebook.
 
-1. **Hero** — one-liner + brand-gradient visual (e.g. the revenue card or a
-   verified performance card mock) + primary CTA "Start splitting" / "Get started".
-2. **Problem** — the spreadsheet-and-late-payment pain, told in one tight section.
-3. **How it works** — the 3-step story (Connect → Sell → Everyone gets paid).
-4. **Features** — the core six (splits, payouts, ledger, invoices, achievements,
-   awards) with short benefit-led copy.
-5. **For your team** — dedicated section on the verified credential / share card
-   for every earning role: closers, setters, and rev-share partners (this is
-   unique; competitors don't have it). Never frame it as closers-only.
-6. **Pricing** — simple tier table from section 6.
-7. **FAQ** — payouts timing (7-day hold), Stripe requirement, fees, refunds.
-8. **Footer CTA** — "Your team closes. We handle the money."
+### 5.6 Team management
 
-Do NOT fabricate: customer logos, testimonials, user counts, revenue processed,
-press mentions, or integrations beyond Stripe. If a section needs social proof,
-use the verified-credential concept itself as the proof story.
+- **Roles:** Owner, Admin, Sales Manager, Closer, Setter, Partner, Staff and Viewer, each with the right access (see section 6).
+- **Invites and join codes:** invite people with their role and commission already set.
+- **Team management:** change roles and rates, set override %, remove members.
+- **Member list:** everyone on the team.
+
+### 5.7 Visibility and reporting
+
+- **Overview dashboard:** the key numbers at a glance.
+- **Notifications:** in-app alerts (new sales, payouts, failed payments, awards, plan notices) plus email for important events.
+- **CSV export:** download your data.
+
+### 5.8 Integrations
+
+- **Slack:** post sales and payment events to your Slack channels.
+- **Custom webhooks:** send events (deal closed, invoice paid and more) to your own tools.
+- **Stripe and Whop:** choose either as your payment provider.
+
+### 5.9 Onboarding and support
+
+- **Guided setup:** a checklist walks every role through getting started.
+- **Support inbox:** contact the RevSplitPay team from inside the app.
 
 ---
 
-## 10. Tech Facts (for accuracy, if mentioned)
+## 6. Roles: who sees what
 
-- Payments infrastructure: **Stripe Connect** (checkout links, direct transfers,
-  Express onboarding).
-- Web app: Next.js; real-time backend: Convex.
-- Money handling: all amounts tracked in cents; commissions computed per-deal;
-  full audit trail.
+| Role | What they can do |
+|---|---|
+| **Owner** | Everything: products, checkout links, sales, deals, team, commissions, invoices, awards, billing and integrations. Does not earn commissions. |
+| **Admin** | Helps run the business: sales, deals, the whole team's payouts, invoices, team management, billing (view only). Can also earn commissions on deals. |
+| **Sales Manager** | Manages their team: products, sales, deals, team management, awards received, and their own payouts, including override commission. |
+| **Closer** | Creates checkout links and closes deals; sees their deals, their payouts, their invoices, awards, achievements and their public profile. |
+| **Setter** | Books the calls; sees the deals they set, their payouts, invoices, awards and achievements. |
+| **Partner** | Earns a share of sales (per deal or business-wide); sees their deals, payouts, invoices and awards. |
+| **Staff** | Support team members; see their payouts, invoices and awards. |
+| **Viewer** | Read-only access for accountants or observers. |
+
+---
+
+## 7. Payment providers
+
+- Each business chooses **Stripe** or **Whop** to take payments.
+- **Stripe:**
+  - customers pay by card;
+  - the business and each team member connect a Stripe account to receive money;
+  - team members' Stripe accounts must be in a supported country (the US, the UK, the EU/EEA, Canada or Switzerland).
+- **Whop:** for businesses that already sell through Whop. Payments and payouts run through Whop.
+- RevSplitPay never stores card details. **Card details are handled entirely by Stripe or Whop.**
+
+---
+
+## 8. Plans and pricing
+
+All prices are in **USD**, billed **monthly in advance**.
+
+| | **Starter** | **Growth** (most popular) | **Scale** |
+|---|---|---|---|
+| **Price** | **$97/month** | **$299/month** | **$997/month** |
+| **Sales per month** | up to $100K | up to $500K | up to $2M |
+| **Team members included** | 5 | 25 | 75 |
+| **Extra team members** | $25/month each | $25/month each | $25/month each |
+| Selling, checkout links, recurring, instalments, payment plans | ✓ | ✓ | ✓ |
+| Automatic commission splits and payouts | ✓ | ✓ | ✓ |
+| Invoices from team members | ✓ | ✓ | ✓ |
+| Achievements, badges, leaderboard, giving awards | ✓ | ✓ | ✓ |
+| Slack and webhooks, dashboard, CSV export | ✓ | ✓ | ✓ |
+| **Award rules (automatic bonuses)** | — | ✓ | ✓ |
+| **Commission boosts** | — | ✓ | ✓ |
+| **Goal tracker for reps** | — | ✓ | ✓ |
+| **Private Slack channel with our team** | — | — | ✓ |
+| **Personal setup call (one-time)** | — | — | ✓ |
+| **Priority support** | — | — | ✓ (replies within 4 business hours) |
+| Support replies | 1–2 business days | 1–2 business days | within 4 business hours |
+| Hitting the monthly sales limit | new deals pause until you upgrade | new deals pause until you upgrade | never pauses: we talk Enterprise |
+
+**Enterprise:** for teams selling over $2M a month. Pricing is agreed directly; contact revsplitpay@gmail.com.
+
+### How billing works
+
+- **Team members:**
+  - the owner never counts as a team member;
+  - an extra member costs $25/month, charged when they join;
+  - a paid seat stays paid until the next bill, so someone can be replaced at no extra cost.
+- **Free trials** are given through promo codes (for example 7 days free). A card is needed to start a trial, and each card gets one trial.
+- **Discount codes** can be applied at signup or later from Billing.
+- **Changing plans:**
+  - **upgrades** happen instantly; you pay only the difference for the rest of the month;
+  - **downgrades** take effect at the next bill;
+  - you can switch any time from Billing, and the exact amount is shown before you confirm.
+- **Usage warnings** arrive at 80% and 90% of the plan's monthly sales limit.
+- **At the limit (Starter and Growth):** new deals and links pause until you upgrade.
+  - Your team keeps access to everything they've earned.
+  - Existing links, subscriptions and instalments keep collecting.
+  - Payouts keep going out.
+- **You are never moved down a plan automatically.**
+- **Cancel any time:** everything works until the end of the month you paid for, with no final bill.
+
+### Platform fees
+
+- **Commissions:** 2.9% of each commission paid to a team member.
+- **Invoices and paid awards:** 0.5%.
+- The payment provider's own processing fees (Stripe or Whop) apply as usual.
+- The owner's own share of a sale carries no RevSplitPay fee.
+
+---
+
+## 9. Trust and safety
+
+- **Built on Stripe** (and Whop): payments, card security and payouts run on these providers' regulated infrastructure.
+- **No card data stored by RevSplitPay.**
+- **A 7-day payout hold** protects the business against refunds and chargebacks.
+- **Every split is recorded at the time of sale** and can't be rewritten later, which gives a clear audit trail for every dollar.
+- **No surprise charges:**
+  - the price is shown before every upgrade;
+  - a plan change never charges without confirmation;
+  - pausing never deletes data.
+- **Money in motion is protected:** even if a workspace is paused, existing payments, commissions and payouts continue.
+- **Secure accounts:** sign-in is handled by a dedicated authentication provider. Each role only sees what it should.
+
+---
+
+## 10. Company facts
+
+- **Product:** RevSplitPay
+- **Web app:** app.revsplitpay.com
+- **Company:** registered in Ireland
+- **Currency:** USD
+- **Contact:** revsplitpay@gmail.com
+
+---
+
+## 11. Coming later (not available today)
+
+These are planned and can be mentioned only as "coming soon", if at all:
+- Business analytics (deeper reports)
+- Team chat
+- Deal notes and activity timeline
+- More Slack and WhatsApp updates (win announcements, deal posts)
+
+---
+
+## 12. Frequently asked questions
+
+**Do my reps need to do anything to get paid?**
+They connect their own Stripe (or Whop) payout account once. After that, every commission is paid to them automatically.
+
+**When do reps get paid?**
+Seven days after the customer's payment clears, to protect against refunds. Early pay can be arranged on request.
+
+**What happens if a customer refunds?**
+Refund from RevSplitPay and the commissions are adjusted automatically.
+
+**What if a customer's card fails on an instalment or renewal?**
+The deal is flagged and the payment is retried automatically. For payment plans, the customer is emailed a link to pay.
+
+**Can I sell subscriptions and payment plans?**
+Yes: recurring subscriptions (weekly to annual), equal instalments, and fully custom payment plans with your own amounts and dates.
+
+**Do I pay per team member?**
+Each plan includes a number of team members (5, 25 or 75). Extra members are $25/month each. You never count as one.
+
+**What happens if we sell more than our plan's limit?**
+You're warned at 80% and 90%. At 100% on Starter or Growth, new deals pause until you upgrade. Nothing already earned or in motion stops. Scale never pauses.
+
+**Can I change or cancel my plan?**
+Yes, any time from Billing. Upgrades are instant; downgrades apply at your next bill. Cancelling keeps everything working until the end of the month you paid for.
+
+**Is there a free trial?**
+Trials are available with a promo code. Ask us for one.
+
+**Does RevSplitPay hold our money?**
+No. Payments go through Stripe or Whop to the business, and each person's share is paid out to their own account. RevSplitPay is not a bank.
+
+**Which payment providers do you support?**
+Stripe and Whop. Each business uses one.
+
+---
+
+## 13. Messaging angles (suggestions)
+
+- "Get paid. Get your team paid. Automatically."
+- "Commissions, splits and payouts on autopilot."
+- "One payment in, everyone paid out."
+- "The end of commission spreadsheets."
+- "Built for closers, setters and the teams that run them."
+- "Motivate your team with awards, bonuses and a leaderboard that updates itself."
