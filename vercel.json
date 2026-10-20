@@ -9,6 +9,16 @@
     { "source": "/pricing/starter", "destination": "/pricing", "permanent": true },
     { "source": "/pricing/professional", "destination": "/pricing", "permanent": true }
   ],
+  "headers": [
+    {
+      "source": "/v2/(.*)",
+      "headers": [{ "key": "X-Robots-Tag", "value": "noindex, nofollow" }]
+    },
+    {
+      "source": "/v2",
+      "headers": [{ "key": "X-Robots-Tag", "value": "noindex, nofollow" }]
+    }
+  ],
   "rewrites": [
     {
       "source": "/(.*)",

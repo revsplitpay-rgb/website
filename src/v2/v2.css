@@ -1,0 +1,265 @@
+/*
+  RevSplitPay v2 design tokens and base styles (light theme only, owner 2026-10-19).
+  Every rule is scoped under html[data-v2-theme] so nothing here applies to the
+  live dark site after a visitor leaves /v2 (checked by scripts/check-content.mjs).
+  Colors are RGB triplets because tailwind.config.ts reads them as rgb(var(--x)).
+  Contrast (WCAG, measured): text 17.36 on white, muted 6.66, link 5.82,
+  primary button 4.64 (white on blue), input border 3.49, error 6.57.
+*/
+
+@font-face {
+  font-family: "Geist";
+  src: url("/v2/fonts/Geist-Variable.woff2") format("woff2-variations");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Geist Mono";
+  src: url("/v2/fonts/GeistMono-Variable.woff2") format("woff2-variations");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Metric-matched fallback so text does not jump when Geist loads. */
+@font-face {
+  font-family: "Geist Fallback";
+  src: local("Arial");
+  size-adjust: 104%;
+  ascent-override: 92%;
+  descent-override: 24%;
+  line-gap-override: 0%;
+}
+
+html[data-v2-theme="light"] {
+  color-scheme: light;
+  --background: 255 255 255;
+  --foreground: 11 26 51;
+  --card: 246 249 252;
+  --card-foreground: 11 26 51;
+  --popover: 255 255 255;
+  --popover-foreground: 11 26 51;
+  --primary: 0 114 228;
+  --primary-foreground: 255 255 255;
+  --secondary: 246 249 252;
+  --secondary-foreground: 11 26 51;
+  --muted: 246 249 252;
+  --muted-foreground: 79 93 117;
+  --accent: 246 249 252;
+  --accent-foreground: 11 26 51;
+  --destructive: 180 35 24;
+  --destructive-foreground: 255 255 255;
+  --border: 227 233 241;
+  --input: 125 138 160;
+  --ring: 0 114 228;
+  --radius: 12px;
+  --v2-link: 0 99 199;
+  --v2-visited: 67 56 202;
+  --v2-highlight: 63 193 255;
+  --v2-deep: 0 88 184;
+  --font-sans: "Geist", "Geist Fallback", ui-sans-serif, system-ui, sans-serif;
+  --v2-font-mono: "Geist Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  background: rgb(255 255 255);
+}
+
+html[data-v2-theme] body {
+  font-family: var(--font-sans);
+  background: rgb(var(--background));
+  color: rgb(var(--foreground));
+  font-feature-settings: "ss01", "cv11";
+  text-rendering: optimizeLegibility;
+}
+
+html[data-v2-theme] h1,
+html[data-v2-theme] h2,
+html[data-v2-theme] h3,
+html[data-v2-theme] h4 {
+  font-family: var(--font-sans);
+  letter-spacing: -0.02em;
+  font-weight: 600;
+}
+
+html[data-v2-theme] .font-sans {
+  font-family: var(--font-sans);
+}
+
+html[data-v2-theme] .font-mono,
+html[data-v2-theme] .v2-num {
+  font-family: var(--v2-font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+html[data-v2-theme] .tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Type scale (DESIGN.md) */
+html[data-v2-theme] .v2-display {
+  font-size: 2.25rem;
+  line-height: 2.5rem;
+  letter-spacing: -0.03em;
+  font-weight: 600;
+}
+
+html[data-v2-theme] .v2-h2 {
+  font-size: 2rem;
+  line-height: 2.25rem;
+  letter-spacing: -0.02em;
+  font-weight: 600;
+}
+
+html[data-v2-theme] .v2-h3 {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+  letter-spacing: -0.01em;
+  font-weight: 600;
+}
+
+html[data-v2-theme] .v2-lede {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+}
+
+@media (min-width: 768px) {
+  html[data-v2-theme] .v2-display {
+    font-size: 2.75rem;
+    line-height: 3rem;
+  }
+
+  html[data-v2-theme] .v2-h2 {
+    font-size: 2.25rem;
+    line-height: 2.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  html[data-v2-theme] .v2-display {
+    font-size: 3.5rem;
+    line-height: 3.75rem;
+  }
+}
+
+/* Surfaces */
+html[data-v2-theme] .v2-raised {
+  box-shadow: 0 1px 2px rgb(11 26 51 / 0.04), 0 8px 24px -12px rgb(11 26 51 / 0.12);
+}
+
+html[data-v2-theme] .v2-ledger-shadow {
+  box-shadow: 0 1px 2px rgb(11 26 51 / 0.05), 0 24px 48px -24px rgb(11 26 51 / 0.28);
+}
+
+/* In-body links keep a visible visited state. */
+html[data-v2-theme] .v2-prose a,
+html[data-v2-theme] a.v2-link {
+  color: rgb(var(--v2-link));
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+html[data-v2-theme] .v2-prose a:visited {
+  color: rgb(var(--v2-visited));
+}
+
+/* Blog body: readable measure, calm rhythm. */
+html[data-v2-theme] .v2-prose {
+  color: rgb(var(--foreground));
+  font-size: 1.0625rem;
+  line-height: 1.75rem;
+}
+html[data-v2-theme] .v2-prose > * + * {
+  margin-top: 1.25rem;
+}
+html[data-v2-theme] .v2-prose h2 {
+  margin-top: 2.75rem;
+  font-size: 1.5rem;
+  line-height: 2rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+html[data-v2-theme] .v2-prose h3,
+html[data-v2-theme] .v2-prose h4 {
+  margin-top: 2rem;
+  font-size: 1.1875rem;
+  line-height: 1.75rem;
+  font-weight: 600;
+}
+html[data-v2-theme] .v2-prose ul,
+html[data-v2-theme] .v2-prose ol {
+  padding-left: 1.25rem;
+}
+html[data-v2-theme] .v2-prose ul {
+  list-style: disc;
+}
+html[data-v2-theme] .v2-prose ol {
+  list-style: decimal;
+}
+html[data-v2-theme] .v2-prose li + li {
+  margin-top: 0.5rem;
+}
+html[data-v2-theme] .v2-prose blockquote {
+  border-left: 2px solid rgb(var(--border));
+  padding-left: 1rem;
+  color: rgb(var(--muted-foreground));
+}
+html[data-v2-theme] .v2-prose img {
+  border-radius: 12px;
+  border: 1px solid rgb(var(--border));
+}
+html[data-v2-theme] .v2-prose code {
+  font-family: var(--v2-font-mono);
+  font-size: 0.9em;
+}
+html[data-v2-theme] .v2-prose pre {
+  overflow-x: auto;
+  border-radius: 8px;
+  background: rgb(var(--muted));
+  padding: 1rem;
+}
+html[data-v2-theme] .v2-prose hr {
+  border-color: rgb(var(--border));
+}
+
+/* Browser surfaces */
+html[data-v2-theme] ::selection {
+  background: rgb(0 114 228 / 0.2);
+  color: rgb(var(--foreground));
+}
+
+html[data-v2-theme] input,
+html[data-v2-theme] textarea {
+  caret-color: rgb(var(--primary));
+}
+
+html[data-v2-theme] * {
+  scrollbar-width: thin;
+  scrollbar-color: rgb(var(--input)) transparent;
+}
+
+html[data-v2-theme] :focus-visible {
+  outline: 2px solid rgb(var(--ring));
+  outline-offset: 2px;
+}
+
+/* Dashed underline for the editable ledger fields */
+html[data-v2-theme] .v2-editable {
+  border-bottom: 1px dashed rgb(var(--input));
+}
+
+html[data-v2-theme] .v2-editable:hover,
+html[data-v2-theme] .v2-editable:focus {
+  border-bottom-style: solid;
+  border-bottom-color: rgb(var(--primary));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-v2-theme] *,
+  html[data-v2-theme] *::before,
+  html[data-v2-theme] *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -24,6 +24,7 @@ import TermsAndConditionPage from "./pages/legal/terms-&-condition";
 import LoginPage from "./pages/login";
 import NotFound from "./pages/not-found";
 import Pricing from "./pages/pricing";
+import V2Boundary from "./v2/boundary";
 
 const queryClient = new QueryClient();
 
@@ -57,6 +58,7 @@ const App = () => (
               <Route path="/legal/terms-&-condition" element={<TermsAndConditionPage />} />
               <Route path="/legal/privacy-policy" element={<PrivacyPolicyPage />} />
               <Route path="/legal/cookie-policy" element={<CookiePolicyPage />} />
+              <Route path="/v2/*" element={<V2Boundary />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </AuthProvider>

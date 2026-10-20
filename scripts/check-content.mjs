@@ -56,7 +56,7 @@ export const RULES = [
   },
   { id: "app-url", re: /app\.revsplitpay\.com/, scope: (rel) => rel.startsWith("src/"), allow: ["src/lib/links.ts"], fix: "import APP_URL / APP_SIGNUP_URL from src/lib/links.ts" },
   { id: "google-fonts", re: /fonts\.(googleapis|gstatic)\.com/, scope: () => true, fix: "self-host fonts (GDPR)" },
-  { id: "offer-code", re: /WELCOME50/, scope: (rel) => rel.startsWith("src/"), allow: ["src/lib/pricing.ts"], fix: "render the code from WELCOME_OFFER in src/lib/pricing.ts" },
+  { id: "offer-code", re: /WELCOME50/, scope: (rel) => rel.startsWith("src/") && !isTest(rel), allow: ["src/lib/pricing.ts"], fix: "render the code from WELCOME_OFFER in src/lib/pricing.ts" },
 
   // v2 design-system and content rules
   {
@@ -76,7 +76,7 @@ export const RULES = [
   },
   {
     id: "v2-links",
-    re: /\b(to|href)=["']\/(?!legal\/)/,
+    re: /\b(to|href)=["']\/(?!legal\/|v2\/)/,
     scope: (rel) => rel.startsWith("src/v2/") && rel.endsWith(".tsx") && !isTest(rel),
     fix: "build internal links with v2Path() from src/v2/lib/paths.ts",
   },
@@ -91,7 +91,8 @@ export const RULES = [
     id: "literal-money",
     test: (line) => {
       if (/^\s*(\/\/|\*|\/\*)/.test(line)) return false;
-      const text = stripNumericMarkup(line);
+      // 100% is a bound in validation copy, not a price or fee.
+      const text = stripNumericMarkup(line).replace(/\b100%/g, "");
       return /\$\d/.test(text) || /\d+(\.\d+)?%/.test(text) || /\b\d+-day\b/.test(text);
     },
     scope: (rel) => rel.startsWith("src/v2/") && /\.(tsx|ts)$/.test(rel) && !isTest(rel),

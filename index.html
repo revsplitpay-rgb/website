@@ -24,6 +24,14 @@
     <meta name="twitter:title" content="RevSplitPay — Automatic commission payouts for sales teams">
     <meta name="twitter:description" content="One payment in, everyone paid out. Commission splits and payouts for sales teams, on Stripe or Whop.">
     <meta name="twitter:image" content="https://revsplitpay.com/logo.png">
+    <!-- v2 preview: mark the light theme before first paint so /v2 never flashes dark. -->
+    <script>
+      if (/^\/v2(\/|$)/.test(location.pathname)) document.documentElement.setAttribute("data-v2-theme", "light");
+    </script>
+    <style>
+      html[data-v2-theme="light"] { --background: 255 255 255; --foreground: 11 26 51; background: #fff; color: #0b1a33; color-scheme: light; }
+      html[data-v2-theme="light"] body { background: #fff; }
+    </style>
   </head>
 
   <body>
