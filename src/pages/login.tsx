@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { useAuth } from "@/hooks/use-auth";
 import { useState } from "react";
 import { Helmet } from "react-helmet-async";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
 const LoginPage = () => {
@@ -38,7 +38,7 @@ const LoginPage = () => {
   return (
     <div className="min-h-screen brand-ambient-bg flex flex-col">
       <Helmet>
-        <title>Login | Paymark</title>
+        <title>Login | RevSplitPay</title>
       </Helmet>
       <AuthNavbar />
 
@@ -75,7 +75,7 @@ const LoginPage = () => {
 
             <div className="flex justify-start">
               <span className="text-muted-foreground text-sm">
-                Trouble signing in? Contact <a href="mailto:support@paymark.dev" className="text-white hover:text-primary transition-colors">support@paymark.dev</a>
+                Trouble signing in? Contact <a href="mailto:revsplitpay@gmail.com" className="text-white hover:text-primary transition-colors">revsplitpay@gmail.com</a>
               </span>
             </div>
 
@@ -89,14 +89,6 @@ const LoginPage = () => {
               {loading ? "Signing in..." : "Log in"}
             </Button>
 
-            <div className="text-center pt-4">
-              <p className="text-muted-foreground text-sm">
-                Don't have an account?{" "}
-                <Link to="/signup" className="text-white font-medium hover:underline">
-                  Sign up
-                </Link>
-              </p>
-            </div>
           </form>
         </Container>
       </main>

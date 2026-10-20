@@ -2,6 +2,7 @@ import Container from "@/components/container";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import revSplitPayLogo from "../../../../LOGO BLUE.png";
+import { APP_URL } from "@/lib/links";
 
 const AuthNavbar = () => {
     return (
@@ -24,7 +25,7 @@ const AuthNavbar = () => {
                         Login
                     </Link>
                     <Button asChild>
-                        <a href="https://app.revsplitpay.com/" target="_blank" rel="noopener noreferrer">Open Account</a>
+                        <a href={APP_URL}>Open Account</a>
                     </Button>
                 </div>
             </Container>

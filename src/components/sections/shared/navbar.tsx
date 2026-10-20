@@ -1,6 +1,7 @@
 "use client";
 import * as SheetPrimitive from "@radix-ui/react-dialog";
 import { Menu, XIcon } from "lucide-react";
+import { APP_SIGNUP_URL, APP_URL } from "@/lib/links";
 
 import React from "react";
 
@@ -45,30 +46,12 @@ const pages = [
 ]
 
 const innerPages = [
-  {
-    name: "Pricing Single",
-    href: "/pricing/starter"
-  },
-  {
-    name: "Blog Single",
-    href: "/blog/travel-ticketing"
-  },
-  {
-    name: "Integration Single",
-    href: "/integration/ledgerlink"
-  },
-  {
-    name: "Early Access",
-    href: "/early-access"
-  },
-  {
-    name: "Cookie Policy",
-    href: "/legal/cookie-policy"
-  },
-  {
-    name: "404",
-    href: "/404"
-  }
+  { name: "Stripe", href: "/integration/stripe" },
+  { name: "Whop", href: "/integration/whop" },
+  { name: "Slack", href: "/integration/slack" },
+  { name: "Webhooks", href: "/integration/webhooks" },
+  { name: "Terms and conditions", href: "/legal/terms-&-condition" },
+  { name: "Privacy policy", href: "/legal/privacy-policy" }
 ]
 
 const Navbar = () => {
@@ -90,7 +73,7 @@ const Navbar = () => {
               <UserMenu />
             ) : (
               <Button asChild size="sm">
-                <a href="https://app.revsplitpay.com/" target="_blank" rel="noopener noreferrer">Open Account</a>
+                <a href={APP_URL}>Open Account</a>
               </Button>
             )
           )}
@@ -227,7 +210,7 @@ const Navbar = () => {
               <UserMenu />
             ) : (
               <Button asChild>
-                <Link to="/signup">Get Started</Link>
+                <a href={APP_SIGNUP_URL}>Get Started</a>
               </Button>
             )
           )}

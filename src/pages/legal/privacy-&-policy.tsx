@@ -26,7 +26,7 @@ const PrivacyPolicyPage = () => {
             <Layout>
                 <LegalHero
                     title={`Privacy & Policy`}
-                    description={`Privacy & Policy | Revio - Legal`}
+                    description={`Privacy & Policy | RevSplitPay`}
                 />
                 <section>
                     <Container className="flex flex-col lg:flex-row justify-center md:gap-10 gap-6 py-[60px]">

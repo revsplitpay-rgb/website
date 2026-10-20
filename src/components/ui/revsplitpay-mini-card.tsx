@@ -9,7 +9,7 @@ const RevSplitPayMiniCard = ({ className = "" }: { className?: string }) => (
             <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-white text-primary">R</span>
             RevSplitPay
           </div>
-          <span className="rounded-lg border border-white/30 bg-white/15 px-2 py-1 text-[10px] uppercase tracking-[0.2em]">Live</span>
+          <span className="rounded-lg border border-white/30 bg-white/15 px-2 py-1 text-[10px] uppercase tracking-[0.2em]">Example</span>
         </div>
         <div>
           <p className="text-xs uppercase tracking-[0.24em] text-white/70">Total Revenue</p>

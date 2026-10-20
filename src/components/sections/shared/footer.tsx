@@ -1,7 +1,7 @@
 import Container from "@/components/container";
-import { Newsletter } from "@/components/ui/newsletter";
 import { Facebook, Instagram, Linkedin, Twitter } from "lucide-react";
 import { Link } from "react-router-dom";
+import revSplitPayLogo from "../../../../LOGO BLUE.png";
 
 const pageLinks = [
   { title: "Home", href: "/" },
@@ -14,15 +14,15 @@ const pageLinks = [
 ];
 
 const innerLinks = [
-  { title: "Pricing single", href: "/pricing/starter" },
-  { title: "Blog single", href: "/blog/travel-ticketing" },
-  { title: "Integration single", href: "/integration/ledgerlink" }
+  { title: "Stripe", href: "/integration/stripe" },
+  { title: "Whop", href: "/integration/whop" },
+  { title: "Slack", href: "/integration/slack" }
 ];
 
 const utilityLinks = [
-  { title: "Early Access", href: "/early-access" },
+  { title: "Terms and conditions", href: "/legal/terms-&-condition" },
+  { title: "Privacy policy", href: "/legal/privacy-policy" },
   { title: "Cookie policy", href: "/legal/cookie-policy" },
-  { title: "404", href: "/404" },
 ];
 
 const socialLinks = [
@@ -37,24 +37,17 @@ const Footer = () => {
     <footer className="bg-[#0A0A0A] text-white pt-24 pb-12">
       <Container>
         <div className="flex flex-col lg:flex-row justify-between gap-12 mb-20">
-          {/* Left Column: Newsletter & Logo */}
-          <div className="space-y-16">
-            <div className="space-y-6">
-              <h3 className="text-[20px] font-medium leading-[140%] tracking-[-0.02em]">
-                Subscribe Newsletter
-              </h3>
-              <Newsletter
-                className="max-w-[420px]"
-                placeholder="Enter Your Email"
-              />
-            </div>
+          {/* Left Column: Logo (the newsletter form was removed: it did not store emails) */}
+          <div className="space-y-6">
+            <p className="max-w-[360px] text-muted-foreground">
+              Commissions, splits and payouts on autopilot for sales teams.
+            </p>
 
             <Link to="/" className="inline-block">
-              <img
-                src="/images/common/logo.svg"
-                alt="PAYMARK"
-                className="h-10 w-auto opacity-70 hover:opacity-100 transition-opacity"
-              />
+              <span className="flex items-center gap-2 opacity-80 hover:opacity-100 transition-opacity">
+                <img src={revSplitPayLogo} alt="" className="h-9 w-9 rounded-xl object-cover" />
+                <span className="font-semibold text-xl tracking-tight text-white">RevSplitPay</span>
+              </span>
             </Link>
           </div>
 

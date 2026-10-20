@@ -4,9 +4,10 @@ import { AnimateOnView } from "@/components/ui/motion/animate-on-view";
 import { StaggerContainer } from "@/components/ui/motion/stagger";
 import { ArrowRight, BadgeCheck, ShieldCheck, Wallet } from "lucide-react";
 import { Link } from "react-router-dom";
+import { APP_SIGNUP_URL } from "@/lib/links";
 
 const reassurance = [
-    { icon: Wallet, text: "Payouts run on Stripe Connect" },
+    { icon: Wallet, text: "Runs on Stripe or Whop" },
     { icon: ShieldCheck, text: "7-day hold clears refunds first" },
     { icon: BadgeCheck, text: "Everyone keeps their own account" },
 ];
@@ -39,10 +40,10 @@ const HomeCTA = () => {
                                 size="default"
                                 className="h-11 w-full border border-[#3FC1FF]/35 bg-gradient-to-r from-[#0058B8] via-[#0072E4] to-[#3FC1FF] px-5 text-[15px] text-white shadow-[0_14px_34px_rgba(0,114,228,0.26)] hover:scale-[1.02] hover:shadow-[0_18px_42px_rgba(63,193,255,0.24)] sm:w-auto"
                             >
-                                <Link to="/contact">
+                                <a href={APP_SIGNUP_URL}>
                                     Get started
                                     <ArrowRight />
-                                </Link>
+                                </a>
                             </Button>
                             <Button
                                 asChild

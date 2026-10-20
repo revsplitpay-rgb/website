@@ -8,6 +8,7 @@ import {
     User
 } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
+import revSplitPayLogo from "../../../LOGO BLUE.png";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
 interface BlogLayoutProps {
@@ -40,11 +41,7 @@ const BlogLayout = ({ children }: BlogLayoutProps) => {
       <aside className="w-64 border-r border-white/10 flex flex-col">
         <div className="p-6 border-b border-white/10">
           <Link to="/" className="flex items-center gap-2">
-            <img
-              src="/images/common/logo.svg"
-              alt="Logo"
-              className="h-8"
-            />
+            <img src={revSplitPayLogo} alt="RevSplitPay" className="h-8 w-8 rounded-lg object-cover" />
           </Link>
         </div>
 

@@ -132,9 +132,11 @@ const PricingCard = React.forwardRef<HTMLDivElement, PricingCardProps>(
               variant={isHighlighted ? "pricing" : "outline"}
               asChild
             >
-              <Link to={buttonLink}>
-                {buttonText}
-              </Link>
+              {/^https?:\/\//.test(buttonLink) ? (
+                <a href={buttonLink}>{buttonText}</a>
+              ) : (
+                <Link to={buttonLink}>{buttonText}</Link>
+              )}
             </Button>
           </CardFooter>
         </div>

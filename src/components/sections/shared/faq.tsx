@@ -5,23 +5,34 @@ import { AnimateOnView } from "@/components/ui/motion/animate-on-view";
 import { Minus, Plus } from "lucide-react";
 import { Link } from "react-router-dom";
 import revSplitPayLogo from "../../../../LOGO BLUE.png";
+import {
+  COMMISSION_FEE_LABEL,
+  EXTRA_MEMBER_USD,
+  HOLD_DAYS,
+  INVOICE_FEE_LABEL,
+  PLANS,
+  formatUsd,
+} from "@/lib/pricing";
 
+const lastPlan = PLANS[PLANS.length - 1];
+
+// Answers follow product.md sections 8 and 12; numbers come from src/lib/pricing.ts.
 const faqs = [
   {
     question: "What is RevSplitPay?",
-    answer: "RevSplitPay helps teams split commission payouts automatically using verified Stripe payment data, so every payout stays clear, accurate, and easy to track.",
+    answer: "The payment and commission platform for sales teams: your customer pays once, and every closer, setter, partner and manager is paid their exact share automatically.",
   },
   {
-    question: "When do payouts actually arrive?",
-    answer: "Each commission is held for 7 days after the sale settles, which covers the refund window. After that it pays out automatically or with one click, and an admin can advance a single deal early if a rep asks.",
+    question: "When do reps get paid?",
+    answer: `${HOLD_DAYS} days after the customer's payment clears, to protect against refunds. Early pay can be arranged on request.`,
   },
   {
     question: "What does it cost?",
-    answer: "A monthly subscription based on your business revenue, from $300 up to $1,500, plus 3.5% of each team member's commission. Your own share as the owner is exempt, invoices are 3%, and award bonuses are free. Stripe's processing rates apply on top.",
+    answer: `Plans run from ${formatUsd(PLANS[0].priceUsd)} to ${formatUsd(lastPlan.priceUsd)} a month by monthly sales, with extra team members at ${formatUsd(EXTRA_MEMBER_USD)} a month each. The platform fee is ${COMMISSION_FEE_LABEL} of each commission paid to a team member, taken from their payout; your own share has no fee. Invoices and paid awards are ${INVOICE_FEE_LABEL}. Stripe or Whop processing fees apply as usual.`,
   },
   {
-    question: "Does everyone need a Stripe account?",
-    answer: "Yes. The business connects its Stripe account and each team member connects their own through Stripe Express. Commissions transfer directly between those accounts, so we are never holding your money.",
+    question: "Does RevSplitPay hold our money?",
+    answer: "No. Payments go through Stripe or Whop to the business, and each person's share is paid out to their own account. RevSplitPay is not a bank.",
   }
 ];
 

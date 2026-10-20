@@ -1,4 +1,5 @@
 import { Helmet } from "react-helmet-async";
+import { SITE_URL } from "@/lib/links";
 
 interface SEOProps {
     title: string;
@@ -15,11 +16,11 @@ const SEO = ({
     description,
     canonicalUrl,
     ogType = "website",
-    ogImage = "/og-image.jpg",
-    twitterCard = "summary_large_image",
+    ogImage = "/logo.png",
+    twitterCard = "summary",
     jsonLd,
 }: SEOProps) => {
-    const siteUrl = "https://morganblake.com";
+    const siteUrl = SITE_URL;
     const fullUrl = `${siteUrl}${canonicalUrl}`;
     const fullImageUrl = ogImage.startsWith("http") ? ogImage : `${siteUrl}${ogImage}`;
 
@@ -37,7 +38,7 @@ const SEO = ({
             <meta property="og:url" content={fullUrl} />
             <meta property="og:image" content={fullImageUrl} />
             <meta property="og:image:alt" content={title} />
-            <meta property="og:site_name" content="Revio - Offline & Online Payment" />
+            <meta property="og:site_name" content="RevSplitPay" />
             <meta property="og:locale" content="en_US" />
 
             {/* Twitter Card Meta Tags */}
@@ -46,11 +47,9 @@ const SEO = ({
             <meta name="twitter:description" content={description} />
             <meta name="twitter:image" content={fullImageUrl} />
             <meta name="twitter:image:alt" content={title} />
-            <meta name="twitter:site" content="@revio.photo" />
-            <meta name="twitter:creator" content="@revio.photo" />
 
             {/* Additional Meta Tags */}
-            <meta name="author" content="Revio" />
+            <meta name="author" content="RevSplitPay" />
             <meta name="robots" content="index, follow" />
             <meta name="googlebot" content="index, follow" />
 

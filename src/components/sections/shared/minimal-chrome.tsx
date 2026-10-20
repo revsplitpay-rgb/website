@@ -2,9 +2,7 @@ import Container from "@/components/container";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import revSplitPayLogo from "../../../../LOGO BLUE.png";
-
-const APP_URL = "https://app.revsplitpay.com/";
-const CONTACT_EMAIL = "revsplitpay@gmail.com";
+import { APP_URL, CONTACT_EMAIL } from "@/lib/links";
 
 // Stripped chrome for pages that are finished while the rest of the site is
 // still template. Carries no links to unfinished pages.
@@ -32,7 +30,7 @@ export const MinimalFooter = () => (
                 <span className="text-base font-semibold tracking-tight">RevSplitPay</span>
             </Link>
             <p className="text-sm text-white/45">
-                &copy; {new Date().getFullYear()} RevSplitPay. Payments run on Stripe Connect.
+                &copy; {new Date().getFullYear()} RevSplitPay. Payments run on Stripe or Whop.
             </p>
             <a
                 href={`mailto:${CONTACT_EMAIL}`}

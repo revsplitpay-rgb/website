@@ -76,7 +76,7 @@ const HomeFooter = () => {
                     <div>
                         <h4 className="mb-5 text-sm font-semibold text-white">Ready when you are</h4>
                         <p className="mb-5 text-sm leading-relaxed text-white/60">
-                            Connect Stripe, set your splits, and let the next sale pay everyone by itself.
+                            Connect Stripe or Whop, set your splits, and let the next sale pay everyone by itself.
                         </p>
                         <a
                             href="#get-started"
@@ -91,7 +91,7 @@ const HomeFooter = () => {
 
                 <div className="mt-14 flex flex-col items-center justify-between gap-4 border-t border-white/[0.07] pt-8 md:flex-row">
                     <p className="text-sm text-white/45">
-                        &copy; {new Date().getFullYear()} RevSplitPay. Payments run on Stripe Connect.
+                        &copy; {new Date().getFullYear()} RevSplitPay. Payments run on Stripe or Whop.
                     </p>
                     <a
                         href="#"

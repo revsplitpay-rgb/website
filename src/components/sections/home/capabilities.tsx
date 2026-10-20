@@ -14,6 +14,7 @@ import {
     Wallet,
 } from 'lucide-react'
 import Container from '../../container'
+import { INVOICE_FEE_LABEL } from '@/lib/pricing'
 
 const chip = 'rounded-full border border-white/10 bg-white/[0.045] px-3 py-1 text-[11px] font-medium text-white/70'
 const activeChip = 'rounded-full border border-[#3FC1FF]/30 bg-[#3FC1FF]/[0.11] px-3 py-1 text-[11px] font-semibold text-[#9BDAFF] shadow-[0_0_24px_rgba(63,193,255,0.14)]'
@@ -64,17 +65,17 @@ const capabilities = [
     },
     {
         icon: ReceiptText,
-        title: 'One-off payment requests',
-        body: 'A rep asks for a bonus or reimbursement. You approve it, Stripe generates the link, and the money lands minus a 3% fee.',
-        points: ['Approve', 'Pay link', '3% fee'],
+        title: 'Invoices from your team',
+        body: `A rep invoices you for extra work or an agreed bonus. You approve it and pay in one click by card, bank transfer or your Whop balance, with a ${INVOICE_FEE_LABEL} fee.`,
+        points: ['Approve', 'Pay in one click', `${INVOICE_FEE_LABEL} fee`],
         span: 'lg:col-span-2',
         visual: 'request' as const,
     },
     {
         icon: Award,
-        title: 'Awards with no platform fee',
-        body: 'Hand out a public award with an optional cash bonus. We take nothing, so the rep keeps the full amount.',
-        points: ['Public award', 'Cash bonus', '0% fee'],
+        title: 'Awards, with or without cash',
+        body: `Give a rep a badge or a cash award. Cash awards come with a payment link and the money goes straight to the rep, with a ${INVOICE_FEE_LABEL} fee.`,
+        points: ['Badge', 'Cash award', `${INVOICE_FEE_LABEL} fee`],
         span: 'lg:col-span-2',
         visual: 'award' as const,
     },
@@ -190,7 +191,7 @@ const SmallVisual = ({ kind }: { kind: VisualKind }) => {
         )
     }
     if (kind === 'award') {
-        return <div className="mt-6 flex flex-wrap gap-2" aria-hidden="true"><span className={activeChip}>0% platform fee</span><span className={chip}>Bonus optional</span></div>
+        return <div className="mt-6 flex flex-wrap gap-2" aria-hidden="true"><span className={activeChip}>{INVOICE_FEE_LABEL} fee on paid awards</span><span className={chip}>Cash optional</span></div>
     }
     if (kind === 'analytics') {
         return <BarsVisual />

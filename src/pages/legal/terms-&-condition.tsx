@@ -19,7 +19,7 @@ const TermsAndConditionPage = () => {
             <Layout>
                 <LegalHero
                     title={`Terms & Conditions`}
-                    description={`Terms & Conditions | Revio - Legal`}
+                    description={`Terms & Conditions | RevSplitPay`}
                 />
                 <section>
                     <Container className="flex flex-col lg:flex-row justify-center md:gap-10 gap-6 py-[60px]">

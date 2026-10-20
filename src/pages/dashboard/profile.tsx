@@ -127,7 +127,7 @@ const ProfilePage = () => {
   return (
     <div className="min-h-screen brand-site-shell flex flex-col">
       <Helmet>
-        <title>Profile Settings | Paymark</title>
+        <title>Profile Settings | RevSplitPay</title>
       </Helmet>
 
       <main className="flex-1 relative pt-12 md:pt-20 pb-20 brand-ambient-bg">

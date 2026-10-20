@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import revSplitPayLogo from "../../../../LOGO BLUE.png";
+import { APP_URL } from "@/lib/links";
 
 // Home-only nav: these jump to sections on this page instead of routing away.
 // Ids are set on the matching sections; targets carry scroll-mt for the
@@ -100,7 +101,7 @@ const HomeNavbar = () => {
                             <UserMenu />
                         ) : (
                             <Button asChild size="sm">
-                                <a href="https://app.revsplitpay.com/" target="_blank" rel="noopener noreferrer">Open Account</a>
+                                <a href={APP_URL}>Open Account</a>
                             </Button>
                         ))}
                 </div>

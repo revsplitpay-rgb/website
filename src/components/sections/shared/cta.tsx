@@ -3,7 +3,7 @@ import RevSplitPayMiniCard from "@/components/ui/revsplitpay-mini-card";
 import { Button } from "@/components/ui/button";
 import { AnimateOnView } from "@/components/ui/motion/animate-on-view";
 import { StaggerContainer } from "@/components/ui/motion/stagger";
-import { Link } from "react-router-dom";
+import { APP_SIGNUP_URL } from "@/lib/links";
 
 const CTA = () => {
     return (
@@ -30,14 +30,14 @@ const CTA = () => {
                         <p
                             className='text-muted-foreground md:mb-10 mb-5'
                         >
-                            Connect Stripe, set your splits, and let the next sale pay everyone by itself.
+                            Connect Stripe or Whop, set your splits, and let the next sale pay everyone by itself.
                         </p>
                     </AnimateOnView>
                     <AnimateOnView>
                         <Button asChild>
-                            <Link to="/contact">
+                            <a href={APP_SIGNUP_URL}>
                                 Get started
-                            </Link>
+                            </a>
                         </Button>
                     </AnimateOnView>
                 </StaggerContainer>

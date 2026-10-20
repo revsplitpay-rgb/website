@@ -1,4 +1,5 @@
 import Container from "@/components/container";
+import { APP_URL } from "@/lib/links";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -141,12 +142,12 @@ const ContactForm = () => {
                   <span className="font-medium">Already have an account?</span>
                 </div>
                 <a
-                  href="https://app.revsplitpay.com/"
+                  href={APP_URL}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="block text-sm text-muted-foreground pt-4 hover:text-foreground transition-colors"
                 >
-                  app.revsplitpay.com
+                  {APP_URL.replace("https://", "").replace(/\/$/, "")}
                 </a>
               </div>
             </div>

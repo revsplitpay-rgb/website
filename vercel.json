@@ -3,6 +3,12 @@
   "buildCommand": "npm run build",
   "installCommand": "npm install",
   "outputDirectory": "dist",
+  "redirects": [
+    { "source": "/signup", "destination": "https://app.revsplitpay.com/", "permanent": true },
+    { "source": "/early-access", "destination": "/", "permanent": true },
+    { "source": "/pricing/starter", "destination": "/pricing", "permanent": true },
+    { "source": "/pricing/professional", "destination": "/pricing", "permanent": true }
+  ],
   "rewrites": [
     {
       "source": "/(.*)",
