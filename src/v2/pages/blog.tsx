@@ -6,7 +6,8 @@ import { useMemo } from "react";
 import { Link, useParams } from "react-router-dom";
 import CtaBand from "../components/cta-band";
 import PageMeta from "../components/page-meta";
-import { ButtonLink, Container, Section, SectionHeading } from "../components/ui";
+import PageHero from "../components/page-hero";
+import { ButtonLink, Container, Grad, Section } from "../components/ui";
 import { v2Path } from "../lib/paths";
 
 const SANITIZE = {
@@ -33,10 +34,10 @@ const Meta = ({ post }: { post: BlogPost }) => (
 );
 
 const Skeleton = () => (
-  <ul className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3" aria-hidden="true">
+  <ul className="grid gap-6 md:grid-cols-2 lg:grid-cols-3" aria-hidden="true">
     {[0, 1, 2].map((n) => (
-      <li key={n} className="rounded-lg border border-border">
-        <div className="aspect-[16/9] rounded-t-lg bg-muted" />
+      <li key={n} className="v2-card overflow-hidden">
+        <div className="v2-shimmer aspect-[16/9] bg-[linear-gradient(90deg,rgb(var(--muted)),rgb(232_240_252),rgb(var(--muted)))]" />
         <div className="space-y-3 p-5">
           <div className="h-3 w-1/3 rounded-sm bg-muted" />
           <div className="h-5 w-4/5 rounded-sm bg-muted" />
@@ -56,30 +57,38 @@ export const BlogIndex = () => {
         description="Notes on paying sales teams, commissions and payouts."
         path="/blog"
       />
-      <Section>
+      <PageHero
+        eyebrow="Blog"
+        title={
+          <>
+            Notes on <Grad>getting teams paid</Grad>.
+          </>
+        }
+        support="Commissions, payouts and running a sales team, from the RevSplitPay team."
+      />
+      <Section className="pt-12 md:pt-16">
         <Container>
-          <SectionHeading as="h1" title="Blog." support="Notes on paying sales teams, commissions and payouts." />
           {isLoading ? (
             <Skeleton />
           ) : posts.length === 0 ? (
-            <p className="mt-12 text-muted-foreground">No posts yet. Check back soon.</p>
+            <div className="v2-card mx-auto max-w-[520px] p-10 text-center"><p className="text-lg font-semibold text-foreground">First posts are on the way.</p><p className="mt-2 text-muted-foreground">Check back soon.</p></div>
           ) : (
-            <ul className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            <ul className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
               {posts.map((post) => (
                 <li key={post.id}>
                   <Link
                     to={v2Path(`/blog/${post.slug}`)}
-                    className="group block h-full rounded-lg border border-border bg-background transition-colors hover:border-input"
+                    className="v2-card v2-card-hover group block h-full overflow-hidden"
                   >
                     {post.image && (
                       <img
                         src={post.image}
                         alt=""
                         loading="lazy"
-                        className="aspect-[16/9] w-full rounded-t-lg border-b border-border object-cover"
+                        className="aspect-[16/9] w-full border-b border-border object-cover transition-transform duration-700 group-hover:scale-[1.03]"
                       />
                     )}
-                    <div className="p-5">
+                    <div className="p-6">
                       <Meta post={post} />
                       <h2 className="v2-h3 mt-2 text-foreground group-hover:underline group-hover:underline-offset-4">
                         {post.title}
@@ -154,7 +163,7 @@ export const BlogArticle = () => {
               <Meta post={post} />
             </div>
             {post.image && (
-              <img src={post.image} alt="" className="mt-10 aspect-[16/9] w-full rounded-lg border border-border object-cover" />
+              <img src={post.image} alt="" className="mt-10 aspect-[16/9] w-full rounded-[20px] border border-border object-cover shadow-[0_30px_60px_-30px_rgb(0_58_130/0.35)]" />
             )}
             <div className="v2-prose mt-10" dangerouslySetInnerHTML={{ __html: html }} />
           </Container>

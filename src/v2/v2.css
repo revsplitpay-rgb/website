@@ -95,59 +95,349 @@ html[data-v2-theme] .tabular-nums {
   font-variant-numeric: tabular-nums;
 }
 
-/* Type scale (DESIGN.md) */
+/* Type scale: big, tight display with clear steps down to body. */
 html[data-v2-theme] .v2-display {
-  font-size: 2.25rem;
-  line-height: 2.5rem;
-  letter-spacing: -0.03em;
+  text-wrap: balance;
+  font-size: 2.75rem;
+  line-height: 1.02;
+  letter-spacing: -0.045em;
+  font-weight: 600;
+}
+
+html[data-v2-theme] .v2-h1 {
+  text-wrap: balance;
+  font-size: 2.5rem;
+  line-height: 1.05;
+  letter-spacing: -0.04em;
   font-weight: 600;
 }
 
 html[data-v2-theme] .v2-h2 {
-  font-size: 2rem;
-  line-height: 2.25rem;
-  letter-spacing: -0.02em;
+  text-wrap: balance;
+  font-size: 2.125rem;
+  line-height: 1.1;
+  letter-spacing: -0.035em;
   font-weight: 600;
 }
 
 html[data-v2-theme] .v2-h3 {
   font-size: 1.25rem;
   line-height: 1.75rem;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.015em;
   font-weight: 600;
 }
 
 html[data-v2-theme] .v2-lede {
   font-size: 1.125rem;
-  line-height: 1.75rem;
+  line-height: 1.7;
+}
+
+html[data-v2-theme] .v2-stat {
+  font-size: 2.75rem;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  font-weight: 600;
 }
 
 @media (min-width: 768px) {
   html[data-v2-theme] .v2-display {
-    font-size: 2.75rem;
-    line-height: 3rem;
+    font-size: 4rem;
   }
-
+  html[data-v2-theme] .v2-h1 {
+    font-size: 3.25rem;
+  }
   html[data-v2-theme] .v2-h2 {
-    font-size: 2.25rem;
-    line-height: 2.5rem;
+    font-size: 2.75rem;
+  }
+  html[data-v2-theme] .v2-lede {
+    font-size: 1.1875rem;
+  }
+  html[data-v2-theme] .v2-stat {
+    font-size: 3.5rem;
   }
 }
 
 @media (min-width: 1024px) {
   html[data-v2-theme] .v2-display {
-    font-size: 3.5rem;
-    line-height: 3.75rem;
+    font-size: 5rem;
   }
+  html[data-v2-theme] .v2-h1 {
+    font-size: 4rem;
+  }
+  html[data-v2-theme] .v2-h2 {
+    font-size: 3.25rem;
+  }
+}
+
+/* Brand gradient text: deep blue to sky. */
+html[data-v2-theme] .v2-gradient-text {
+  background: linear-gradient(100deg, #003d82 0%, #0058b8 22%, #0072e4 55%, #3fc1ff 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+/* Small uppercase label above section titles. */
+html[data-v2-theme] .v2-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--v2-font-mono);
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgb(var(--v2-deep));
+}
+html[data-v2-theme] .v2-eyebrow::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  background: linear-gradient(135deg, #0072e4, #3fc1ff);
+  box-shadow: 0 0 0 3px rgb(63 193 255 / 0.18);
+}
+html[data-v2-theme] .v2-eyebrow-light {
+  color: #ffffff;
 }
 
 /* Surfaces */
 html[data-v2-theme] .v2-raised {
-  box-shadow: 0 1px 2px rgb(11 26 51 / 0.04), 0 8px 24px -12px rgb(11 26 51 / 0.12);
+  box-shadow: 0 1px 2px rgb(11 26 51 / 0.04), 0 12px 32px -14px rgb(0 58 130 / 0.18);
 }
 
 html[data-v2-theme] .v2-ledger-shadow {
-  box-shadow: 0 1px 2px rgb(11 26 51 / 0.05), 0 24px 48px -24px rgb(11 26 51 / 0.28);
+  box-shadow: 0 1px 2px rgb(11 26 51 / 0.05), 0 30px 60px -28px rgb(0 58 130 / 0.35);
+}
+
+html[data-v2-theme] .v2-card {
+  position: relative;
+  border-radius: 20px;
+  border: 1px solid rgb(var(--border));
+  background-color: #fff;
+  box-shadow: 0 1px 2px rgb(11 26 51 / 0.04), 0 10px 30px -18px rgb(0 58 130 / 0.22);
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.35s;
+}
+html[data-v2-theme] .v2-card-hover:hover {
+  transform: translateY(-4px);
+  border-color: rgb(0 114 228 / 0.28);
+  box-shadow: 0 1px 2px rgb(11 26 51 / 0.04), 0 28px 50px -24px rgb(0 72 160 / 0.35);
+}
+
+/* Glassy white for floating cards over gradients. */
+html[data-v2-theme] .v2-glass {
+  background: rgb(255 255 255 / 0.86);
+  border: 1px solid rgb(255 255 255 / 0.95);
+  box-shadow: 0 1px 1px rgb(11 26 51 / 0.04), 0 20px 44px -20px rgb(0 58 130 / 0.38), inset 0 1px 0 rgb(255 255 255);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+
+/* Gradient hairline border (masked padding box). */
+html[data-v2-theme] .v2-gradient-border::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: 1px;
+  border-radius: inherit;
+  background: linear-gradient(140deg, rgb(63 193 255 / 0.9), rgb(0 114 228 / 0.35) 40%, rgb(0 88 184 / 0.1) 70%, rgb(63 193 255 / 0.6));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* Rotating gradient border for the featured plan: the fill is painted on the
+   padding box and the conic gradient only shows through the 1.5px border. */
+@property --v2-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+html[data-v2-theme] .v2-spin-border {
+  position: relative;
+  border: 1.5px solid transparent;
+  background:
+    linear-gradient(180deg, #ffffff 0%, #f3f8ff 100%) padding-box,
+    conic-gradient(from var(--v2-angle), #3fc1ff, #0072e4 25%, #9fdcff 50%, #0072e4 75%, #3fc1ff) border-box;
+  box-shadow: 0 30px 60px -28px rgb(0 72 160 / 0.45), 0 0 0 6px rgb(0 114 228 / 0.05);
+  animation: v2-spin 8s linear infinite;
+}
+html[data-v2-theme] .v2-spin-border-deep {
+  background:
+    radial-gradient(ellipse 80% 50% at 100% 0%, rgb(63 193 255 / 0.35), transparent 70%) padding-box,
+    linear-gradient(165deg, #0a3f9e 0%, #0a52cc 55%, #0b5fd6 100%) padding-box,
+    conic-gradient(from var(--v2-angle), #3fc1ff, #9fe2ff 25%, #0072e4 50%, #9fe2ff 75%, #3fc1ff) border-box;
+  box-shadow: 0 40px 70px -30px rgb(0 50 150 / 0.65), 0 0 0 6px rgb(0 114 228 / 0.06);
+}
+
+/* Section backgrounds. Tints fade to white at their edges so sections blend. */
+html[data-v2-theme] .v2-sky {
+  background:
+    radial-gradient(ellipse 60% 50% at 12% 0%, rgb(63 193 255 / 0.34), transparent 70%),
+    radial-gradient(ellipse 55% 45% at 88% 4%, rgb(0 114 228 / 0.24), transparent 70%),
+    linear-gradient(180deg, #e3efff 0%, #f1f7ff 55%, #ffffff 100%);
+}
+
+html[data-v2-theme] .v2-tint {
+  background:
+    linear-gradient(180deg, #ffffff 0, rgb(255 255 255 / 0) 140px, rgb(255 255 255 / 0) calc(100% - 140px), #ffffff 100%),
+    radial-gradient(ellipse 50% 60% at 0% 20%, rgb(63 193 255 / 0.14), transparent 70%),
+    radial-gradient(ellipse 50% 60% at 100% 80%, rgb(0 114 228 / 0.1), transparent 70%),
+    #f2f7ff;
+}
+
+/* Saturated mid-page anchor band: bright brand blue, white type. */
+html[data-v2-theme] .v2-blue-band {
+  background:
+    radial-gradient(ellipse 55% 60% at 8% 0%, rgb(90 190 255 / 0.35), transparent 70%),
+    radial-gradient(ellipse 50% 70% at 100% 100%, rgb(0 30 110 / 0.55), transparent 70%),
+    linear-gradient(125deg, #083fb0 0%, #0a52cc 50%, #0b5fd6 100%);
+  color: #fff;
+}
+
+html[data-v2-theme] .v2-deep-band {
+  background:
+    radial-gradient(ellipse 60% 80% at 10% 0%, rgb(63 193 255 / 0.55), transparent 65%),
+    radial-gradient(ellipse 60% 90% at 95% 100%, rgb(0 40 100 / 0.7), transparent 70%),
+    linear-gradient(120deg, #003d82 0%, #0058b8 40%, #0072e4 100%);
+  color: #fff;
+}
+
+/* Faint blueprint grid, faded at the edges. */
+html[data-v2-theme] .v2-grid-bg {
+  background-image:
+    linear-gradient(rgb(0 88 184 / 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(0 88 184 / 0.07) 1px, transparent 1px);
+  background-size: 56px 56px;
+  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, #000 30%, transparent 75%);
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, #000 30%, transparent 75%);
+}
+html[data-v2-theme] .v2-grid-light {
+  background-image:
+    linear-gradient(rgb(255 255 255 / 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(255 255 255 / 0.1) 1px, transparent 1px);
+  background-size: 56px 56px;
+  -webkit-mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, #000 20%, transparent 80%);
+  mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, #000 20%, transparent 80%);
+}
+
+/* Soft colour blobs. Static: blurred layers are expensive to animate. */
+html[data-v2-theme] .v2-blob {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(60px);
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+/* Buttons */
+html[data-v2-theme] .v2-btn-primary {
+  background: linear-gradient(180deg, #1a86f0 0%, #0072e4 55%, #0063c7 100%);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.28), 0 1px 2px rgb(0 40 100 / 0.3), 0 10px 24px -10px rgb(0 114 228 / 0.7);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+}
+html[data-v2-theme] .v2-btn-primary:hover {
+  filter: brightness(1.06);
+  transform: translateY(-1px);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.3), 0 2px 4px rgb(0 40 100 / 0.3), 0 16px 30px -12px rgb(0 114 228 / 0.8);
+}
+html[data-v2-theme] .v2-btn-secondary {
+  background: #fff;
+  box-shadow: 0 1px 2px rgb(11 26 51 / 0.06), 0 6px 16px -10px rgb(0 58 130 / 0.25);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+html[data-v2-theme] .v2-btn-secondary:hover {
+  transform: translateY(-1px);
+  border-color: rgb(0 114 228 / 0.45);
+}
+
+/* Icon tile with brand gradient */
+html[data-v2-theme] .v2-icon-tile {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  color: #fff;
+  background: linear-gradient(140deg, #3fc1ff 0%, #0072e4 55%, #0058b8 100%);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.35), 0 8px 18px -8px rgb(0 114 228 / 0.7);
+}
+
+/* Fading edges for marquees. */
+html[data-v2-theme] .v2-fade-x {
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+
+html[data-v2-theme] .v2-float {
+  animation: v2-float 7s ease-in-out infinite;
+  will-change: transform;
+}
+html[data-v2-theme] .v2-float-slow {
+  animation: v2-float 9s ease-in-out infinite reverse;
+}
+
+html[data-v2-theme] .v2-pulse-ring {
+  animation: v2-pulse-ring 2.4s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+}
+
+html[data-v2-theme] .v2-marquee {
+  animation: v2-marquee 55s linear infinite;
+  will-change: transform;
+}
+html[data-v2-theme] .v2-marquee:hover {
+  animation-play-state: paused;
+}
+
+html[data-v2-theme] .v2-shimmer {
+  background-size: 200% 100%;
+  animation: v2-shimmer 3.5s linear infinite;
+}
+
+@keyframes v2-spin {
+  to {
+    --v2-angle: 360deg;
+  }
+}
+@keyframes v2-drift {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  100% {
+    transform: translate3d(40px, 30px, 0) scale(1.15);
+  }
+}
+@keyframes v2-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+@keyframes v2-pulse-ring {
+  0% {
+    transform: scale(1);
+    opacity: 0.55;
+  }
+  100% {
+    transform: scale(1.9);
+    opacity: 0;
+  }
+}
+@keyframes v2-marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+@keyframes v2-shimmer {
+  to {
+    background-position: -200% 0;
+  }
 }
 
 /* In-body links keep a visible visited state. */
@@ -247,6 +537,10 @@ html[data-v2-theme] .v2-editable {
   border-bottom: 1px dashed rgb(var(--input));
 }
 
+html[data-v2-theme] .v2-editable:focus-visible {
+  outline: none;
+}
+
 html[data-v2-theme] .v2-editable:hover,
 html[data-v2-theme] .v2-editable:focus {
   border-bottom-style: solid;
@@ -257,8 +551,7 @@ html[data-v2-theme] .v2-editable:focus {
   html[data-v2-theme] *,
   html[data-v2-theme] *::before,
   html[data-v2-theme] *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
+    animation: none !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }

@@ -12,7 +12,6 @@ export const NAV_LINKS = [
   { label: "Product", to: v2Path("/feature") },
   { label: "Pricing", to: v2Path("/pricing") },
   { label: "Integrations", to: v2Path("/integration") },
-  { label: "Blog", to: v2Path("/blog") },
 ];
 
 export const Logo = () => (
@@ -38,13 +37,19 @@ const Navbar = () => {
   useEffect(() => setOpen(false), [pathname]);
 
   return (
-    <header
-      className={cn(
-        "sticky top-0 z-40 border-b bg-background transition-colors duration-200",
-        scrolled ? "border-border" : "border-transparent",
-      )}
-    >
-      <Container className="flex h-14 items-center justify-between lg:h-16">
+    <header className="sticky top-0 z-40 h-16">
+      <Container
+        className={cn(
+          "flex h-16 items-center justify-between transition-all duration-300",
+          scrolled && "lg:max-w-[1080px]",
+        )}
+      >
+        <div
+          className={cn(
+            "flex w-full items-center justify-between transition-all duration-300",
+            scrolled ? "v2-glass mt-3 h-14 rounded-full pl-5 pr-2" : "h-16",
+          )}
+        >
         <Logo />
 
         <nav aria-label="Main" className="hidden lg:block">
@@ -57,7 +62,7 @@ const Navbar = () => {
                     cn(
                       "relative py-2 text-[0.9375rem] transition-colors duration-150 hover:text-foreground",
                       isActive
-                        ? "text-foreground after:absolute after:inset-x-0 after:-bottom-[19px] after:h-0.5 after:bg-[rgb(var(--v2-highlight))]"
+                        ? "font-medium text-foreground after:absolute after:inset-x-0 after:-bottom-0.5 after:mx-auto after:h-0.5 after:w-4 after:rounded-full after:bg-[linear-gradient(90deg,#3fc1ff,#0072e4)]"
                         : "text-muted-foreground",
                     )
                   }
@@ -73,7 +78,7 @@ const Navbar = () => {
           <a href={APP_URL} className="text-[0.9375rem] text-muted-foreground transition-colors hover:text-foreground">
             Log in
           </a>
-          <a href={APP_SIGNUP_URL} className={buttonClass("primary", "min-h-10 px-4")}>
+          <a href={APP_SIGNUP_URL} className={buttonClass("primary", "min-h-10 px-5")}>
             Get started
           </a>
         </div>
@@ -89,8 +94,8 @@ const Navbar = () => {
             </button>
           </Dialog.Trigger>
           <Dialog.Portal>
-            <Dialog.Overlay className="fixed inset-0 z-50 bg-foreground/20 data-[state=open]:animate-in data-[state=open]:fade-in-0" />
-            <Dialog.Content className="fixed inset-y-0 right-0 z-50 flex w-full max-w-sm flex-col bg-background p-4 v2-raised data-[state=open]:animate-in data-[state=open]:slide-in-from-right">
+            <Dialog.Overlay className="fixed inset-0 z-50 bg-[rgb(0_30_80/0.25)] backdrop-blur-sm data-[state=open]:animate-in data-[state=open]:fade-in-0" />
+            <Dialog.Content className="fixed inset-y-0 right-0 z-50 flex w-full max-w-sm flex-col bg-background p-4 shadow-[0_0_60px_-20px_rgb(0_40_110/0.5)] data-[state=open]:animate-in data-[state=open]:slide-in-from-right">
               <div className="flex h-12 items-center justify-between">
                 <Dialog.Title className="text-base font-semibold">Menu</Dialog.Title>
                 <Dialog.Close
@@ -123,6 +128,7 @@ const Navbar = () => {
             </Dialog.Content>
           </Dialog.Portal>
         </Dialog.Root>
+        </div>
       </Container>
     </header>
   );

@@ -1,44 +1,39 @@
 import { animate, motion, useReducedMotion } from "framer-motion";
-import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 
-// Motion rules (DESIGN.md): fade up 12px over 400ms, once. Anything already on
-// screen at mount renders in its final state, so content never waits on timing.
-// Everything is static for visitors who prefer reduced motion.
-export const REVEAL_MS = 400;
-export const ROLL_MS = 700;
-const EASE = [0.22, 1, 0.36, 1] as const;
+// Motion: blur-in reveals that rise 24px over 800ms, once, staggered by the
+// caller's delay. Visitors who prefer reduced motion get everything static.
+export const REVEAL_MS = 800;
+export const ROLL_MS = 1200;
+export const EASE = [0.21, 0.47, 0.32, 0.98] as const;
 
-const useVisibleAtMount = () => {
-  const ref = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(true);
-  useLayoutEffect(() => {
-    const el = ref.current;
-    if (!el || typeof IntersectionObserver === "undefined") return;
-    const rect = el.getBoundingClientRect();
-    setVisible(rect.top < window.innerHeight && rect.bottom > 0);
-  }, []);
-  return { ref, visibleAtMount: visible };
-};
-
-/** `delay` is in milliseconds. */
-export const Reveal = ({ children, className, delay = 0 }: { children: ReactNode; className?: string; delay?: number }) => {
+/** `delay` is in milliseconds. `onLoad` animates immediately instead of on scroll. */
+export const Reveal = ({
+  children,
+  className,
+  delay = 0,
+  y = 24,
+  blur = true,
+  onLoad = false,
+}: {
+  children: ReactNode;
+  className?: string;
+  delay?: number;
+  y?: number;
+  blur?: boolean;
+  onLoad?: boolean;
+}) => {
   const reduced = useReducedMotion();
-  const { ref, visibleAtMount } = useVisibleAtMount();
-  if (reduced || visibleAtMount) {
-    return (
-      <div ref={ref} className={className}>
-        {children}
-      </div>
-    );
-  }
+  if (reduced) return <div className={className}>{children}</div>;
+  const shown = { opacity: 1, y: 0, filter: "blur(0px)", transitionEnd: { filter: "none" } };
+  // Above-the-fold entrances are quicker so the hero is readable almost at once.
+  const duration = onLoad ? 0.6 : REVEAL_MS / 1000;
   return (
     <motion.div
-      ref={ref}
       className={className}
-      initial={{ opacity: 0, y: 12 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.2 }}
-      transition={{ duration: REVEAL_MS / 1000, ease: EASE, delay: delay / 1000 }}
+      initial={{ opacity: 0, y: onLoad ? Math.min(y, 14) : y, filter: blur ? `blur(${onLoad ? 5 : 8}px)` : "blur(0px)" }}
+      {...(onLoad ? { animate: shown } : { whileInView: shown, viewport: { once: true, margin: "-60px" } })}
+      transition={{ duration, ease: EASE, delay: delay / 1000 }}
     >
       {children}
     </motion.div>

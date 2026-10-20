@@ -39,13 +39,20 @@ const CopyButton = ({
 
   return (
     <span className={cn("inline-flex flex-wrap items-center gap-3", className)}>
-      <span ref={textRef} className={showValue ? "font-mono text-[0.9375rem] text-foreground" : "sr-only"}>
+      <span
+        ref={textRef}
+        className={
+          showValue
+            ? "rounded-[10px] border border-dashed border-[rgb(0_114_228/0.45)] bg-[rgb(0_114_228/0.06)] px-3 py-1.5 font-mono text-[0.9375rem] font-semibold tracking-wider text-[rgb(var(--v2-deep))]"
+            : "sr-only"
+        }
+      >
         {value}
       </span>
       <button
         type="button"
         onClick={copy}
-        className="inline-flex min-h-11 items-center gap-2 rounded-md border border-input px-3 text-sm font-medium text-foreground transition-colors hover:bg-muted"
+        className="v2-btn-secondary inline-flex min-h-11 items-center gap-2 rounded-full border border-border px-4 text-sm font-medium text-foreground"
       >
         {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
         {copied ? "Copied" : label}

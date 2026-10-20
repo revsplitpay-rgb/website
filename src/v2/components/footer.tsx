@@ -32,7 +32,8 @@ const columns = [
 ];
 
 const Footer = () => (
-  <footer className="border-t border-border bg-background">
+  <footer className="relative bg-[linear-gradient(180deg,#ffffff,#f4f8ff)]">
+    <div className="absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,rgb(0_114_228/0.35),transparent)]" aria-hidden="true" />
     <Container className="py-14 lg:py-16">
       <div className="grid gap-10 md:grid-cols-[1.4fr_repeat(3,1fr)]">
         <div className="max-w-xs">
@@ -44,10 +45,10 @@ const Footer = () => (
         {columns.map((column) => (
           <div key={column.title}>
             <h2 className="text-sm font-semibold text-foreground">{column.title}</h2>
-            <ul className="mt-4 space-y-3">
+            <ul className="mt-3 space-y-0.5">
               {column.links.map((link) => (
                 <li key={link.label}>
-                  <Link to={link.to} className="text-[0.9375rem] text-muted-foreground transition-colors hover:text-foreground">
+                  <Link to={link.to} className="inline-flex min-h-10 items-center text-[0.9375rem] text-muted-foreground transition-colors hover:text-[rgb(var(--v2-deep))]">
                     {link.label}
                   </Link>
                 </li>

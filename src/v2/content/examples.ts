@@ -17,3 +17,15 @@ export const leaderboardExamples = [
 
 export const awardRuleExample = "Hit $50K in sales this month and get a $500 bonus";
 export const boostExample = "+2% on the next deals";
+
+// The "before" spreadsheet in the problem section: deliberately messy.
+export const spreadsheetExample = {
+  columns: ["Deal", "Sale", "Closer", "Setter", "Paid?"],
+  rows: [
+    { cells: ["Coaching #1042", "$5,000", "10%", "5%?", "No"], flag: "setter" as const },
+    { cells: ["Program #1043", "$3,500", "10%", "—", "Yes"], flag: null },
+    { cells: ["Course #1044", "$2,000", "??", "5%", "Refund?"], flag: "closer" as const },
+    { cells: ["Retainer #1045", "$8,000", "8%", "5%", "Partly"], flag: "paid" as const },
+  ],
+  notes: ["Who closed this one?", "Refunded — fix the split later"],
+};

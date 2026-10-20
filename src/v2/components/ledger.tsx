@@ -23,6 +23,26 @@ const DEFAULT_ROWS: Row[] = [
 
 const money = (cents: number) => formatCents(cents);
 
+const BAR_COLORS = ["bg-[rgb(var(--v2-deep))]", "bg-[rgb(var(--v2-highlight))]", "bg-[rgb(0_150_200)]", "bg-[rgb(90_110_220)]"];
+
+/** Live proportion bar: each person's share, then the owner's. */
+const SplitBar = ({ parts, total }: { parts: { key: string; cents: number }[]; total: number }) => (
+  <div className="mt-4 flex h-2.5 w-full overflow-hidden rounded-full bg-muted" aria-hidden="true">
+    {total > 0 &&
+      parts.map((part, index) => (
+        <span
+          key={`${part.key}-${index}`}
+          className={cn(
+            "h-full transition-[width] duration-500 ease-out",
+            index === parts.length - 1 ? "bg-[linear-gradient(90deg,#0072e4,#5cc8ff)]" : BAR_COLORS[index % BAR_COLORS.length],
+            index > 0 && "border-l-2 border-white",
+          )}
+          style={{ width: `${(part.cents / total) * 100}%` }}
+        />
+      ))}
+  </div>
+);
+
 /**
  * The editable example ledger: one sale, each person's share, the 2.9% fee taken
  * from their payout, and the owner's fee-free share. Pure math lives in lib/split.
@@ -74,8 +94,8 @@ const Ledger = ({ className }: { className?: string }) => {
   const shares = "value" in result && result.value ? result.value.participants : null;
 
   return (
-    <div className={cn("rounded-lg border border-border bg-background v2-ledger-shadow", className)}>
-      <div className="flex items-center justify-between border-b border-border px-5 py-4 sm:px-6">
+    <div className={cn("v2-card v2-ledger-shadow overflow-hidden", className)}>
+      <div className="flex items-center justify-between border-b border-border bg-[rgb(244_248_255)] px-5 py-3 sm:px-6">
         <p className="text-sm font-medium text-foreground">
           <ExampleLabel className="mr-2" />
           Change the numbers
@@ -106,6 +126,17 @@ const Ledger = ({ className }: { className?: string }) => {
             className="v2-num v2-editable w-full min-w-0 bg-transparent text-[1.75rem] font-medium text-foreground outline-none"
           />
         </div>
+        <SplitBar
+          parts={
+            "value" in result && result.value
+              ? [
+                  ...result.value.participants.map((p) => ({ key: p.role, cents: p.commissionCents })),
+                  { key: "You", cents: result.value.ownerCents },
+                ]
+              : []
+          }
+          total={"value" in result && result.value ? result.value.saleCents : 0}
+        />
       </div>
 
       <ul className="divide-y divide-border border-t border-border" aria-label="Team shares">
@@ -123,7 +154,7 @@ const Ledger = ({ className }: { className?: string }) => {
                   id={`${uid}-role-${row.id}`}
                   value={row.role}
                   onChange={(event) => updateRow(row.id, { role: event.target.value as Role })}
-                  className="min-h-11 min-w-0 flex-1 rounded-sm border border-input bg-background px-2 text-[0.9375rem] text-foreground sm:max-w-[160px]"
+                  className="min-h-11 min-w-0 flex-1 rounded-[10px] border border-border bg-background px-3 text-[0.9375rem] text-foreground shadow-[0_1px_2px_rgb(11_26_51/0.05)] sm:max-w-[160px]"
                 >
                   {ROLES.map((role) => (
                     <option key={role}>{role}</option>
@@ -132,7 +163,7 @@ const Ledger = ({ className }: { className?: string }) => {
                 <label className="sr-only" htmlFor={`${uid}-pct-${row.id}`}>
                   {label} share in percent
                 </label>
-                <div className="flex w-[88px] shrink-0 items-center rounded-sm border border-input px-2">
+                <div className="flex w-[88px] shrink-0 items-center rounded-[10px] border border-border px-2 shadow-[0_1px_2px_rgb(11_26_51/0.05)] focus-within:border-primary">
                   <input
                     id={`${uid}-pct-${row.id}`}
                     inputMode="decimal"
@@ -170,12 +201,12 @@ const Ledger = ({ className }: { className?: string }) => {
             </li>
           );
         })}
-        <li className="grid gap-1 bg-muted px-5 py-4 sm:grid-cols-[1fr_auto] sm:items-center sm:px-6">
+        <li className="grid gap-1 bg-[linear-gradient(90deg,rgb(0_114_228/0.08),rgb(63_193_255/0.06))] px-5 py-4 sm:grid-cols-[1fr_auto] sm:items-center sm:px-6">
           <div>
             <p className="font-medium text-foreground">You keep</p>
             <p className="text-sm text-muted-foreground">Owner share · No fee</p>
           </div>
-          <p className="v2-num text-[1.5rem] font-medium text-foreground sm:text-right">
+          <p className="v2-num v2-gradient-text text-[1.75rem] font-semibold sm:text-right">
             {"value" in result && result.value ? <RollingNumber value={result.value.ownerCents} format={money} /> : "—"}
           </p>
         </li>

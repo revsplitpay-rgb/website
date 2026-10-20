@@ -4,7 +4,7 @@ import { Mail } from "lucide-react";
 import { useId, useState, type FormEvent } from "react";
 import CopyButton from "../components/copy-button";
 import PageMeta from "../components/page-meta";
-import { ButtonLink, Container, Panel, Section, SectionHeading, buttonClass } from "../components/ui";
+import { ButtonLink, Container, Grad, Panel, Section, SectionHeading, buttonClass } from "../components/ui";
 
 // Bands follow the plan limits, so they move with pricing.ts.
 const members = PLANS.map((plan) => plan.includedMembers);
@@ -16,7 +16,8 @@ const SALES_BANDS = [
   `Over ${ENTERPRISE_THRESHOLD_LABEL}`,
 ];
 
-const fieldClass = "mt-2 h-11 w-full rounded-sm border border-input bg-background px-3 text-foreground";
+const fieldClass =
+  "mt-2 h-12 w-full rounded-[12px] border border-border bg-white px-4 text-foreground shadow-[0_1px_2px_rgb(11_26_51/0.05)] focus:border-primary";
 
 /**
  * No form backend yet: submitting opens the visitor's email app with the
@@ -53,12 +54,19 @@ const Contact = () => {
         description="Questions about RevSplitPay, pricing or Enterprise? Email the team."
         path="/contact"
       />
-      <Section>
-        <Container className="grid gap-10 lg:grid-cols-[1fr_minmax(0,560px)] lg:gap-16">
-          <div>
+      <Section tone="sky" className="-mt-16 pt-32 md:pt-40">
+        <div className="v2-grid-bg absolute inset-0" aria-hidden="true" />
+        <div className="v2-blob -left-24 top-10 h-72 w-72 bg-[rgb(63_193_255/0.4)]" aria-hidden="true" />
+        <Container className="relative grid items-start gap-12 lg:grid-cols-[1fr_minmax(0,560px)] lg:gap-16">
+          <div className="lg:pt-6">
             <SectionHeading
               as="h1"
-              title="Talk to us."
+              eyebrow="Contact"
+              title={
+                <>
+                  Talk <Grad>to us</Grad>.
+                </>
+              }
               support="Questions about plans, Enterprise or getting your team set up? We reply by email."
             />
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
@@ -67,13 +75,30 @@ const Contact = () => {
               </ButtonLink>
               <CopyButton value={CONTACT_EMAIL} label="Copy email" showValue={false} />
             </div>
+            <ol className="mt-10 space-y-5">
+              {[
+                { title: "Send us a message", text: "Tell us about your team and how you sell." },
+                { title: "We reply by email", text: "A real person answers, as soon as we can." },
+                { title: "Get set up", text: "We help you connect your payment account and invite your team." },
+              ].map((step, index) => (
+                <li key={step.title} className="flex gap-4">
+                  <span className="v2-num flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white text-sm font-semibold text-[rgb(var(--v2-deep))] ring-1 ring-[rgb(0_114_228/0.2)]">
+                    {index + 1}
+                  </span>
+                  <div>
+                    <p className="font-semibold text-foreground">{step.title}</p>
+                    <p className="mt-0.5 text-[0.9375rem] text-muted-foreground">{step.text}</p>
+                  </div>
+                </li>
+              ))}
+            </ol>
             {BOOKING_URL && (
               <ButtonLink href={BOOKING_URL} className="mt-4">
                 Book a call
               </ButtonLink>
             )}
           </div>
-          <Panel raised>
+          <Panel raised className="v2-gradient-border">
             <form onSubmit={submit} noValidate aria-describedby={error ? `${uid}-error` : undefined}>
               <div className="grid gap-5 sm:grid-cols-2">
                 <div>
@@ -119,7 +144,7 @@ const Contact = () => {
                     name="message"
                     required
                     rows={5}
-                    className="mt-2 w-full rounded-sm border border-input bg-background px-3 py-2.5 text-foreground"
+                    className="mt-2 w-full rounded-[12px] border border-border bg-white px-4 py-3 text-foreground shadow-[0_1px_2px_rgb(11_26_51/0.05)] focus:border-primary"
                   />
                 </div>
               </div>

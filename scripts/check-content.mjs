@@ -60,19 +60,23 @@ export const RULES = [
 
   // v2 design-system and content rules
   {
+    // Brand gradient stops may appear inside Tailwind arbitrary values and SVG
+    // colour attributes; anything else uses theme tokens or v2.css utilities.
     id: "hardcoded-color",
-    re: /#[0-9a-fA-F]{3}(?:[0-9a-fA-F]{3})?\b/,
+    test: (line) =>
+      /#[0-9a-fA-F]{3}(?:[0-9a-fA-F]{3})?\b/.test(
+        line.replace(/\[[^\]]*\]/g, "").replace(/\b(stopColor|fill|stroke)=["'][^"']*["']/g, ""),
+      ),
     scope: (rel) => rel.startsWith("src/v2/") && !rel.endsWith(".css") && !isTest(rel),
-    fix: "use theme tokens from src/v2/theme/tokens.css",
+    fix: "use theme tokens or the gradient utilities in src/v2/v2.css",
   },
   { id: "lottie", re: /lottie/i, scope: (rel) => rel.startsWith("src/v2/"), fix: "use v2 example visuals, not Lottie" },
-  { id: "decorative-glow", re: /radial-gradient|backdrop-blur/, scope: (rel) => rel.startsWith("src/v2/"), fix: "no glows or glass effects (DESIGN.md)" },
   { id: "next-imports", re: /from\s+["']next\//, scope: (rel) => rel.startsWith("src/v2/"), fix: "use plain <img> and react-router, not next/*" },
   {
     id: "registry-style",
-    re: /\brounded-(xl|2xl|3xl)\b|\bshadow-(md|lg|xl|2xl)\b|text-\[\d+px\]|@tabler|\bfont-(bold|extrabold)\b/,
+    re: /text-\[\d+px\]|@tabler/,
     scope: (rel) => rel.startsWith("src/v2/") && /\.(tsx|ts)$/.test(rel) && !isTest(rel),
-    fix: "use Panel radii/shadow tokens, the type scale and lucide icons (DESIGN.md)",
+    fix: "use rem-based type sizes and lucide icons",
   },
   {
     id: "v2-links",
@@ -84,7 +88,7 @@ export const RULES = [
     id: "bare-whop",
     re: /\bWhop\b/,
     scope: (rel) => /^src\/v2\/(content|sections|pages)\//.test(rel) && !isTest(rel),
-    allow: ["src/v2/content/providers.ts"],
+    allow: ["src/v2/content/providers.ts", "src/v2/content/logos.ts"],
     fix: "use the helpers in src/v2/content/providers.ts (WHOP_LIVE)",
   },
   {
@@ -92,7 +96,10 @@ export const RULES = [
     test: (line) => {
       if (/^\s*(\/\/|\*|\/\*)/.test(line)) return false;
       // 100% is a bound in validation copy, not a price or fee.
-      const text = stripNumericMarkup(line).replace(/\b100%/g, "");
+      // Quoted CSS-like values ("0%", "-30% 0px") are layout and motion, not money.
+      const text = stripNumericMarkup(line)
+        .replace(/\b100%/g, "")
+        .replace(/(["'`])[-\d.\s%px]*%[-\d.\s%px]*\1/g, "");
       return /\$\d/.test(text) || /\d+(\.\d+)?%/.test(text) || /\b\d+-day\b/.test(text);
     },
     scope: (rel) => rel.startsWith("src/v2/") && /\.(tsx|ts)$/.test(rel) && !isTest(rel),

@@ -12,14 +12,16 @@ import {
 } from "@/lib/pricing";
 import { cn } from "@/lib/utils";
 import * as Accordion from "@radix-ui/react-accordion";
-import { Check, ChevronDown, Minus } from "lucide-react";
+import { Check, ChevronDown, Minus, Tag } from "lucide-react";
 import { useId, useState } from "react";
 import CopyButton from "../components/copy-button";
 import CtaBand from "../components/cta-band";
 import Faq from "../components/faq";
 import PageMeta from "../components/page-meta";
 import PlanCards from "../components/plan-cards";
-import { ButtonLink, Container, Panel, Section, SectionHeading } from "../components/ui";
+import PageHero from "../components/page-hero";
+import { Reveal } from "../components/motion";
+import { ButtonLink, Container, Grad, Panel, Section, SectionHeading } from "../components/ui";
 import { billingPoints, enterpriseLine, priceLine } from "../content/copy";
 import { v2Path } from "../lib/paths";
 import { formatCents, parseSaleInput } from "../lib/split";
@@ -29,38 +31,44 @@ const exampleFeeCents = Math.round((EXAMPLE_COMMISSION_CENTS * COMMISSION_FEE_BP
 const MAX_MEMBERS = 200;
 
 const OfferCallout = () => (
-  <div className="mt-8 flex flex-col gap-4 rounded-lg border border-primary bg-background p-5 sm:flex-row sm:items-center sm:justify-between">
-    <p className="text-[0.9375rem] text-foreground">
-      <span className="font-medium">
-        {WELCOME_OFFER.percentOff}% off {WELCOME_OFFER.appliesTo}
-      </span>{" "}
-      on any plan. Use the code at signup.
+  <div className="v2-glass v2-gradient-border relative mx-auto flex max-w-[700px] flex-col gap-4 rounded-[20px] p-4 text-left sm:flex-row sm:items-center sm:justify-between sm:pl-5">
+    <p className="flex items-center gap-3 text-[0.9375rem] text-foreground">
+      <span className="v2-icon-tile h-9 w-9 shrink-0">
+        <Tag className="h-4 w-4" aria-hidden="true" />
+      </span>
+      <span>
+        <span className="font-semibold">
+          {WELCOME_OFFER.percentOff}% off {WELCOME_OFFER.appliesTo}
+        </span>{" "}
+        on any plan, at signup.
+      </span>
     </p>
-    <CopyButton value={WELCOME_OFFER.code} label="Copy code" />
+    <CopyButton value={WELCOME_OFFER.code} label="Copy code" className="shrink-0 flex-nowrap" />
   </div>
 );
 
 const FeeStrip = () => (
-  <Section surface labelledBy="fees-title">
+  <Section tone="tint" labelledBy="fees-title">
     <Container>
       <SectionHeading
         id="fees-title"
+        eyebrow="Fees"
         title="Fees, in plain numbers."
         support="Your plan covers the software. A small fee comes out of each team member's payout, and your own share is never charged."
       />
-      <div className="mt-10 grid gap-4 lg:grid-cols-3">
+      <div className="mt-12 grid gap-5 lg:grid-cols-3">
         <Panel>
-          <p className="v2-num text-[2rem] font-medium leading-none text-foreground">{COMMISSION_FEE_LABEL}</p>
+          <p className="v2-stat v2-gradient-text">{COMMISSION_FEE_LABEL}</p>
           <p className="mt-3 text-[0.9375rem] text-muted-foreground">
             Taken from each commission paid to a team member. The owner is fee-free.
           </p>
         </Panel>
         <Panel>
-          <p className="v2-num text-[2rem] font-medium leading-none text-foreground">{INVOICE_FEE_LABEL}</p>
+          <p className="v2-stat v2-gradient-text">{INVOICE_FEE_LABEL}</p>
           <p className="mt-3 text-[0.9375rem] text-muted-foreground">On invoices from team members and on paid awards.</p>
         </Panel>
-        <Panel raised>
-          <p className="text-sm font-medium text-muted-foreground">Worked example</p>
+        <Panel raised className="v2-gradient-border">
+          <p className="text-sm font-medium uppercase tracking-[0.12em] text-[rgb(var(--v2-deep))]">Worked example</p>
           <dl className="mt-3 space-y-2 text-[0.9375rem]">
             <div className="flex justify-between gap-4">
               <dt className="text-muted-foreground">Closer's commission</dt>
@@ -72,7 +80,7 @@ const FeeStrip = () => (
             </div>
             <div className="flex justify-between gap-4 border-t border-border pt-2 font-medium">
               <dt className="text-foreground">Paid to the closer</dt>
-              <dd className="v2-num text-foreground">{formatCents(EXAMPLE_COMMISSION_CENTS - exampleFeeCents)}</dd>
+              <dd className="v2-num v2-gradient-text text-lg font-semibold">{formatCents(EXAMPLE_COMMISSION_CENTS - exampleFeeCents)}</dd>
             </div>
           </dl>
         </Panel>
@@ -93,9 +101,10 @@ const PlanPicker = () => {
 
   return (
     <Section labelledBy="picker-title">
-      <Container className="grid gap-10 lg:grid-cols-[1fr_1fr] lg:gap-16">
+      <Container className="relative grid items-center gap-10 lg:grid-cols-[1fr_1fr] lg:gap-16">
         <SectionHeading
           id="picker-title"
+          eyebrow="Plan finder"
           title="Find your plan."
           support={`Tell us your monthly sales and team size. Extra team members are ${formatUsd(EXTRA_MEMBER_USD)} a month each, and you never count as one.`}
         />
@@ -112,7 +121,7 @@ const PlanPicker = () => {
                 onChange={(e) => setSales(e.target.value)}
                 aria-invalid={!salesResult.ok}
                 aria-describedby={!salesResult.ok ? `${uid}-sales-error` : undefined}
-                className="v2-num mt-2 h-11 w-full rounded-sm border border-input bg-background px-3 text-foreground"
+                className="v2-num mt-2 h-12 w-full rounded-[12px] border border-border bg-white px-4 text-foreground shadow-[0_1px_2px_rgb(11_26_51/0.05)] focus:border-primary"
               />
               {!salesResult.ok && (
                 <p id={`${uid}-sales-error`} className="mt-2 text-sm text-destructive">
@@ -131,7 +140,7 @@ const PlanPicker = () => {
                 max={MAX_MEMBERS}
                 value={members}
                 onChange={(e) => setMembers(e.target.value)}
-                className="v2-num mt-2 h-11 w-full rounded-sm border border-input bg-background px-3 text-foreground"
+                className="v2-num mt-2 h-12 w-full rounded-[12px] border border-border bg-white px-4 text-foreground shadow-[0_1px_2px_rgb(11_26_51/0.05)] focus:border-primary"
               />
             </div>
           </div>
@@ -140,8 +149,9 @@ const PlanPicker = () => {
               <>
                 <p className="text-sm text-muted-foreground">Best fit</p>
                 <p className="mt-1 flex flex-wrap items-baseline gap-x-3">
-                  <span className="v2-h3 text-foreground">{plan.name}</span>
-                  <span className="v2-num text-foreground">{formatUsd(rec.monthlyTotalUsd)}/month</span>
+                  <span className="text-2xl font-semibold tracking-tight text-foreground">{plan.name}</span>
+                  <span className="v2-num v2-gradient-text text-2xl font-semibold">{formatUsd(rec.monthlyTotalUsd)}</span>
+                  <span className="text-muted-foreground">/month</span>
                 </p>
                 <p className="mt-2 text-[0.9375rem] text-muted-foreground">
                   {memberCount > plan.includedMembers
@@ -178,10 +188,16 @@ const Mark = ({ value }: { value: boolean | string }) =>
   );
 
 const Compare = () => (
-  <Section surface labelledBy="compare-title">
+  <Section labelledBy="compare-title">
     <Container>
-      <SectionHeading id="compare-title" title="Compare plans." />
-      <div className="mt-10 hidden overflow-hidden rounded-lg border border-border bg-background md:block">
+      <SectionHeading
+        id="compare-title"
+        center
+        eyebrow="Compare"
+        title="Every plan, side by side."
+      />
+      <Reveal className="mt-12 hidden md:block">
+      <div className="v2-card overflow-hidden">
         <table className="w-full text-left text-[0.9375rem]">
           <thead>
             <tr className="border-b border-border">
@@ -189,8 +205,16 @@ const Compare = () => (
                 Feature
               </th>
               {PLANS.map((plan) => (
-                <th key={plan.id} scope="col" className="w-40 px-4 py-4 text-center font-medium text-foreground">
+                <th
+                  key={plan.id}
+                  scope="col"
+                  className={cn(
+                    "w-40 px-4 py-5 text-center font-semibold text-foreground",
+                    plan.badge && "bg-[rgb(0_114_228/0.06)] text-[rgb(var(--v2-deep))]",
+                  )}
+                >
                   {plan.name}
+                  {plan.badge && <span className="mt-1 block text-xs font-medium text-primary">{plan.badge}</span>}
                 </th>
               ))}
             </tr>
@@ -231,17 +255,18 @@ const Compare = () => (
           </tbody>
         </table>
       </div>
-      <Accordion.Root type="multiple" defaultValue={["growth"]} className="mt-8 border-t border-border md:hidden">
+      </Reveal>
+      <Accordion.Root type="multiple" defaultValue={["growth"]} className="mt-10 space-y-3 md:hidden">
         {PLANS.map((plan) => (
-          <Accordion.Item key={plan.id} value={plan.id} className="border-b border-border">
+          <Accordion.Item key={plan.id} value={plan.id} className="v2-card overflow-hidden">
             <Accordion.Header>
-              <Accordion.Trigger className="group flex min-h-14 w-full items-center justify-between py-4 text-left font-medium text-foreground">
+              <Accordion.Trigger className="group flex min-h-14 w-full items-center justify-between px-5 py-4 text-left font-semibold text-foreground">
                 {plan.name} · {formatUsd(plan.priceUsd)}/month
                 <ChevronDown className="h-5 w-5 text-muted-foreground transition-transform duration-200 group-data-[state=open]:rotate-180" />
               </Accordion.Trigger>
             </Accordion.Header>
             <Accordion.Content className="overflow-hidden data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down">
-              <ul className="space-y-2.5 pb-5 text-[0.9375rem]">
+              <ul className="space-y-2.5 px-5 pb-5 text-[0.9375rem]">
                 {PLAN_FEATURES.map((row) => {
                   const on = row.plans[plan.id as PlanId] !== false;
                   return (
@@ -268,17 +293,27 @@ const Compare = () => (
 );
 
 const Billing = () => (
-  <Section labelledBy="billing-title">
-    <Container className="grid gap-10 lg:grid-cols-[1fr_1.6fr]">
-      <SectionHeading id="billing-title" title="How billing works." />
-      <ul className="space-y-4">
-        {billingPoints.map((point) => (
-          <li key={point} className="flex gap-3 border-b border-border pb-4 text-[0.9375rem] text-foreground last:border-0">
-            <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
-            {point}
-          </li>
-        ))}
-      </ul>
+  <Section tone="tint" labelledBy="billing-title">
+    <Container className="grid gap-12 lg:grid-cols-[1fr_1.5fr] lg:gap-16">
+      <div className="lg:sticky lg:top-28 lg:self-start">
+        <SectionHeading
+          id="billing-title"
+          eyebrow="Billing"
+          title="How billing works."
+        />
+      </div>
+      <Reveal>
+        <ul className="v2-card divide-y divide-border">
+          {billingPoints.map((point) => (
+            <li key={point} className="flex gap-3.5 px-6 py-4 text-[0.9375rem] text-foreground">
+              <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[rgb(0_114_228/0.1)] text-primary">
+                <Check className="h-3 w-3" aria-hidden="true" />
+              </span>
+              {point}
+            </li>
+          ))}
+        </ul>
+      </Reveal>
     </Container>
   </Section>
 );
@@ -290,13 +325,21 @@ const Pricing = () => (
       description={`${priceLine()}. Plans for teams of every size, with fees shown up front.`}
       path="/pricing"
     />
-    <Section className="pb-10 md:pb-14 lg:pb-16">
+    <PageHero
+      eyebrow="Pricing"
+      title={
+        <>
+          Simple plans. <Grad>Fees shown up front.</Grad>
+        </>
+      }
+      support={priceLine()}
+      className="pb-10 md:pb-12"
+    >
+      <OfferCallout />
+    </PageHero>
+    <Section className="pt-12 md:pt-16 lg:pt-20">
       <Container>
-        <SectionHeading as="h1" title="Simple plans. Fees shown up front." support={priceLine()} />
-        <OfferCallout />
-        <div className="mt-10">
-          <PlanCards />
-        </div>
+        <PlanCards />
       </Container>
     </Section>
     <FeeStrip />
