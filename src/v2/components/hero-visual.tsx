@@ -1,23 +1,12 @@
-import { HOLD_DAYS } from "@/lib/pricing";
+import { COMMISSION_FEE_LABEL, HOLD_DAYS } from "@/lib/pricing";
 import { cn } from "@/lib/utils";
 import { motion, useReducedMotion } from "framer-motion";
 import { useEffect, useState, type ReactNode } from "react";
-import {
-  ArrowDownLeft,
-  BadgeCheck,
-  Bell,
-  CircleDollarSign,
-  FileText,
-  RefreshCw,
-  Repeat,
-  Send,
-  ShieldCheck,
-  Trophy,
-  Undo2,
-} from "lucide-react";
+import { BadgeCheck, CircleDollarSign, Send, ShieldCheck, Trophy, Users } from "lucide-react";
 import { formatCents, split } from "../lib/split";
-import { EASE, RollingNumber } from "./motion";
-import { ExampleLabel, StatusPill } from "./ui";
+import { roles } from "../content/copy";
+import { EASE, Reveal, RollingNumber } from "./motion";
+import { Container, ExampleLabel, StatusPill } from "./ui";
 
 // Illustrative hero deal. Numbers are computed with the same split math as the
 // calculator so the picture can never disagree with the product.
@@ -37,13 +26,16 @@ const SEGMENTS = [
 ];
 
 const HOLD_DONE_DAYS = HOLD_DAYS - 2;
-const LOOP_MS = 7000;
-const SETTER_PAID_MS = 3600;
+const LOOP_MS = 8000;
+// Moments inside each loop, in ms from the start of the cycle.
+const AT = { closerPaid: 2200, setterPaid: 3700, settled: 4500 } as const;
 
-/** Replays the deal every few seconds: count up, split fills, setter gets paid. */
-const useDealLoop = (enabled: boolean) => {
+type Phase = { cycle: number; closerPaid: boolean; setterPaid: boolean; settled: boolean };
+
+/** One deal, replayed every few seconds: count up, split, closer paid, setter paid, settled. */
+const useDealLoop = (enabled: boolean): Phase => {
   const [cycle, setCycle] = useState(0);
-  const [setterPaid, setSetterPaid] = useState(!enabled);
+  const [step, setStep] = useState(enabled ? 0 : 3);
   useEffect(() => {
     if (!enabled) return;
     const loop = window.setInterval(() => setCycle((n) => n + 1), LOOP_MS);
@@ -51,16 +43,32 @@ const useDealLoop = (enabled: boolean) => {
   }, [enabled]);
   useEffect(() => {
     if (!enabled) return;
-    setSetterPaid(false);
-    const paid = window.setTimeout(() => setSetterPaid(true), SETTER_PAID_MS);
-    return () => window.clearTimeout(paid);
+    setStep(0);
+    const timers = [AT.closerPaid, AT.setterPaid, AT.settled].map((ms, i) => window.setTimeout(() => setStep(i + 1), ms));
+    return () => timers.forEach((t) => window.clearTimeout(t));
   }, [cycle, enabled]);
-  return { cycle, setterPaid };
+  return { cycle, closerPaid: step >= 1, setterPaid: step >= 2, settled: step >= 3 };
 };
 
-const DealCard = () => {
+/** Status pill that pops when its status changes. */
+const LivePill = ({ status }: { status: "Paid" | "Pending" }) => {
   const reduced = useReducedMotion();
-  const { cycle, setterPaid } = useDealLoop(!reduced);
+  return (
+    <motion.span
+      key={status}
+      initial={reduced ? false : { scale: 0.6, opacity: 0 }}
+      animate={{ scale: [0.6, 1.12, 1], opacity: 1 }}
+      transition={{ duration: 0.45, ease: EASE }}
+      className="inline-flex"
+    >
+      <StatusPill status={status} />
+    </motion.span>
+  );
+};
+
+const DealCard = ({ phase }: { phase: Phase }) => {
+  const reduced = useReducedMotion();
+  const { cycle } = phase;
   return (
     <div className="v2-card v2-ledger-shadow overflow-hidden text-left">
       <div className="flex items-center justify-between border-b border-border bg-[rgb(244_248_255)] px-5 py-3">
@@ -72,7 +80,16 @@ const DealCard = () => {
           </span>
           <span className="text-sm font-medium text-foreground">Deal · Coaching program</span>
         </div>
-        <ExampleLabel />
+        <div className="flex items-center gap-2">
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-[rgb(16_160_110/0.1)] px-2 py-0.5 text-xs font-medium text-[rgb(4_120_87)]">
+            <span className="relative flex h-1.5 w-1.5" aria-hidden="true">
+              <span className="v2-pulse-ring absolute inline-flex h-full w-full rounded-full bg-[rgb(16_160_110)]" />
+              <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[rgb(16_160_110)]" />
+            </span>
+            Live
+          </span>
+          <ExampleLabel />
+        </div>
       </div>
       <div className="p-5 sm:p-6">
         <div className="flex items-end justify-between gap-4">
@@ -82,11 +99,11 @@ const DealCard = () => {
               <RollingNumber key={cycle} value={SALE_CENTS} format={formatCents} />
             </p>
           </div>
-          <StatusPill status="Paid" />
+          <LivePill status="Paid" />
         </div>
 
         <div className="mt-6">
-          <div className="flex h-3 w-full overflow-hidden rounded-full bg-muted" aria-hidden="true">
+          <div className="relative flex h-3 w-full overflow-hidden rounded-full bg-muted" aria-hidden="true">
             {SEGMENTS.map((segment, index) => (
               <motion.span
                 key={`${segment.label}-${cycle}`}
@@ -96,6 +113,15 @@ const DealCard = () => {
                 transition={{ duration: 1.1, delay: (cycle === 0 ? 0.7 : 0.3) + index * 0.28, ease: EASE }}
               />
             ))}
+            {!reduced && (
+              <motion.span
+                key={`sweep-${cycle}`}
+                className="absolute inset-y-0 w-1/4 bg-[linear-gradient(90deg,transparent,rgb(255_255_255/0.75),transparent)]"
+                initial={{ left: "-30%" }}
+                animate={{ left: "110%" }}
+                transition={{ duration: 1.2, delay: 1.6, ease: "easeInOut" }}
+              />
+            )}
           </div>
           <div className="mt-2 flex justify-between text-xs text-muted-foreground">
             <span>Split automatically at checkout</span>
@@ -103,36 +129,59 @@ const DealCard = () => {
           </div>
         </div>
 
-        <ul className="mt-5 divide-y divide-border rounded-2xl border border-border">
-          {shares.map((share, index) => (
-            <li key={share.role} className="flex items-center justify-between gap-3 px-4 py-3">
-              <div className="flex items-center gap-3">
-                <span
-                  className={cn(
-                    "flex h-8 w-8 items-center justify-center rounded-full text-xs font-semibold text-white",
-                    index === 0 ? "bg-[rgb(var(--v2-deep))]" : "bg-[rgb(var(--v2-highlight))]",
-                  )}
-                  aria-hidden="true"
-                >
-                  {share.role[0]}
-                </span>
-                <div>
-                  <p className="text-sm font-medium text-foreground">{share.role}</p>
-                  <p className="v2-num whitespace-nowrap text-xs text-muted-foreground">{share.bp / 100}% · fee {formatCents(share.feeCents)}</p>
+        <ul className="mt-5 divide-y divide-border overflow-hidden rounded-2xl border border-border">
+          {shares.map((share, index) => {
+            const paid = index === 0 ? phase.closerPaid : phase.setterPaid;
+            return (
+              <motion.li
+                key={`${share.role}-${cycle}`}
+                className={cn(
+                  "flex items-center justify-between gap-3 px-4 py-3 transition-colors duration-500",
+                  paid && "bg-[rgb(16_160_110/0.04)]",
+                )}
+                initial={reduced ? false : { opacity: 0, x: -14 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.5, delay: 0.9 + index * 0.18, ease: EASE }}
+              >
+                <div className="flex items-center gap-3">
+                  <span
+                    className={cn(
+                      "flex h-8 w-8 items-center justify-center rounded-full text-xs font-semibold text-white",
+                      index === 0 ? "bg-[rgb(var(--v2-deep))]" : "bg-[rgb(var(--v2-highlight))]",
+                    )}
+                    aria-hidden="true"
+                  >
+                    {share.role[0]}
+                  </span>
+                  <div>
+                    <p className="text-sm font-medium text-foreground">{share.role}</p>
+                    <p className="v2-num whitespace-nowrap text-xs text-muted-foreground">
+                      {share.bp / 100}% · fee {formatCents(share.feeCents)}
+                    </p>
+                  </div>
                 </div>
-              </div>
-              <div className="flex items-center gap-3">
-                <span className="v2-num text-sm font-medium text-foreground">{formatCents(share.netCents)}</span>
-                <StatusPill status={index === 0 || setterPaid ? "Paid" : "Pending"} />
-              </div>
-            </li>
-          ))}
-          <li className="flex items-center justify-between gap-3 bg-[rgb(244_248_255)] px-4 py-3">
+                <div className="flex items-center gap-3">
+                  <span className="v2-num text-sm font-medium text-foreground">
+                    <RollingNumber key={cycle} value={share.netCents} format={formatCents} />
+                  </span>
+                  <LivePill status={paid ? "Paid" : "Pending"} />
+                </div>
+              </motion.li>
+            );
+          })}
+          <li
+            className={cn(
+              "relative flex items-center justify-between gap-3 px-4 py-3 transition-colors duration-700",
+              phase.settled ? "bg-[linear-gradient(90deg,rgb(0_114_228/0.1),rgb(63_193_255/0.08))]" : "bg-[rgb(244_248_255)]",
+            )}
+          >
             <div>
               <p className="text-sm font-medium text-foreground">You keep</p>
               <p className="text-xs text-muted-foreground">Owner share · no fee</p>
             </div>
-            <span className="v2-num text-base font-semibold text-foreground">{formatCents(ownerCents)}</span>
+            <span className={cn("v2-num text-base font-semibold", phase.settled ? "v2-gradient-text" : "text-foreground")}>
+              <RollingNumber key={cycle} value={ownerCents} format={formatCents} />
+            </span>
           </li>
         </ul>
       </div>
@@ -150,6 +199,16 @@ const FloatCard = ({ className, children, delay }: { className?: string; childre
       transition={{ duration: 0.9, delay, ease: EASE }}
       aria-hidden="true"
     >
+      {children}
+    </motion.div>
+  );
+};
+
+/** A small bounce each time `trigger` flips to true. */
+const Bump = ({ trigger, children }: { trigger: boolean; children: ReactNode }) => {
+  const reduced = useReducedMotion();
+  return (
+    <motion.div animate={trigger && !reduced ? { scale: [1, 1.06, 1] } : { scale: 1 }} transition={{ duration: 0.5, ease: EASE }}>
       {children}
     </motion.div>
   );
@@ -200,67 +259,90 @@ const GlowStrokes = ({ side }: { side: "left" | "right" }) => {
   );
 };
 
-export const HeroVisual = () => (
-  <div className="relative mx-auto mt-16 w-full max-w-[1100px] md:mt-20">
-    <div className="absolute inset-x-[15%] -top-10 bottom-0 -z-10 rounded-[48px] bg-[radial-gradient(closest-side,rgb(0_114_228/0.22),transparent)] blur-2xl" aria-hidden="true" />
+export const HeroVisual = () => {
+  const reduced = useReducedMotion();
+  const phase = useDealLoop(!reduced);
+  const holdDays = phase.settled ? HOLD_DONE_DAYS : phase.setterPaid ? HOLD_DONE_DAYS - 1 : phase.closerPaid ? 2 : 1;
+  return (
+    <div className="relative mx-auto mt-16 w-full max-w-[1100px] md:mt-20">
+      <div className="absolute inset-x-[15%] -top-10 bottom-0 -z-10 rounded-[48px] bg-[radial-gradient(closest-side,rgb(0_114_228/0.22),transparent)] blur-2xl" aria-hidden="true" />
 
-    <FloatCard className="left-0 top-10 w-[224px]" delay={1.1}>
-      <div className="v2-glass v2-float rounded-2xl p-4">
-        <div className="flex items-center gap-3">
-          <span className="v2-icon-tile h-9 w-9">
-            <Send className="h-4 w-4" />
-          </span>
-          <div>
-            <p className="text-xs text-muted-foreground">Payout sent</p>
-            <p className="v2-num text-base font-semibold text-foreground">+{closer ? formatCents(closer.netCents) : ""}</p>
+      <FloatCard className="left-0 top-10 w-[224px]" delay={1.1}>
+        <Bump trigger={phase.closerPaid}>
+          <div className="v2-glass v2-float rounded-2xl p-4">
+            <div className="flex items-center gap-3">
+              <span className="relative">
+                {phase.closerPaid && !reduced && (
+                  <span key={phase.cycle} className="v2-pulse-ring absolute inset-0 rounded-xl bg-[rgb(0_114_228/0.4)] [animation-iteration-count:1]" />
+                )}
+                <span className="v2-icon-tile relative h-9 w-9">
+                  <Send className="h-4 w-4" />
+                </span>
+              </span>
+              <div>
+                <p className="text-xs text-muted-foreground">{phase.closerPaid ? "Payout sent" : "Payout queued"}</p>
+                <p className="v2-num text-base font-semibold text-foreground">+{closer ? formatCents(closer.netCents) : ""}</p>
+              </div>
+            </div>
+            <p className="mt-3 text-xs text-muted-foreground">To the closer's own payout account</p>
           </div>
-        </div>
-        <p className="mt-3 text-xs text-muted-foreground">To the closer's own payout account</p>
-      </div>
-    </FloatCard>
+        </Bump>
+      </FloatCard>
 
-    <FloatCard className="right-0 top-44 w-[224px]" delay={1.3}>
-      <div className="v2-glass v2-float-slow rounded-2xl p-4">
-        <div className="flex items-center justify-between">
-          <p className="text-xs font-medium text-foreground">{HOLD_DAYS}-day safety hold</p>
-          <ShieldCheck className="h-4 w-4 text-primary" />
+      <FloatCard className="right-0 top-44 w-[224px]" delay={1.3}>
+        <div className="v2-glass v2-float-slow rounded-2xl p-4">
+          <div className="flex items-center justify-between">
+            <p className="text-xs font-medium text-foreground">{HOLD_DAYS}-day safety hold</p>
+            <ShieldCheck className="h-4 w-4 text-primary" />
+          </div>
+          <div className="mt-3 flex gap-1" aria-hidden="true">
+            {Array.from({ length: HOLD_DAYS }, (_, day) => (
+              <span
+                key={day}
+                className={cn(
+                  "h-1.5 flex-1 rounded-full transition-colors duration-500",
+                  day < holdDays ? "bg-primary" : "bg-[rgb(0_114_228/0.15)]",
+                )}
+              />
+            ))}
+          </div>
+          <p className="mt-2 text-xs text-muted-foreground">
+            Day <span className="v2-num">{holdDays}</span> of {HOLD_DAYS} · refunds covered first
+          </p>
         </div>
-        <div className="mt-3 flex gap-1" aria-hidden="true">
-          {Array.from({ length: HOLD_DAYS }, (_, day) => (
-            <span
-              key={day}
-              className={cn("h-1.5 flex-1 rounded-full", day < HOLD_DONE_DAYS ? "bg-primary" : "bg-[rgb(0_114_228/0.15)]")}
-            />
-          ))}
-        </div>
-        <p className="mt-2 text-xs text-muted-foreground">
-          Day {HOLD_DONE_DAYS} of {HOLD_DAYS} · refunds covered first
-        </p>
-      </div>
-    </FloatCard>
+      </FloatCard>
 
-    <FloatCard className="bottom-6 right-6 w-[200px]" delay={1.5}>
-      <div className="v2-glass v2-float-slow flex items-center gap-3 rounded-2xl p-3.5">
-        <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-[linear-gradient(140deg,#ffd76a,#f5a524)] text-white shadow-[0_8px_18px_-8px_rgb(245_165_36/0.8)]">
-          <Trophy className="h-4 w-4" />
-        </span>
-        <div>
-          <p className="text-xs text-muted-foreground">Tier unlocked</p>
-          <p className="text-sm font-semibold text-foreground">Gold · Closer</p>
-        </div>
-      </div>
-    </FloatCard>
+      <FloatCard className="bottom-6 right-6 w-[200px]" delay={1.5}>
+        <Bump trigger={phase.settled}>
+          <div className="v2-glass v2-float-slow flex items-center gap-3 rounded-2xl p-3.5">
+            <motion.span
+              key={phase.settled ? `on-${phase.cycle}` : "off"}
+              initial={reduced ? false : { rotate: -20, scale: 0.7 }}
+              animate={{ rotate: 0, scale: 1 }}
+              transition={{ type: "spring", stiffness: 300, damping: 12 }}
+              className="flex h-9 w-9 items-center justify-center rounded-xl bg-[linear-gradient(140deg,#ffd76a,#f5a524)] text-white shadow-[0_8px_18px_-8px_rgb(245_165_36/0.8)]"
+            >
+              <Trophy className="h-4 w-4" />
+            </motion.span>
+            <div>
+              <p className="text-xs text-muted-foreground">Tier unlocked</p>
+              <p className="text-sm font-semibold text-foreground">Gold · Closer</p>
+            </div>
+          </div>
+        </Bump>
+      </FloatCard>
 
-    <motion.div
-      initial={{ opacity: 0, y: 48, filter: "blur(10px)" }}
-      animate={{ opacity: 1, y: 0, filter: "blur(0px)", transitionEnd: { filter: "none" } }}
-      transition={{ duration: 1, delay: 0.45, ease: EASE }}
-      className="mx-auto max-w-[600px]"
-    >
-      <DealCard />
-    </motion.div>
-  </div>
-);
+      <motion.div
+        initial={reduced ? false : { opacity: 0, y: 48, filter: "blur(10px)" }}
+        animate={{ opacity: 1, y: 0, filter: "blur(0px)", transitionEnd: { filter: "none" } }}
+        transition={{ duration: 1, delay: 0.45, ease: EASE }}
+        className="mx-auto max-w-[600px]"
+      >
+        <DealCard phase={phase} />
+      </motion.div>
+    </div>
+  );
+};
 
 export const HeroStrokes = () => (
   <>
@@ -269,34 +351,54 @@ export const HeroStrokes = () => (
   </>
 );
 
-const ACTIVITY = [
-  { icon: CircleDollarSign, title: "Sale recorded", text: "Checkout link paid in full" },
-  { icon: BadgeCheck, title: "Commission split", text: "Closer, setter and partner" },
-  { icon: Send, title: "Payout sent", text: "Straight to their own account" },
-  { icon: Repeat, title: "Renewal paid", text: "The team is paid again" },
-  { icon: Undo2, title: "Refund handled", text: "Commissions adjusted" },
-  { icon: RefreshCw, title: "Payment retried", text: "Customer sent a link to pay" },
-  { icon: FileText, title: "Invoice approved", text: "Paid in one click" },
-  { icon: Trophy, title: "Award given", text: "Bonus for hitting the goal" },
-  { icon: Bell, title: "Team notified", text: "Posted to your Slack channel" },
-  { icon: ArrowDownLeft, title: "Deal closed", text: "Everyone on it is recorded" },
-];
-
-/** Endless strip of product events, like V1's ticker. Pauses on hover. */
-export const ActivityMarquee = () => (
-  <div className="v2-fade-x relative mt-16 overflow-hidden md:mt-24" aria-hidden="true">
-    <div className="v2-marquee flex w-max gap-4 py-2">
-      {[...ACTIVITY, ...ACTIVITY].map((item, index) => (
-        <div key={index} className="v2-card flex w-[260px] shrink-0 items-center gap-3 rounded-2xl px-4 py-3.5">
-          <span className="v2-icon-tile h-9 w-9 shrink-0">
-            <item.icon className="h-4 w-4" />
-          </span>
-          <div className="min-w-0">
-            <p className="text-sm font-medium text-foreground">{item.title}</p>
-            <p className="truncate text-xs text-muted-foreground">{item.text}</p>
-          </div>
-        </div>
-      ))}
-    </div>
-  </div>
-);
+/**
+ * Product facts under the hero. Every number comes from pricing.ts or the
+ * product copy, never from invented usage stats.
+ */
+export const FactsStrip = () => {
+  const facts: { value: ReactNode; label: string; icon: typeof Send }[] = [
+    { value: COMMISSION_FEE_LABEL, label: "fee on each team payout", icon: CircleDollarSign },
+    { value: "Fee-free", label: "your own share, always", icon: BadgeCheck },
+    {
+      value: (
+        <>
+          <RollingNumber value={HOLD_DAYS} format={(n) => String(n)} /> days
+        </>
+      ),
+      label: "safety hold before payouts",
+      icon: ShieldCheck,
+    },
+    {
+      value: <RollingNumber value={roles.length} format={(n) => String(n)} />,
+      label: "team roles, each with the right access",
+      icon: Users,
+    },
+  ];
+  return (
+    <Container className="relative mt-16 md:mt-24">
+      <div className="v2-glass grid overflow-hidden rounded-[24px] sm:grid-cols-2 lg:grid-cols-4">
+        {facts.map((fact, index) => (
+          <Reveal
+            key={fact.label}
+            delay={index * 90}
+            className={cn(
+              "flex items-center gap-4 p-6 lg:p-7",
+              index > 0 && "border-t border-[rgb(0_114_228/0.1)] sm:border-t-0",
+              index % 2 === 1 && "sm:border-l sm:border-[rgb(0_114_228/0.1)]",
+              index >= 2 && "sm:border-t lg:border-t-0",
+              index === 2 && "lg:border-l lg:border-[rgb(0_114_228/0.1)]",
+            )}
+          >
+            <span className="v2-icon-tile h-11 w-11 shrink-0">
+              <fact.icon className="h-5 w-5" aria-hidden="true" />
+            </span>
+            <div>
+              <p className="v2-gradient-text text-[1.75rem] font-semibold leading-none tracking-tight">{fact.value}</p>
+              <p className="mt-1.5 text-sm text-muted-foreground">{fact.label}</p>
+            </div>
+          </Reveal>
+        ))}
+      </div>
+    </Container>
+  );
+};

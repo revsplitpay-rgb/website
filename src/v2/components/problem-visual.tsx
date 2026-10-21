@@ -14,7 +14,7 @@ const SpreadsheetMock = () => {
   const reduced = useReducedMotion();
   return (
     <div className="relative rounded-[20px] border border-border bg-white shadow-[0_20px_40px_-28px_rgb(11_26_51/0.4)]">
-      <div className="flex items-center justify-between border-b border-border px-4 py-3">
+      <div className="flex items-center justify-between border-b border-border px-4 py-4">
         <p className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
           <Sheet className="h-4 w-4 text-[rgb(16_150_90)]" aria-hidden="true" />
           commissions_FINAL_v7.xlsx
@@ -33,7 +33,7 @@ const SpreadsheetMock = () => {
           <thead className="bg-[rgb(246_248_250)]">
             <tr>
               {spreadsheetExample.columns.map((col) => (
-                <th key={col} className="truncate border-b border-r border-border px-2.5 py-2 font-medium last:border-r-0">
+                <th key={col} className="truncate border-b border-r border-border px-3 py-3 font-medium last:border-r-0">
                   {col}
                 </th>
               ))}
@@ -48,7 +48,7 @@ const SpreadsheetMock = () => {
                     <td
                       key={col}
                       className={cn(
-                        "truncate border-b border-r border-border px-2.5 py-2.5 last:border-r-0",
+                        "truncate border-b border-r border-border px-3 py-4 last:border-r-0",
                         flagged && "bg-[rgb(255_236_236)] text-destructive",
                         col === 0 && "text-foreground",
                       )}
@@ -92,14 +92,14 @@ const deal = split(SALE_CENTS, [
 /** The "after": the same deal, split and paid with a clear record. */
 const LedgerMock = () => (
   <div className="v2-card v2-gradient-border overflow-hidden">
-    <div className="flex items-center justify-between border-b border-border bg-[rgb(244_248_255)] px-4 py-3">
+    <div className="flex items-center justify-between border-b border-border bg-[rgb(244_248_255)] px-5 py-4">
       <p className="text-sm font-medium text-foreground">Coaching #1042 · {formatCents(SALE_CENTS)}</p>
       <ExampleLabel />
     </div>
     <ul className="divide-y divide-border">
       {deal.ok &&
         deal.value.participants.map((share) => (
-          <li key={share.role} className="flex items-center justify-between gap-3 px-4 py-3">
+          <li key={share.role} className="flex items-center justify-between gap-3 px-5 py-[1.125rem]">
             <span className="text-sm text-foreground">
               {share.role} <span className="v2-num text-muted-foreground">· {share.bp / 100}%</span>
             </span>
@@ -109,12 +109,12 @@ const LedgerMock = () => (
             </span>
           </li>
         ))}
-      <li className="flex items-center justify-between gap-3 bg-[linear-gradient(90deg,rgb(0_114_228/0.07),rgb(63_193_255/0.05))] px-4 py-3">
+      <li className="flex items-center justify-between gap-3 bg-[linear-gradient(90deg,rgb(0_114_228/0.07),rgb(63_193_255/0.05))] px-5 py-[1.125rem]">
         <span className="text-sm font-medium text-foreground">You keep</span>
         <span className="v2-num text-sm font-semibold text-foreground">{deal.ok ? formatCents(deal.value.ownerCents) : ""}</span>
       </li>
     </ul>
-    <p className="border-t border-border px-4 py-3 text-xs text-muted-foreground">
+    <p className="border-t border-border px-5 py-4 text-xs text-muted-foreground">
       Split at checkout · recorded for good · paid after the {HOLD_DAYS}-day hold
     </p>
   </div>
