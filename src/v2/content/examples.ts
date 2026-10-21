@@ -29,3 +29,9 @@ export const spreadsheetExample = {
   ],
   notes: ["Who closed this one?", "Refunded — fix the split later"],
 };
+
+// Short examples under the goal rows of the pricing comparison (product.md 5.6).
+export const goalExamples = {
+  awardRule: "hit $50K → $500 bonus",
+  boost: "hit $100K → +2%",
+};

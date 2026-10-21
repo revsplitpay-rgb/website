@@ -4,21 +4,18 @@ import {
   EXTRA_MEMBER_USD,
   INVOICE_FEE_LABEL,
   PLANS,
-  PLAN_FEATURES,
   WELCOME_OFFER,
   formatUsd,
   recommendPlan,
-  type PlanId,
 } from "@/lib/pricing";
-import { cn } from "@/lib/utils";
-import * as Accordion from "@radix-ui/react-accordion";
-import { Check, ChevronDown, Minus, Tag } from "lucide-react";
+import { Check, Tag } from "lucide-react";
 import { useId, useState } from "react";
 import CopyButton from "../components/copy-button";
 import CtaBand from "../components/cta-band";
 import Faq from "../components/faq";
 import PageMeta from "../components/page-meta";
 import PlanCards from "../components/plan-cards";
+import PlanCompare from "../components/plan-compare";
 import PageHero from "../components/page-hero";
 import { Reveal } from "../components/motion";
 import { ButtonLink, Container, Grad, Panel, Section, SectionHeading } from "../components/ui";
@@ -178,116 +175,19 @@ const PlanPicker = () => {
   );
 };
 
-const Mark = ({ value }: { value: boolean | string }) =>
-  value === true ? (
-    <Check className="mx-auto h-4 w-4 text-primary" aria-label="Included" />
-  ) : value === false ? (
-    <Minus className="mx-auto h-4 w-4 text-muted-foreground" aria-label="Not included" />
-  ) : (
-    <span>{value}</span>
-  );
-
 const Compare = () => (
-  <Section labelledBy="compare-title">
+  <Section tone="tint" labelledBy="compare-title">
     <Container>
       <SectionHeading
         id="compare-title"
         center
         eyebrow="Compare"
-        title="Every plan, side by side."
+        title="The differences."
+        support="Every plan has the full product. This is everything that changes as you grow."
       />
-      <Reveal className="mt-12 hidden md:block">
-      <div className="v2-card overflow-hidden">
-        <table className="w-full text-left text-[0.9375rem]">
-          <thead>
-            <tr className="border-b border-border">
-              <th scope="col" className="px-6 py-4 font-medium text-muted-foreground">
-                Feature
-              </th>
-              {PLANS.map((plan) => (
-                <th
-                  key={plan.id}
-                  scope="col"
-                  className={cn(
-                    "w-40 px-4 py-5 text-center font-semibold text-foreground",
-                    plan.badge && "bg-[rgb(0_114_228/0.06)] text-[rgb(var(--v2-deep))]",
-                  )}
-                >
-                  {plan.name}
-                  {plan.badge && <span className="mt-1 block text-xs font-medium text-primary">{plan.badge}</span>}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-border">
-            <tr>
-              <th scope="row" className="px-6 py-3 font-normal text-foreground">
-                Monthly sales limit
-              </th>
-              {PLANS.map((plan) => (
-                <td key={plan.id} className="v2-num px-4 py-3 text-center text-foreground">
-                  {plan.salesLimitLabel}
-                </td>
-              ))}
-            </tr>
-            <tr>
-              <th scope="row" className="px-6 py-3 font-normal text-foreground">
-                Team members included
-              </th>
-              {PLANS.map((plan) => (
-                <td key={plan.id} className="v2-num px-4 py-3 text-center text-foreground">
-                  {plan.includedMembers}
-                </td>
-              ))}
-            </tr>
-            {PLAN_FEATURES.map((row) => (
-              <tr key={row.label}>
-                <th scope="row" className="px-6 py-3 font-normal text-foreground">
-                  {row.label}
-                </th>
-                {PLANS.map((plan) => (
-                  <td key={plan.id} className="px-4 py-3 text-center text-foreground">
-                    <Mark value={row.plans[plan.id]} />
-                  </td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
+      <div className="mt-12">
+        <PlanCompare />
       </div>
-      </Reveal>
-      <Accordion.Root type="multiple" defaultValue={["growth"]} className="mt-10 space-y-3 md:hidden">
-        {PLANS.map((plan) => (
-          <Accordion.Item key={plan.id} value={plan.id} className="v2-card overflow-hidden">
-            <Accordion.Header>
-              <Accordion.Trigger className="group flex min-h-14 w-full items-center justify-between px-5 py-4 text-left font-semibold text-foreground">
-                {plan.name} · {formatUsd(plan.priceUsd)}/month
-                <ChevronDown className="h-5 w-5 text-muted-foreground transition-transform duration-200 group-data-[state=open]:rotate-180" />
-              </Accordion.Trigger>
-            </Accordion.Header>
-            <Accordion.Content className="overflow-hidden data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down">
-              <ul className="space-y-2.5 px-5 pb-5 text-[0.9375rem]">
-                {PLAN_FEATURES.map((row) => {
-                  const on = row.plans[plan.id as PlanId] !== false;
-                  return (
-                    <li key={row.label} className={cn("flex gap-2.5", on ? "text-foreground" : "text-muted-foreground line-through")}>
-                      {on ? (
-                        <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
-                      ) : (
-                        <Minus className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />
-                      )}
-                      <span>
-                        {!on && <span className="sr-only">Not included: </span>}
-                        {row.label}
-                      </span>
-                    </li>
-                  );
-                })}
-              </ul>
-            </Accordion.Content>
-          </Accordion.Item>
-        ))}
-      </Accordion.Root>
     </Container>
   </Section>
 );
