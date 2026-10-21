@@ -1,5 +1,5 @@
 import { Component, type ErrorInfo, type ReactNode } from "react";
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes, useParams } from "react-router-dom";
 import { buttonClass } from "./components/ui";
 import V2Layout from "./layout";
 import { v2Path } from "./lib/paths";
@@ -37,16 +37,24 @@ class V2ErrorBoundary extends Component<{ children: ReactNode }, { failed: boole
   }
 }
 
+/** Old /integration URLs (before the clean-URL rename) keep working. */
+const LegacyIntegrationRedirect = () => {
+  const rest = useParams()["*"];
+  return <Navigate to={v2Path(rest ? `/integrations/${rest}` : "/integrations")} replace />;
+};
+
 /** Routes are relative to /v2 (mounted at /v2/* in src/App.tsx). */
 const V2App = () => (
   <V2ErrorBoundary>
     <Routes>
       <Route element={<V2Layout />}>
         <Route index element={<Home />} />
-        <Route path="feature" element={<Feature />} />
+        <Route path="features" element={<Feature />} />
+        <Route path="feature" element={<Navigate to={v2Path("/features")} replace />} />
         <Route path="pricing" element={<Pricing />} />
-        <Route path="integration" element={<IntegrationsIndex />} />
-        <Route path="integration/:slug" element={<IntegrationDetail />} />
+        <Route path="integrations" element={<IntegrationsIndex />} />
+        <Route path="integrations/:slug" element={<IntegrationDetail />} />
+        <Route path="integration/*" element={<LegacyIntegrationRedirect />} />
         <Route path="about" element={<About />} />
         <Route path="contact" element={<Contact />} />
         <Route path="blog" element={<BlogIndex />} />

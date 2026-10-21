@@ -9,13 +9,14 @@ import Ledger from "../components/ledger";
 import MoneyFlow from "../components/money-flow";
 import { Reveal } from "../components/motion";
 import PageMeta from "../components/page-meta";
+import { faqLd, softwareLd } from "../seo/jsonld";
 import PlanCards from "../components/plan-cards";
 import { BeforeAfter } from "../components/problem-visual";
 import { MoneyPath, TrustList } from "../components/trust-visual";
 import ProductBento from "../components/product-bento";
 import { ButtonLink, Container, Grad, Section, SectionHeading } from "../components/ui";
 import VideoShowcase from "../components/video-showcase";
-import { home, offerLine, priceLine, problemRows, steps } from "../content/copy";
+import { faqs, home, offerLine, priceLine, problemRows, steps } from "../content/copy";
 import { providersBadge, railsLine } from "../content/providers";
 import { v2Path } from "../lib/paths";
 
@@ -157,7 +158,7 @@ const HowItWorks = () => (
           </ol>
           <p className="mt-10 text-center text-sm text-muted-foreground">
             {railsLine()}{" "}
-            <Link to={v2Path("/integration")} className="font-semibold text-[rgb(var(--v2-link))] underline-offset-4 hover:underline">
+            <Link to={v2Path("/integrations")} className="font-semibold text-[rgb(var(--v2-link))] underline-offset-4 hover:underline">
               See integrations
             </Link>
           </p>
@@ -215,7 +216,7 @@ const Product = () => (
       <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
         <SectionHeading id="product-title" eyebrow="The product" title={home.productTitle} support={home.productSupport} />
         <Reveal>
-          <ButtonLink href={v2Path("/feature")} variant="secondary" className="shrink-0">
+          <ButtonLink href={v2Path("/features")} variant="secondary" className="shrink-0">
             See every feature <ArrowRight aria-hidden="true" />
           </ButtonLink>
         </Reveal>
@@ -271,7 +272,12 @@ const Trust = () => (
 
 const Home = () => (
   <>
-    <PageMeta title={home.title} description={home.description} path="/" />
+    <PageMeta
+      title={home.title}
+      description={home.description}
+      path="/"
+      jsonLd={[softwareLd(), faqLd(faqs.filter((item) => item.group !== "billing"))]}
+    />
     <Hero />
     <VideoSection />
     <Problem />

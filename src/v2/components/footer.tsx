@@ -8,9 +8,9 @@ const columns = [
   {
     title: "Product",
     links: [
-      { label: "Features", to: v2Path("/feature") },
+      { label: "Features", to: v2Path("/features") },
       { label: "Pricing", to: v2Path("/pricing") },
-      { label: "Integrations", to: v2Path("/integration") },
+      { label: "Integrations", to: v2Path("/integrations") },
     ],
   },
   {

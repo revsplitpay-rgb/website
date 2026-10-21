@@ -27,6 +27,7 @@ import { InvoiceVisual, PayTypesVisual, SplitVisual } from "../components/produc
 import { Reveal } from "../components/motion";
 import PageHero from "../components/page-hero";
 import PageMeta from "../components/page-meta";
+import { breadcrumbLd } from "../seo/jsonld";
 import { ButtonLink, Container, Grad, Section, SectionHeading } from "../components/ui";
 import { featureGroups, roles } from "../content/copy";
 import { providerPhrase } from "../content/providers";
@@ -88,9 +89,10 @@ const Feature = () => {
   return (
     <>
       <PageMeta
-        title="Product | RevSplitPay"
+        title="Features | RevSplitPay"
         description="Checkout links, automatic commission splits, payouts, invoices, rewards and reporting for sales teams."
-        path="/feature"
+        path="/features"
+        jsonLd={[breadcrumbLd([{ name: "Features", path: "/features" }])]}
       />
       <PageHero
         eyebrow="Product"

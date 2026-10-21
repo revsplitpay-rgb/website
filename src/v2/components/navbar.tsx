@@ -9,9 +9,9 @@ import { v2Path } from "../lib/paths";
 import { buttonClass, Container } from "./ui";
 
 export const NAV_LINKS = [
-  { label: "Product", to: v2Path("/feature") },
+  { label: "Product", to: v2Path("/features") },
   { label: "Pricing", to: v2Path("/pricing") },
-  { label: "Integrations", to: v2Path("/integration") },
+  { label: "Integrations", to: v2Path("/integrations") },
 ];
 
 export const Logo = () => (

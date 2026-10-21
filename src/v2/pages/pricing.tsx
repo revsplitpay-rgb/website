@@ -14,12 +14,13 @@ import CopyButton from "../components/copy-button";
 import CtaBand from "../components/cta-band";
 import Faq from "../components/faq";
 import PageMeta from "../components/page-meta";
+import { breadcrumbLd, faqLd, softwareLd } from "../seo/jsonld";
 import PlanCards from "../components/plan-cards";
 import PlanCompare from "../components/plan-compare";
 import PageHero from "../components/page-hero";
 import { Reveal } from "../components/motion";
 import { ButtonLink, Container, Grad, Panel, Section, SectionHeading } from "../components/ui";
-import { billingPoints, enterpriseLine, priceLine } from "../content/copy";
+import { billingPoints, enterpriseLine, faqs, priceLine } from "../content/copy";
 import { v2Path } from "../lib/paths";
 import { formatCents, parseSaleInput } from "../lib/split";
 
@@ -224,6 +225,7 @@ const Pricing = () => (
       title="Pricing | RevSplitPay"
       description={`${priceLine()}. Plans for teams of every size, with fees shown up front.`}
       path="/pricing"
+      jsonLd={[softwareLd(), faqLd(faqs.filter((item) => item.group === "billing")), breadcrumbLd([{ name: "Pricing", path: "/pricing" }])]}
     />
     <PageHero
       eyebrow="Pricing"

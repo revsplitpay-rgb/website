@@ -5,6 +5,7 @@ import CtaBand from "../components/cta-band";
 import { Reveal } from "../components/motion";
 import PageHero from "../components/page-hero";
 import PageMeta from "../components/page-meta";
+import { breadcrumbLd } from "../seo/jsonld";
 import { Container, Grad, Section } from "../components/ui";
 import { home } from "../content/copy";
 import { providerPhrase } from "../content/providers";
@@ -35,7 +36,12 @@ const blocks = [
 
 const About = () => (
   <>
-    <PageMeta title="About | RevSplitPay" description={home.heroSupport} path="/about" />
+    <PageMeta
+      title="About | RevSplitPay"
+      description={home.heroSupport}
+      path="/about"
+      jsonLd={[breadcrumbLd([{ name: "About", path: "/about" }])]}
+    />
     <PageHero
       eyebrow="About"
       title={

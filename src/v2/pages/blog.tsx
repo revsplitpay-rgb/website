@@ -6,6 +6,7 @@ import { useMemo } from "react";
 import { Link, useParams } from "react-router-dom";
 import CtaBand from "../components/cta-band";
 import PageMeta from "../components/page-meta";
+import { blogPostingLd, breadcrumbLd } from "../seo/jsonld";
 import PageHero from "../components/page-hero";
 import { ButtonLink, Container, Grad, Section } from "../components/ui";
 import { v2Path } from "../lib/paths";
@@ -17,6 +18,12 @@ const SANITIZE = {
   ],
   ALLOWED_ATTR: ["href", "src", "alt", "title"],
   ALLOW_DATA_ATTR: false,
+};
+
+/** First ~155 characters of a post's text, for the meta description. */
+const excerpt = (html: string | null) => {
+  const text = (html ?? "").replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
+  return text.length > 155 ? `${text.slice(0, 152).trimEnd()}...` : text;
 };
 
 const Meta = ({ post }: { post: BlogPost }) => (
@@ -56,6 +63,7 @@ export const BlogIndex = () => {
         title="Blog | RevSplitPay"
         description="Notes on paying sales teams, commissions and payouts."
         path="/blog"
+        jsonLd={[breadcrumbLd([{ name: "Blog", path: "/blog" }])]}
       />
       <PageHero
         eyebrow="Blog"
@@ -139,7 +147,7 @@ export const BlogArticle = () => {
   if (!post) {
     return (
       <Section>
-        <PageMeta title="Post not found | RevSplitPay" description="This post moved or never existed." path={`/blog/${slug}`} />
+        <PageMeta title="Post not found | RevSplitPay" description="This post moved or never existed." path={`/blog/${slug}`} noindex />
         <Container className="max-w-[720px]">
           {back}
           <h1 className="v2-h2 mt-8 text-foreground">This post moved or never existed.</h1>
@@ -153,7 +161,20 @@ export const BlogArticle = () => {
 
   return (
     <>
-      <PageMeta title={`${post.title} | RevSplitPay`} description={post.title} path={`/blog/${post.slug}`} />
+      <PageMeta
+        title={`${post.title} | RevSplitPay`}
+        description={excerpt(post.content) || post.title}
+        path={`/blog/${post.slug}`}
+        type="article"
+        image={post.image || undefined}
+        jsonLd={[
+          blogPostingLd(post),
+          breadcrumbLd([
+            { name: "Blog", path: "/blog" },
+            { name: post.title, path: `/blog/${post.slug}` },
+          ]),
+        ]}
+      />
       <article>
         <Section>
           <Container className="max-w-[720px]">

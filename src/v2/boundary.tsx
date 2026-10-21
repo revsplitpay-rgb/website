@@ -1,4 +1,4 @@
-import { lazy, Suspense, useLayoutEffect } from "react";
+import { lazy, Suspense, useEffect, useLayoutEffect } from "react";
 
 // Eager, tiny entry for /v2/*. It marks <html> as the v2 light theme before the
 // lazy v2 chunk paints, and removes the mark when the visitor leaves /v2 so the
@@ -11,8 +11,11 @@ export function setV2Theme(on: boolean) {
   else root.removeAttribute("data-v2-theme");
 }
 
+// Layout effect in the browser (before paint); plain effect during prerender.
+const useIsomorphicLayoutEffect = typeof window === "undefined" ? useEffect : useLayoutEffect;
+
 const V2Boundary = () => {
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     setV2Theme(true);
     return () => setV2Theme(false);
   }, []);

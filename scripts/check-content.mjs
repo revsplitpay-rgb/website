@@ -51,7 +51,7 @@ export const RULES = [
     id: "dead-routes",
     re: /["'`]\/(signup|early-access)["'`]/,
     scope: (rel) => rel.startsWith("src/"),
-    allow: ["src/App.tsx"],
+    allow: ["src/app-tree.tsx"], // the route table (redirects for old URLs)
     fix: "link to APP_SIGNUP_URL from src/lib/links.ts",
   },
   { id: "app-url", re: /app\.revsplitpay\.com/, scope: (rel) => rel.startsWith("src/"), allow: ["src/lib/links.ts"], fix: "import APP_URL / APP_SIGNUP_URL from src/lib/links.ts" },

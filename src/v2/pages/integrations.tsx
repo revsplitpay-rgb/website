@@ -9,6 +9,7 @@ import CtaBand from "../components/cta-band";
 import { Reveal } from "../components/motion";
 import PageHero from "../components/page-hero";
 import PageMeta from "../components/page-meta";
+import { breadcrumbLd } from "../seo/jsonld";
 import { ButtonLink, Container, Grad, Panel, Section } from "../components/ui";
 import { INTEGRATION_LOGOS, WEBHOOK_TOOL_LOGOS, type Logo } from "../content/logos";
 import { providerPhrase } from "../content/providers";
@@ -39,7 +40,7 @@ const IntegrationMark = ({ item, scale = 1 }: { item: Integration; scale?: numbe
 
 const IntegrationCard = ({ item, index }: { item: Integration; index: number }) => (
   <Reveal delay={index * 90} className="h-full">
-    <Link to={v2Path(`/integration/${item.slug}`)} className="v2-card v2-card-hover group flex h-full flex-col p-7">
+    <Link to={v2Path(`/integrations/${item.slug}`)} className="v2-card v2-card-hover group flex h-full flex-col p-7">
       <div className="flex h-12 items-center justify-between gap-4">
         <IntegrationMark item={item} />
         <span className="rounded-full bg-muted px-2.5 py-1 text-xs font-medium text-muted-foreground">{item.kind}</span>
@@ -92,7 +93,8 @@ export const IntegrationsIndex = () => (
     <PageMeta
       title="Integrations | RevSplitPay"
       description={`RevSplitPay runs on ${providerPhrase()} and connects to Slack and your own tools with webhooks.`}
-      path="/integration"
+      path="/integrations"
+      jsonLd={[breadcrumbLd([{ name: "Integrations", path: "/integrations" }])]}
     />
     <PageHero
       eyebrow="Integrations"
@@ -168,18 +170,28 @@ const ConnectionVisual = ({ item }: { item: Integration }) => {
 export const IntegrationDetail = () => {
   const { slug = "" } = useParams();
   const item = findIntegration(slug);
-  if (!item) return <Navigate to={v2Path("/integration")} replace />;
+  if (!item) return <Navigate to={v2Path("/integrations")} replace />;
 
   return (
     <>
-      <PageMeta title={`${item.name} integration | RevSplitPay`} description={item.summary} path={`/integration/${item.slug}`} />
+      <PageMeta
+        title={`${item.name} integration | RevSplitPay`}
+        description={item.summary}
+        path={`/integrations/${item.slug}`}
+        jsonLd={[
+          breadcrumbLd([
+            { name: "Integrations", path: "/integrations" },
+            { name: item.name, path: `/integrations/${item.slug}` },
+          ]),
+        ]}
+      />
       <PageHero eyebrow={item.kind} title={item.name} support={item.overview} center={false} aside={<ConnectionVisual item={item} />}>
         <div className="flex flex-wrap items-center gap-4">
           <ButtonLink href={APP_SIGNUP_URL}>
             Get started <ArrowRight aria-hidden="true" />
           </ButtonLink>
           <Link
-            to={v2Path("/integration")}
+            to={v2Path("/integrations")}
             className="inline-flex min-h-11 items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground"
           >
             <ArrowLeft className="h-4 w-4" aria-hidden="true" /> All integrations

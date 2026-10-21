@@ -99,3 +99,41 @@
 **Effort:** M (human) / S (CC)
 **Priority:** P3
 **Depends on:** App exposing plan data
+
+## SEO (added 2026-10-21)
+
+Phase 1-3 groundwork is built: build-time prerender of every v2 page
+(`scripts/prerender.mjs`, `src/entry-server.tsx`), per-page meta and JSON-LD
+(`src/v2/components/page-meta.tsx`, `src/v2/seo/`), generated `sitemap.xml`,
+`robots.txt` (AI crawlers allowed), `llms.txt` and `llms-full.txt`.
+
+### Switchover steps (when v2 replaces the live site)
+
+**What:**
+1. Set `V2_BASE = ""` in `src/v2/lib/paths.ts`. This drops the preview noindex, advertises the sitemap in robots.txt and prerenders pages at the root.
+2. Point the root routes in `src/app-tree.tsx` at v2, then remove the old site's pages, sections and Lottie (cuts about 2.5 MB of JS).
+3. Add 301s in `vercel.json`: `/feature` to `/features`, `/integration` to `/integrations`, `/integration/:slug` to `/integrations/:slug`, `/legal/terms-&-condition` to `/legal/terms`, `/legal/privacy-policy` to `/legal/privacy`, `/legal/cookie-policy` to `/legal/cookies`.
+4. Restrict the catch-all rewrite to real app routes so unknown URLs return a real 404 instead of a soft 404.
+5. Remove the index.html inline v2-theme script and the Inter Tight preload.
+6. Compress `video-explain.mp4` (61 MB) to under 5 MB, and convert images to WebP.
+7. Verify revsplitpay.com in Google Search Console and Bing Webmaster Tools (DNS), submit the sitemap, and add IndexNow on deploy.
+
+**Priority:** P1 at switchover
+
+### Owner inputs for trust and structured data
+
+**What:** Legal company name, registered address and CRO number (footer and Organization JSON-LD); official social profile URLs (`ORGANIZATION.sameAs` in `src/v2/seo/site.ts`); a domain email with SPF, DKIM and DMARC; real privacy, terms, cookie, refund and DPA text; founder story and photos for About; an analytics choice (Plausible, or GA4 with consent).
+
+**Priority:** P1
+
+### Blog rebuild hook
+
+**What:** Trigger a Vercel deploy hook when a post is published, so new posts are prerendered and added to the sitemap. Until then, new posts render client-side and appear in the sitemap on the next deploy.
+
+**Priority:** P2
+
+### Phase 4 content and Phase 6 off-site
+
+**What:** Keyword research, then use-case pages, the free commission calculator page, glossary, help centre and comparison pages; listings on G2, Capterra, Product Hunt and the Whop app store; YouTube copy of the explainer (then add VideoObject JSON-LD with its real upload date).
+
+**Priority:** P2

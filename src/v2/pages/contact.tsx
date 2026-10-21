@@ -4,6 +4,7 @@ import { Mail } from "lucide-react";
 import { useId, useState, type FormEvent } from "react";
 import CopyButton from "../components/copy-button";
 import PageMeta from "../components/page-meta";
+import { breadcrumbLd } from "../seo/jsonld";
 import { ButtonLink, Container, Grad, Panel, Section, SectionHeading, buttonClass } from "../components/ui";
 
 // Bands follow the plan limits, so they move with pricing.ts.
@@ -53,6 +54,7 @@ const Contact = () => {
         title="Contact | RevSplitPay"
         description="Questions about RevSplitPay, pricing or Enterprise? Email the team."
         path="/contact"
+        jsonLd={[breadcrumbLd([{ name: "Contact", path: "/contact" }])]}
       />
       <Section tone="sky" className="-mt-16 pt-32 md:pt-40">
         <div className="v2-grid-bg absolute inset-0" aria-hidden="true" />

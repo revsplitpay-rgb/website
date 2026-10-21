@@ -4,7 +4,7 @@ import { Outlet, useLocation } from "react-router-dom";
 import Footer from "./components/footer";
 import Navbar from "./components/navbar";
 
-/** Shared v2 frame: skip link, landmarks, noindex while v2 is a preview. */
+/** Shared v2 frame: skip link, landmarks. Robots rules live in PageMeta. */
 const V2Layout = () => {
   const { pathname } = useLocation();
 
@@ -16,7 +16,6 @@ const V2Layout = () => {
   return (
     <div className="min-h-screen bg-background text-foreground antialiased">
       <Helmet>
-        <meta name="robots" content="noindex, nofollow" />
         <link rel="preload" href="/v2/fonts/Geist-Variable.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
       </Helmet>
       <a

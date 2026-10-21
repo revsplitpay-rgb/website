@@ -5,9 +5,9 @@ import { v2Path } from "../lib/paths";
 
 const links = [
   { label: "Home", to: "/" },
-  { label: "Product", to: "/feature" },
+  { label: "Product", to: "/features" },
   { label: "Pricing", to: "/pricing" },
-  { label: "Integrations", to: "/integration" },
+  { label: "Integrations", to: "/integrations" },
   { label: "Contact", to: "/contact" },
 ];
 
@@ -15,7 +15,7 @@ const NotFound = () => {
   const { pathname } = useLocation();
   return (
     <>
-      <PageMeta title="Page not found | RevSplitPay" description="This page moved or never existed." path={pathname} />
+      <PageMeta title="Page not found | RevSplitPay" description="This page moved or never existed." path={pathname} noindex />
       <Section tone="sky" className="-mt-16 pt-36 md:pt-44">
         <div className="v2-grid-bg absolute inset-0" aria-hidden="true" />
         <Container className="relative max-w-[760px] text-center">
