@@ -16,8 +16,8 @@ const SEO = ({
     description,
     canonicalUrl,
     ogType = "website",
-    ogImage = "/logo.png",
-    twitterCard = "summary",
+    ogImage = "/og-image.png",
+    twitterCard = "summary_large_image",
     jsonLd,
 }: SEOProps) => {
     const siteUrl = SITE_URL;
