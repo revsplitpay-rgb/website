@@ -254,8 +254,10 @@ const GlowStrokes = ({ side }: { side: "left" | "right" }) => {
             transition={{ duration: 1.6, delay: 0.4 + index * 0.25, ease: EASE }}
           />
           {!reduced && (
-            <circle r="2.5" fill="#3fc1ff">
-              <animateMotion dur={`${4 + index}s`} repeatCount="indefinite" path={d} begin={`${1.5 + index * 0.6}s`} />
+            <circle r="2.5" fill="#3fc1ff" opacity="0">
+              <animateMotion dur={`${4 + index}s`} repeatCount="3" fill="freeze" path={d} begin={`${1.5 + index * 0.6}s`} />
+              {/* Fade in and out with each pass, then stay hidden after the last. */}
+              <animate attributeName="opacity" values="0;1;1;0" dur={`${4 + index}s`} repeatCount="3" fill="freeze" begin={`${1.5 + index * 0.6}s`} />
             </circle>
           )}
         </g>
@@ -446,7 +448,7 @@ export const ProvidersHub = () => {
   const hub = (
     <Reveal className="flex flex-col items-center gap-3 text-center">
       <span className="relative flex h-20 w-20 items-center justify-center rounded-[22px] bg-white shadow-[0_18px_40px_-16px_rgb(0_72_160/0.55)] ring-1 ring-[rgb(0_114_228/0.18)]">
-        <span className="v2-pulse-ring absolute inset-0 rounded-[22px] bg-[rgb(0_114_228/0.15)] [animation-iteration-count:3]" aria-hidden="true" />
+        <span className="v2-pulse-ring absolute inset-0 rounded-[22px] bg-[rgb(0_114_228/0.15)] " aria-hidden="true" />
         <img src={logo} alt="" className="relative h-11 w-11 rounded-xl" />
       </span>
       <span className="max-w-[14ch] text-sm font-medium text-foreground">RevSplitPay splits every payment</span>

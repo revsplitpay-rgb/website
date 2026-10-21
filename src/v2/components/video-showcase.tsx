@@ -98,7 +98,7 @@ const VideoShowcase = () => {
               <span className="absolute bottom-3 left-3 right-3 flex items-center justify-between gap-4 text-white sm:bottom-5 sm:left-5 sm:right-5 md:bottom-8 md:left-8 md:right-8">
                 <span className="flex items-center gap-4 md:gap-5">
                   <span className="relative flex shrink-0 items-center justify-center">
-                    <span className="v2-pulse-ring absolute h-11 w-11 rounded-full bg-white/40 [animation-iteration-count:3] sm:h-14 sm:w-14 md:h-20 md:w-20" />
+                    <span className="v2-pulse-ring absolute h-11 w-11 rounded-full bg-white/40 sm:h-14 sm:w-14 md:h-20 md:w-20" />
                     <span className="relative flex h-11 w-11 items-center justify-center rounded-full bg-white text-primary shadow-[0_20px_40px_-12px_rgb(0_30_80/0.6)] transition-transform duration-300 group-hover:scale-110 sm:h-14 sm:w-14 md:h-20 md:w-20">
                       <Play className="ml-0.5 h-5 w-5 fill-current sm:h-6 sm:w-6 md:h-8 md:w-8" />
                     </span>

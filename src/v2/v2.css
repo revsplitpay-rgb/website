@@ -375,16 +375,18 @@ html[data-v2-theme] .v2-fade-x {
   mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
 }
 
+/* Motion budget: only the hero deal story and the logo marquee loop forever.
+   Everything else plays a few times, then rests on its final frame. */
 html[data-v2-theme] .v2-float {
-  animation: v2-float 7s ease-in-out infinite;
+  animation: v2-float 7s ease-in-out 3;
   will-change: transform;
 }
 html[data-v2-theme] .v2-float-slow {
-  animation: v2-float 9s ease-in-out infinite reverse;
+  animation: v2-float 9s ease-in-out 3 reverse;
 }
 
 html[data-v2-theme] .v2-pulse-ring {
-  animation: v2-pulse-ring 2.4s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+  animation: v2-pulse-ring 2.4s cubic-bezier(0.22, 1, 0.36, 1) 3 forwards;
 }
 
 html[data-v2-theme] .v2-marquee {
