@@ -80,7 +80,7 @@ const VideoSection = () => (
         id="overview-title"
         center
         eyebrow="Watch the overview"
-        title="See it work in under a minute."
+        title="See it work in one minute."
         support="From checkout link to every person paid, in one short walkthrough."
       />
       <div className="mx-auto mt-12 max-w-[1080px] md:mt-16">

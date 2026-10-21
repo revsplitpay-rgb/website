@@ -1,23 +1,64 @@
-import { APP_SIGNUP_URL } from "@/lib/links";
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
-import { Play, RotateCcw } from "lucide-react";
-import { useRef, useState } from "react";
-import explainerVideo from "../../../video-explain.mp4";
+import { Play } from "lucide-react";
+import { useRef, useState, type DetailedHTMLProps, type HTMLAttributes } from "react";
 import { buttonClass } from "./ui";
 
-// The explainer file (video-explain.mp4) runs 0:23. The <video> only mounts
-// after the visitor presses play, so nothing downloads before that.
-const VIDEO_LENGTH_LABEL = "0:23";
+// The explainer (1:15) is hosted on Wistia (owner, 2026-10-21). Wistia's
+// scripts load only after the visitor presses play, so the page stays fast and
+// nothing is requested from Wistia before the visitor chooses to watch.
+const WISTIA_MEDIA_ID = "xyba3e68fp";
+const WISTIA_ASPECT = "1.7777777777777777";
+const VIDEO_LENGTH_LABEL = "1:15";
 const POSTER = "/v2/video-poster.png";
 
-type VideoState = "idle" | "loading" | "playing" | "ended" | "error";
+declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
+  namespace JSX {
+    interface IntrinsicElements {
+      "wistia-player": DetailedHTMLProps<HTMLAttributes<HTMLElement>, HTMLElement> & {
+        "media-id": string;
+        aspect?: string;
+        autoplay?: string;
+      };
+    }
+  }
+}
+
+const WISTIA_SCRIPTS = [
+  { src: "https://fast.wistia.com/player.js", module: false },
+  { src: `https://fast.wistia.com/embed/${WISTIA_MEDIA_ID}.js`, module: true },
+];
+
+let wistiaLoading: Promise<void> | null = null;
+
+/** Adds Wistia's player scripts once; a failed load can be retried. */
+const loadWistia = () =>
+  (wistiaLoading ??= Promise.all(
+    WISTIA_SCRIPTS.map(
+      ({ src, module }) =>
+        new Promise<void>((resolve, reject) => {
+          const script = document.createElement("script");
+          script.src = src;
+          script.async = true;
+          if (module) script.type = "module";
+          script.onload = () => resolve();
+          script.onerror = () => reject(new Error(`Could not load ${src}`));
+          document.head.appendChild(script);
+        }),
+    ),
+  )
+    .then(() => undefined)
+    .catch((error) => {
+      wistiaLoading = null;
+      throw error;
+    }));
+
+type VideoState = "idle" | "loading" | "ready" | "error";
 
 const VideoShowcase = () => {
   const reduced = useReducedMotion();
   const frameRef = useRef<HTMLDivElement>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
   const [state, setState] = useState<VideoState>("idle");
-  const [attempt, setAttempt] = useState(0);
 
   // Grows from 88% to full size as it scrolls into view.
   const { scrollYProgress } = useScroll({ target: frameRef, offset: ["start end", "center center"] });
@@ -25,12 +66,11 @@ const VideoShowcase = () => {
   const radius = useTransform(scrollYProgress, [0, 1], [40, 28]);
   const tilt = useTransform(scrollYProgress, [0, 1], [10, 0]);
 
-  const replay = () => {
-    const video = videoRef.current;
-    if (!video) return;
-    video.currentTime = 0;
-    void video.play();
-    setState("playing");
+  const play = () => {
+    setState("loading");
+    loadWistia()
+      .then(() => setState("ready"))
+      .catch(() => setState("error"));
   };
 
   return (
@@ -40,11 +80,11 @@ const VideoShowcase = () => {
         style={reduced ? undefined : { scale, borderRadius: radius, rotateX: tilt }}
         className="relative overflow-hidden rounded-[28px] bg-[rgb(var(--foreground))] p-1.5 shadow-[0_50px_100px_-40px_rgb(0_40_110/0.55)] ring-1 ring-[rgb(0_114_228/0.15)]"
       >
-        <div className="relative aspect-video w-full overflow-hidden rounded-[22px]">
+        <div className="relative aspect-video w-full overflow-hidden rounded-[22px] bg-black">
           {state === "idle" ? (
             <button
               type="button"
-              onClick={() => setState("loading")}
+              onClick={play}
               className="group absolute inset-0 h-full w-full text-left"
               aria-label={`Play the RevSplitPay overview video, ${VIDEO_LENGTH_LABEL}`}
             >
@@ -71,54 +111,27 @@ const VideoShowcase = () => {
                 <span className="hidden rounded-full bg-white/15 px-3 py-1 font-mono text-sm sm:block">{VIDEO_LENGTH_LABEL}</span>
               </span>
             </button>
+          ) : state === "error" ? (
+            <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-[rgb(0_20_60/0.85)] p-6 text-center">
+              <p className="text-white" role="alert">
+                The video couldn't load. A browser extension may be blocking it.
+              </p>
+              <button type="button" onClick={play} className={buttonClass("secondary")}>
+                Try again
+              </button>
+            </div>
           ) : (
             <>
-              <video
-                key={attempt}
-                ref={videoRef}
-                className="h-full w-full bg-black"
-                src={explainerVideo}
-                poster={POSTER}
-                controls
-                autoPlay
-                playsInline
-                preload="auto"
-                onPlaying={() => setState("playing")}
-                onEnded={() => setState("ended")}
-                onError={() => setState("error")}
-              />
+              {/* Poster stays underneath until Wistia's player paints over it. */}
+              <img src={POSTER} alt="" className="absolute inset-0 h-full w-full object-cover opacity-60" />
               {state === "loading" && (
-                <p className="pointer-events-none absolute inset-x-0 bottom-16 text-center text-sm text-white" aria-live="polite">
+                <p className="absolute inset-x-0 bottom-6 text-center text-sm text-white" aria-live="polite">
                   Loading video…
                 </p>
               )}
-              {state === "ended" && (
-                <div className="absolute inset-0 flex flex-wrap items-center justify-center gap-3 bg-[rgb(0_20_60/0.7)]">
-                  <button type="button" onClick={replay} className={buttonClass("secondary")}>
-                    <RotateCcw /> Replay
-                  </button>
-                  <a href={APP_SIGNUP_URL} className={buttonClass("primary")}>
-                    Get started
-                  </a>
-                </div>
-              )}
-              {state === "error" && (
-                <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-[rgb(0_20_60/0.8)] p-6 text-center">
-                  <p className="text-white" role="alert">
-                    The video couldn't load.
-                  </p>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setState("loading");
-                      setAttempt((n) => n + 1);
-                    }}
-                    className={buttonClass("secondary")}
-                  >
-                    Try again
-                  </button>
-                </div>
-              )}
+              <div className="absolute inset-0">
+                <wistia-player media-id={WISTIA_MEDIA_ID} aspect={WISTIA_ASPECT} autoplay="true" className="block h-full w-full" />
+              </div>
             </>
           )}
         </div>
