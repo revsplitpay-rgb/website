@@ -284,7 +284,7 @@ html[data-v2-theme] .v2-sky {
 
 html[data-v2-theme] .v2-tint {
   background:
-    linear-gradient(180deg, #ffffff 0, rgb(255 255 255 / 0) 140px, rgb(255 255 255 / 0) calc(100% - 140px), #ffffff 100%),
+    linear-gradient(180deg, #ffffff 0, rgb(255 255 255 / 0) 96px, rgb(255 255 255 / 0) calc(100% - 96px), #ffffff 100%),
     radial-gradient(ellipse 50% 60% at 0% 20%, rgb(63 193 255 / 0.14), transparent 70%),
     radial-gradient(ellipse 50% 60% at 100% 80%, rgb(0 114 228 / 0.1), transparent 70%),
     #f2f7ff;

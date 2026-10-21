@@ -45,7 +45,7 @@ const About = () => (
       }
       support="RevSplitPay is the payment and commission platform for sales teams. Your customer pays once, and every closer, setter, partner and manager is paid their exact share automatically."
     />
-    <Section className="pt-12 md:pt-16">
+    <Section>
       <Container>
         <div className="grid gap-5 md:grid-cols-2">
           {blocks.map((block, index) => (

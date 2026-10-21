@@ -10,7 +10,7 @@ import { ButtonLink, Container } from "./ui";
 const CtaBand = () => {
   const reduced = useReducedMotion();
   return (
-  <section aria-labelledby="cta-title" className="bg-background py-16 md:py-24">
+  <section aria-labelledby="cta-title" className="bg-background py-12 md:py-16 lg:py-20">
     <Container>
       <Reveal>
         <div className="v2-deep-band relative isolate overflow-hidden rounded-[32px] px-6 py-14 text-center shadow-[0_40px_80px_-40px_rgb(0_40_110/0.7)] sm:px-12 md:py-20">

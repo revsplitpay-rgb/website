@@ -22,7 +22,7 @@ const PageHero = ({
   aside?: ReactNode;
   className?: string;
 }) => (
-  <section className={cn("v2-sky relative isolate -mt-16 overflow-hidden pb-16 pt-32 md:pb-24 md:pt-40", className)}>
+  <section className={cn("v2-sky relative isolate -mt-16 overflow-hidden pb-12 pt-32 md:pb-16 md:pt-40 lg:pb-20", className)}>
     <div className="v2-grid-bg absolute inset-0 -z-10" aria-hidden="true" />
     <div className="v2-blob -left-24 top-10 -z-10 h-72 w-72 bg-[rgb(63_193_255/0.4)]" aria-hidden="true" />
     <div className="v2-blob -right-24 top-24 -z-10 h-80 w-80 bg-[rgb(0_114_228/0.22)] [animation-delay:-8s]" aria-hidden="true" />

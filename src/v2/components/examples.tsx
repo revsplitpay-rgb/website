@@ -4,14 +4,14 @@ import { EASE } from "./motion";
 import { ExampleLabel, StatusPill } from "./ui";
 
 /** Illustrative payout list: role labels, round amounts, always labeled Example. */
-export const PayoutExample = () => (
+export const PayoutExample = ({ limit }: { limit?: number }) => (
   <div className="overflow-hidden rounded-2xl border border-border bg-white shadow-[0_10px_30px_-20px_rgb(0_58_130/0.35)]">
     <div className="flex items-center justify-between border-b border-border bg-[rgb(244_248_255)] px-5 py-3">
       <p className="text-sm font-medium text-foreground">My payouts</p>
       <ExampleLabel />
     </div>
     <ul className="divide-y divide-border">
-      {payoutExamples.map((row, index) => (
+      {payoutExamples.slice(0, limit).map((row, index) => (
         <li key={index} className="flex items-center justify-between gap-4 px-5 py-3">
           <div>
             <p className="text-[0.9375rem] text-foreground">{row.role} commission</p>
@@ -36,7 +36,7 @@ export const LeaderboardExample = () => {
       <p className="text-sm font-medium text-foreground">Leaderboard · this month</p>
       <ExampleLabel />
     </div>
-    <ul className="space-y-4 px-5 py-4">
+    <ul className="space-y-3 px-5 py-4">
       {leaderboardExamples.map((row) => (
         <li key={row.rank} className="grid grid-cols-[1.5rem_1fr_5rem] items-center gap-3">
           <span className="v2-num text-sm text-muted-foreground">{row.rank}</span>

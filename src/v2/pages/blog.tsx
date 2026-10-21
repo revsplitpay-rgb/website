@@ -66,7 +66,7 @@ export const BlogIndex = () => {
         }
         support="Commissions, payouts and running a sales team, from the RevSplitPay team."
       />
-      <Section className="pt-12 md:pt-16">
+      <Section>
         <Container>
           {isLoading ? (
             <Skeleton />

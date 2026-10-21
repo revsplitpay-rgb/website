@@ -20,7 +20,7 @@ import {
   Eye,
   type LucideIcon,
 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ComponentType } from "react";
 import CtaBand from "../components/cta-band";
 import { LeaderboardExample, PayoutExample } from "../components/examples";
 import { InvoiceVisual, PayTypesVisual, SplitVisual } from "../components/product-bento";
@@ -31,7 +31,7 @@ import { ButtonLink, Container, Grad, Section, SectionHeading } from "../compone
 import { featureGroups, roles } from "../content/copy";
 import { providerPhrase } from "../content/providers";
 
-const GROUP_VISUALS: Record<string, () => JSX.Element> = {
+const GROUP_VISUALS: Record<string, ComponentType> = {
   selling: PayTypesVisual,
   commissions: SplitVisual,
   payouts: PayoutExample,

@@ -20,7 +20,7 @@ const toneClass: Record<SectionTone, string> = {
   blue: "v2-blue-band",
 };
 
-/** Section padding top and bottom: 72px phone, 96px tablet, 128px desktop. */
+/** One spacing scale for every section (top and bottom): 48px phone, 64px tablet, 80px desktop. */
 export const Section = ({
   id,
   className,
@@ -40,7 +40,7 @@ export const Section = ({
   <section
     id={id}
     aria-labelledby={labelledBy}
-    className={cn("relative scroll-mt-20 overflow-hidden py-[72px] md:py-24 lg:py-28", toneClass[surface ? "tint" : tone], className)}
+    className={cn("relative scroll-mt-20 overflow-hidden py-12 md:py-16 lg:py-20", toneClass[surface ? "tint" : tone], className)}
   >
     {children}
   </section>

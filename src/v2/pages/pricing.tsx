@@ -233,11 +233,10 @@ const Pricing = () => (
         </>
       }
       support={priceLine()}
-      className="pb-10 md:pb-12"
     >
       <OfferCallout />
     </PageHero>
-    <Section className="pt-12 md:pt-16 lg:pt-20">
+    <Section>
       <Container>
         <PlanCards />
       </Container>

@@ -360,7 +360,7 @@ export const HeroStrokes = () => (
 export const LogoStrip = () => {
   const marks = [...paymentProviderLogos(), INTEGRATION_LOGOS.slack!, ...WEBHOOK_TOOL_LOGOS];
   return (
-    <div className="relative mt-20 md:mt-28">
+    <div className="relative mt-16 md:mt-20">
       <Reveal>
         <p className="px-4 text-center text-sm text-muted-foreground">
           Payments run on <span className="font-medium text-foreground">{providerPhrase()}</span>. Events reach Slack, and

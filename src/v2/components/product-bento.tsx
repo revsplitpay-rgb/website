@@ -21,7 +21,7 @@ const ROLES = [
 export const SplitVisual = () => {
   const reduced = useReducedMotion();
   return (
-    <div className="rounded-2xl border border-border bg-[rgb(248_251_255)] p-5">
+    <div className="rounded-2xl border border-border bg-[rgb(248_251_255)] p-4">
       <div className="flex items-center justify-between">
         <p className="text-sm font-medium text-foreground">Team share of one sale</p>
         <ExampleLabel />
@@ -38,9 +38,9 @@ export const SplitVisual = () => {
           />
         ))}
       </div>
-      <ul className="mt-5 grid grid-cols-2 gap-3">
+      <ul className="mt-4 grid grid-cols-2 gap-2">
         {ROLES.map((item) => (
-          <li key={item.role} className="flex items-center gap-2.5 rounded-xl bg-white px-3 py-2.5 ring-1 ring-border">
+          <li key={item.role} className="flex items-center gap-2.5 rounded-xl bg-white px-3 py-2 ring-1 ring-border">
             <span className={cn("h-2.5 w-2.5 rounded-full", item.className)} aria-hidden="true" />
             <span className="text-sm text-foreground">{item.role}</span>
           </li>
@@ -80,11 +80,11 @@ const RECOVERY = [
 export const RecoveryVisual = () => {
   const reduced = useReducedMotion();
   return (
-    <ol className="space-y-2.5" aria-hidden="true">
+    <ol className="space-y-2" aria-hidden="true">
       {RECOVERY.map((step, index) => (
         <motion.li
           key={step.label}
-          className="flex items-center gap-3 rounded-xl bg-white px-3 py-2.5 ring-1 ring-border"
+          className="flex items-center gap-3 rounded-xl bg-white px-3 py-2 ring-1 ring-border"
           initial={reduced ? false : { opacity: 0, x: -12 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
@@ -148,24 +148,24 @@ const Card = ({
   <Reveal delay={delay} className={className}>
     <article
       className={cn(
-        "v2-card v2-card-hover flex h-full flex-col overflow-hidden p-6 lg:p-8",
+        "v2-card v2-card-hover flex h-full flex-col overflow-hidden p-6 lg:p-7",
         FILL[fill],
-        wide && "lg:grid lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:items-center lg:gap-12 lg:p-10",
+        wide && "lg:grid lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:items-center lg:gap-10 lg:p-8",
       )}
     >
       <div>
-        <h3 className="text-[1.375rem] font-semibold leading-tight tracking-tight text-foreground">{title}</h3>
-        <p className="mt-3 text-[0.9375rem] leading-relaxed text-muted-foreground">{text}</p>
+        <h3 className="text-[1.25rem] font-semibold leading-tight tracking-tight text-foreground">{title}</h3>
+        <p className="mt-2 text-[0.9375rem] leading-relaxed text-muted-foreground">{text}</p>
       </div>
-      <div className={cn("mt-8 flex flex-1 flex-col justify-center", wide && "lg:mt-0")}>{visual}</div>
+      <div className={cn("mt-6 flex flex-1 flex-col justify-end", wide && "lg:mt-0")}>{visual}</div>
     </article>
   </Reveal>
 );
 
 const ProductBento = () => (
-  <div className="mt-14 grid gap-5 lg:grid-cols-6">
+  <div className="mt-12 grid gap-4 lg:grid-cols-6">
     <Card className="lg:col-span-3" fill="blue" title={row("commissions").title} text={row("commissions").text} visual={<SplitVisual />} />
-    <Card className="lg:col-span-3" delay={80} title={row("payouts").title} text={row("payouts").text} visual={<PayoutExample />} />
+    <Card className="lg:col-span-3" delay={80} title={row("payouts").title} text={row("payouts").text} visual={<PayoutExample limit={3} />} />
     <Card className="lg:col-span-2" delay={0} fill="grid" title={row("payment-types").title} text={row("payment-types").text} visual={<PayTypesVisual />} />
     <Card className="lg:col-span-2" delay={80} title={row("recovery").title} text={row("recovery").text} visual={<RecoveryVisual />} />
     <Card className="lg:col-span-2" delay={160} fill="mesh" title={row("invoices").title} text={row("invoices").text} visual={<InvoiceVisual />} />

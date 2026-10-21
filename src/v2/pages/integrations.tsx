@@ -105,7 +105,7 @@ export const IntegrationsIndex = () => (
     >
       <HeroLogos />
     </PageHero>
-    <Section className="pt-12 md:pt-16">
+    <Section>
       <Container className="space-y-14">
         {groups.map((group) => (
           <div key={group.title}>
@@ -186,7 +186,7 @@ export const IntegrationDetail = () => {
           </Link>
         </div>
       </PageHero>
-      <Section className="pt-12 md:pt-16">
+      <Section>
         <Container>
           <div className="grid gap-6 lg:grid-cols-2">
             <Reveal className="h-full">

@@ -22,7 +22,7 @@ import { v2Path } from "../lib/paths";
 const [heroLead, heroRest] = home.heroTitle.split(", ");
 
 const Hero = () => (
-  <section className="v2-sky relative isolate -mt-16 overflow-hidden pb-10 pt-28 md:pb-16 md:pt-36 lg:pt-40">
+  <section className="v2-sky relative isolate -mt-16 overflow-hidden pb-12 pt-28 md:pb-16 md:pt-36 lg:pb-20 lg:pt-40">
     <div className="v2-grid-bg absolute inset-0 -z-10" aria-hidden="true" />
     <div className="v2-blob -left-24 top-10 -z-10 h-80 w-80 bg-[rgb(63_193_255/0.45)]" aria-hidden="true" />
     <div className="v2-blob -right-24 top-40 -z-10 h-96 w-96 bg-[rgb(0_114_228/0.25)] [animation-delay:-8s]" aria-hidden="true" />
@@ -73,7 +73,7 @@ const Hero = () => (
 );
 
 const VideoSection = () => (
-  <Section id="overview" labelledBy="overview-title" className="pt-16 md:pt-20 lg:pt-24">
+  <Section id="overview" labelledBy="overview-title">
     <Container>
       <SectionHeading
         id="overview-title"
