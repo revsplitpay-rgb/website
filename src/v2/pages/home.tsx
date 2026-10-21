@@ -4,7 +4,7 @@ import { ArrowRight, Check, X } from "lucide-react";
 import { Link } from "react-router-dom";
 import CtaBand from "../components/cta-band";
 import Faq from "../components/faq";
-import { FactsStrip, HeroStrokes, HeroVisual } from "../components/hero-visual";
+import { HeroStrokes, HeroVisual, LogoStrip } from "../components/hero-visual";
 import Ledger from "../components/ledger";
 import MoneyFlow from "../components/money-flow";
 import { Reveal } from "../components/motion";
@@ -16,7 +16,6 @@ import ProductBento from "../components/product-bento";
 import { ButtonLink, Container, Grad, Section, SectionHeading } from "../components/ui";
 import VideoShowcase from "../components/video-showcase";
 import { home, offerLine, priceLine, problemRows, steps } from "../content/copy";
-import { paymentProviderLogos } from "../content/logos";
 import { providersBadge, railsLine } from "../content/providers";
 import { v2Path } from "../lib/paths";
 
@@ -66,16 +65,10 @@ const Hero = () => (
           </span>
           <span className="font-medium text-[rgb(var(--v2-deep))]">{offerLine()}</span>
         </p>
-        <div className="mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-3">
-          <span className="text-xs font-medium uppercase tracking-[0.14em] text-muted-foreground">Payments run on</span>
-          {paymentProviderLogos().map((mark) => (
-            <img key={mark.name} src={mark.src} alt={mark.name} style={{ height: mark.height * 0.85 }} className="w-auto" />
-          ))}
-        </div>
       </Reveal>
       <HeroVisual />
     </Container>
-    <FactsStrip />
+    <LogoStrip />
   </section>
 );
 

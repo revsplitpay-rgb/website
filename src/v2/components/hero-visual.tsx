@@ -1,12 +1,13 @@
-import { COMMISSION_FEE_LABEL, HOLD_DAYS } from "@/lib/pricing";
+import { HOLD_DAYS } from "@/lib/pricing";
 import { cn } from "@/lib/utils";
 import { motion, useReducedMotion } from "framer-motion";
 import { useEffect, useState, type ReactNode } from "react";
-import { BadgeCheck, CircleDollarSign, Send, ShieldCheck, Trophy, Users } from "lucide-react";
+import { Send, ShieldCheck, Trophy } from "lucide-react";
 import { formatCents, split } from "../lib/split";
-import { roles } from "../content/copy";
+import { INTEGRATION_LOGOS, WEBHOOK_TOOL_LOGOS, paymentProviderLogos } from "../content/logos";
+import { providerPhrase } from "../content/providers";
 import { EASE, Reveal, RollingNumber } from "./motion";
-import { Container, ExampleLabel, StatusPill } from "./ui";
+import { ExampleLabel, StatusPill } from "./ui";
 
 // Illustrative hero deal. Numbers are computed with the same split math as the
 // calculator so the picture can never disagree with the product.
@@ -352,53 +353,38 @@ export const HeroStrokes = () => (
 );
 
 /**
- * Product facts under the hero. Every number comes from pricing.ts or the
- * product copy, never from invented usage stats.
+ * Partner logos under the hero: where payments run, and the tools events
+ * reach (Slack natively, the rest through custom webhooks). Greyscale until
+ * hovered; scrolls slowly and pauses on hover.
  */
-export const FactsStrip = () => {
-  const facts: { value: ReactNode; label: string; icon: typeof Send }[] = [
-    { value: COMMISSION_FEE_LABEL, label: "fee on each team payout", icon: CircleDollarSign },
-    { value: "Fee-free", label: "your own share, always", icon: BadgeCheck },
-    {
-      value: (
-        <>
-          <RollingNumber value={HOLD_DAYS} format={(n) => String(n)} /> days
-        </>
-      ),
-      label: "safety hold before payouts",
-      icon: ShieldCheck,
-    },
-    {
-      value: <RollingNumber value={roles.length} format={(n) => String(n)} />,
-      label: "team roles, each with the right access",
-      icon: Users,
-    },
-  ];
+export const LogoStrip = () => {
+  const marks = [...paymentProviderLogos(), INTEGRATION_LOGOS.slack!, ...WEBHOOK_TOOL_LOGOS];
   return (
-    <Container className="relative mt-16 md:mt-24">
-      <div className="v2-glass grid overflow-hidden rounded-[24px] sm:grid-cols-2 lg:grid-cols-4">
-        {facts.map((fact, index) => (
-          <Reveal
-            key={fact.label}
-            delay={index * 90}
-            className={cn(
-              "flex items-center gap-4 p-6 lg:p-7",
-              index > 0 && "border-t border-[rgb(0_114_228/0.1)] sm:border-t-0",
-              index % 2 === 1 && "sm:border-l sm:border-[rgb(0_114_228/0.1)]",
-              index >= 2 && "sm:border-t lg:border-t-0",
-              index === 2 && "lg:border-l lg:border-[rgb(0_114_228/0.1)]",
-            )}
-          >
-            <span className="v2-icon-tile h-11 w-11 shrink-0">
-              <fact.icon className="h-5 w-5" aria-hidden="true" />
-            </span>
-            <div>
-              <p className="v2-gradient-text text-[1.75rem] font-semibold leading-none tracking-tight">{fact.value}</p>
-              <p className="mt-1.5 text-sm text-muted-foreground">{fact.label}</p>
-            </div>
-          </Reveal>
-        ))}
+    <div className="relative mt-20 md:mt-28">
+      <Reveal>
+        <p className="px-4 text-center text-sm text-muted-foreground">
+          Payments run on <span className="font-medium text-foreground">{providerPhrase()}</span>. Events reach Slack, and
+          your other tools through webhooks.
+        </p>
+      </Reveal>
+      <div className="v2-fade-x mt-8 overflow-hidden" aria-label="Integrations">
+        <ul className="v2-marquee flex w-max items-center gap-6 py-2 [animation-duration:40s]">
+          {[...marks, ...marks, ...marks, ...marks].map((mark, index) => (
+            <li
+              key={`${mark.name}-${index}`}
+              aria-hidden={index >= marks.length ? true : undefined}
+              className="group flex h-20 w-[200px] shrink-0 items-center justify-center rounded-2xl bg-white/70 ring-1 ring-[rgb(0_114_228/0.08)] transition-all duration-300 hover:bg-white hover:shadow-[0_16px_32px_-18px_rgb(0_72_160/0.45)]"
+            >
+              <img
+                src={mark.src}
+                alt={index < marks.length ? mark.name : ""}
+                style={{ height: mark.height }}
+                className="w-auto opacity-60 grayscale transition-all duration-300 group-hover:opacity-100 group-hover:grayscale-0"
+              />
+            </li>
+          ))}
+        </ul>
       </div>
-    </Container>
+    </div>
   );
 };
