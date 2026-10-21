@@ -264,7 +264,10 @@ html[data-v2-theme] .v2-spin-border {
     linear-gradient(180deg, #ffffff 0%, #f3f8ff 100%) padding-box,
     conic-gradient(from var(--v2-angle), #3fc1ff, #0072e4 25%, #9fdcff 50%, #0072e4 75%, #3fc1ff) border-box;
   box-shadow: 0 30px 60px -28px rgb(0 72 160 / 0.45), 0 0 0 6px rgb(0 114 228 / 0.05);
-  animation: v2-spin 8s linear infinite;
+  animation: v2-spin 5s linear 2 paused;
+}
+html[data-v2-theme] .v2-spin-run {
+  animation-play-state: running;
 }
 html[data-v2-theme] .v2-spin-border-deep {
   background:

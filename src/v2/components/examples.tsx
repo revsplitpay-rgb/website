@@ -15,7 +15,7 @@ export const PayoutExample = ({ limit }: { limit?: number }) => (
         <li key={index} className="flex items-center justify-between gap-4 px-5 py-3">
           <div>
             <p className="text-[0.9375rem] text-foreground">{row.role} commission</p>
-            <p className="text-sm text-muted-foreground">{row.when}</p>
+            <p className="whitespace-nowrap text-sm text-muted-foreground">{row.when}</p>
           </div>
           <div className="flex items-center gap-3">
             <span className="v2-num text-[0.9375rem] text-foreground">{row.amount}</span>

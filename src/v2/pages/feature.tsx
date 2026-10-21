@@ -1,6 +1,8 @@
 import { cn } from "@/lib/utils";
 import { APP_SIGNUP_URL } from "@/lib/links";
+import { USAGE_WARNING_PCTS } from "@/lib/pricing";
 import {
+  AlertTriangle,
   ArrowRight,
   BarChart3,
   Check,
@@ -24,13 +26,115 @@ import { useEffect, useState, type ComponentType } from "react";
 import CtaBand from "../components/cta-band";
 import { LeaderboardExample, PayoutExample } from "../components/examples";
 import { InvoiceVisual, PayTypesVisual, SplitVisual } from "../components/product-bento";
+import { INTEGRATION_LOGOS, WEBHOOK_TOOL_LOGOS, paymentProviderLogos } from "../content/logos";
 import { Reveal } from "../components/motion";
 import PageHero from "../components/page-hero";
 import PageMeta from "../components/page-meta";
 import { breadcrumbLd } from "../seo/jsonld";
-import { ButtonLink, Container, Grad, Section, SectionHeading } from "../components/ui";
+import { ButtonLink, Container, ExampleLabel, Grad, Section, SectionHeading } from "../components/ui";
 import { featureGroups, roles } from "../content/copy";
 import { providerPhrase } from "../content/providers";
+
+// Soft brand-family tints, rotated across the feature groups.
+const TINTS = [
+  {
+    card: "bg-[linear-gradient(160deg,#eef5ff_0%,#ffffff_55%)]",
+    tile: "bg-[linear-gradient(140deg,#3fc1ff,#0058b8)]",
+    tick: "bg-[rgb(0_114_228/0.1)] text-primary",
+    panel: "bg-[linear-gradient(160deg,#e8f2ff,#f8fbff)] ring-[rgb(0_114_228/0.12)]",
+  },
+  {
+    card: "bg-[linear-gradient(160deg,#ebfaff_0%,#ffffff_55%)]",
+    tile: "bg-[linear-gradient(140deg,#5ad8ff,#0087c2)]",
+    tick: "bg-[rgb(0_135_194/0.12)] text-[rgb(0_110_160)]",
+    panel: "bg-[linear-gradient(160deg,#e3f7ff,#f8fdff)] ring-[rgb(0_135_194/0.14)]",
+  },
+  {
+    card: "bg-[linear-gradient(160deg,#f1f0ff_0%,#ffffff_55%)]",
+    tile: "bg-[linear-gradient(140deg,#8f8cff,#4f46e5)]",
+    tick: "bg-[rgb(79_70_229/0.1)] text-[rgb(67_56_202)]",
+    panel: "bg-[linear-gradient(160deg,#eeedff,#fafaff)] ring-[rgb(79_70_229/0.12)]",
+  },
+  {
+    card: "bg-[linear-gradient(160deg,#ebfbf6_0%,#ffffff_55%)]",
+    tile: "bg-[linear-gradient(140deg,#34d3a5,#0f9d7a)]",
+    tick: "bg-[rgb(16_160_110/0.12)] text-[rgb(4_120_87)]",
+    panel: "bg-[linear-gradient(160deg,#e6f9f2,#f8fdfb)] ring-[rgb(16_160_110/0.14)]",
+  },
+];
+
+const TeamVisual = () => (
+  <ul className="grid grid-cols-2 gap-2" aria-hidden="true">
+    {roles.map((item) => {
+      const RoleIcon = ROLE_ICONS[item.role] ?? Users;
+      return (
+        <li key={item.role} className="flex items-center gap-2 rounded-xl bg-white px-3 py-2 text-sm text-foreground ring-1 ring-border">
+          <RoleIcon className="h-3.5 w-3.5 text-primary" />
+          {item.role}
+        </li>
+      );
+    })}
+  </ul>
+);
+
+const ReportingVisual = () => (
+  <div className="rounded-xl bg-white ring-1 ring-border" aria-hidden="true">
+    <div className="flex items-center justify-between border-b border-border px-4 py-2.5">
+      <p className="text-sm font-medium text-foreground">Alerts</p>
+      <ExampleLabel />
+    </div>
+    <ul className="divide-y divide-border text-sm">
+      {[
+        { icon: CreditCard, text: "New sale recorded", tone: "bg-[rgb(0_114_228/0.1)] text-primary" },
+        { icon: Send, text: "Payout sent to Closer", tone: "bg-[rgb(16_160_110/0.12)] text-[rgb(4_120_87)]" },
+        { icon: AlertTriangle, text: "Failed payment flagged", tone: "bg-[rgb(var(--destructive)/0.1)] text-destructive" },
+        { icon: BarChart3, text: `Plan at ${USAGE_WARNING_PCTS[0]}% of sales limit`, tone: "bg-[rgb(245_165_36/0.14)] text-[rgb(146_92_0)]" },
+      ].map((row) => (
+        <li key={row.text} className="flex items-center gap-3 px-4 py-2.5 text-foreground">
+          <span className={cn("flex h-7 w-7 items-center justify-center rounded-lg", row.tone)}>
+            <row.icon className="h-3.5 w-3.5" />
+          </span>
+          {row.text}
+        </li>
+      ))}
+    </ul>
+  </div>
+);
+
+const IntegrationsVisual = () => (
+  <ul className="grid grid-cols-2 gap-2" aria-hidden="true">
+    {[...paymentProviderLogos(), INTEGRATION_LOGOS.slack!, ...WEBHOOK_TOOL_LOGOS].map((mark) => (
+      <li key={mark.name} className="flex h-14 items-center justify-center rounded-xl bg-white ring-1 ring-border">
+        <img src={mark.src} alt="" style={{ height: Math.round(mark.height * 0.8) }} className="w-auto" />
+      </li>
+    ))}
+  </ul>
+);
+
+const OnboardingVisual = () => (
+  <div className="rounded-xl bg-white p-4 ring-1 ring-border" aria-hidden="true">
+    <p className="text-sm font-medium text-foreground">Setup checklist</p>
+    <ul className="mt-3 space-y-2.5 text-sm">
+      {[
+        { text: "Connect your payment account", done: true },
+        { text: "Invite your team", done: true },
+        { text: "Create your first checkout link", done: false },
+      ].map((step) => (
+        <li key={step.text} className="flex items-center gap-2.5">
+          <span
+            className={cn(
+              "flex h-5 w-5 items-center justify-center rounded-full",
+              step.done ? "bg-[rgb(16_160_110)] text-white" : "ring-2 ring-[rgb(0_114_228/0.35)]",
+            )}
+          >
+            {step.done && <Check className="h-3 w-3" />}
+          </span>
+          <span className={step.done ? "text-muted-foreground line-through" : "font-medium text-foreground"}>{step.text}</span>
+        </li>
+      ))}
+    </ul>
+  </div>
+);
 
 const GROUP_VISUALS: Record<string, ComponentType> = {
   selling: PayTypesVisual,
@@ -38,6 +142,10 @@ const GROUP_VISUALS: Record<string, ComponentType> = {
   payouts: PayoutExample,
   invoices: InvoiceVisual,
   rewards: LeaderboardExample,
+  team: TeamVisual,
+  reporting: ReportingVisual,
+  integrations: IntegrationsVisual,
+  onboarding: OnboardingVisual,
 };
 
 const ROLE_ICONS: Record<string, LucideIcon> = {
@@ -139,12 +247,18 @@ const Feature = () => {
             {featureGroups.map((group, index) => {
               const Icon = GROUP_ICONS[group.id] ?? Check;
               const Visual = GROUP_VISUALS[group.id];
+              const tint = TINTS[index % TINTS.length];
               return (
                 <section key={group.id} id={group.id} aria-labelledby={`${group.id}-title`} className="scroll-mt-24">
                   <Reveal>
-                    <div className="v2-card p-7 lg:p-10">
+                    <div className={cn("v2-card p-7 lg:p-10", tint.card)}>
                       <div className="flex items-start gap-5">
-                        <span className="v2-icon-tile h-12 w-12 shrink-0">
+                        <span
+                          className={cn(
+                            "flex h-12 w-12 shrink-0 items-center justify-center rounded-xl text-white shadow-[inset_0_1px_0_rgb(255_255_255/0.35),0_8px_18px_-8px_rgb(0_40_120/0.55)]",
+                            tint.tile,
+                          )}
+                        >
                           <Icon className="h-5 w-5" aria-hidden="true" />
                         </span>
                         <div>
@@ -157,11 +271,11 @@ const Feature = () => {
                           <p className="mt-2 max-w-[60ch] text-muted-foreground">{group.summary}</p>
                         </div>
                       </div>
-                      <div className={cn("mt-8", Visual && "grid gap-8 xl:grid-cols-[1fr_minmax(0,380px)] xl:items-center")}>
+                      <div className={cn("mt-8 md:pl-[68px]", Visual && "grid gap-8 xl:grid-cols-[1fr_minmax(0,360px)] xl:items-center")}>
                         <ul className={cn("grid gap-x-8 gap-y-3.5 text-[0.9375rem] text-foreground", !Visual && "sm:grid-cols-2")}>
                           {group.points.map((point) => (
                             <li key={point} className="flex gap-3">
-                              <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[rgb(0_114_228/0.1)] text-primary">
+                              <span className={cn("mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full", tint.tick)}>
                                 <Check className="h-3 w-3" aria-hidden="true" />
                               </span>
                               {point}
@@ -169,7 +283,7 @@ const Feature = () => {
                           ))}
                         </ul>
                         {Visual && (
-                          <div className="rounded-[20px] bg-[linear-gradient(160deg,#eef6ff,#f8fbff)] p-4 ring-1 ring-[rgb(0_114_228/0.1)]">
+                          <div className={cn("rounded-[20px] p-4 ring-1", tint.panel)}>
                             <Visual />
                           </div>
                         )}

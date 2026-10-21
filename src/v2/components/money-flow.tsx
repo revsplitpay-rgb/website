@@ -40,8 +40,9 @@ const MoneyFlow = ({ onBlue = false }: { onBlue?: boolean }) => {
                 key={n}
                 className="absolute -top-[3px] h-[7px] w-20 rounded-full bg-[linear-gradient(90deg,transparent,#9fe2ff,#ffffff)] blur-[1px]"
                 initial={{ left: "-10%", opacity: 0 }}
-                animate={{ left: ["-10%", "100%"], opacity: [0, 1, 1, 0] }}
-                transition={{ duration: PULSE_SECONDS, repeat: Infinity, delay: 1.4 + n * (PULSE_SECONDS / 2), ease: "easeInOut" }}
+                whileInView={{ left: ["-10%", "100%"], opacity: [0, 1, 1, 0] }}
+                viewport={{ once: true }}
+                transition={{ duration: PULSE_SECONDS, repeat: 1, delay: 1.4 + n * (PULSE_SECONDS / 2), ease: "easeInOut" }}
               />
             ))}
         </div>

@@ -1,7 +1,7 @@
 import { HOLD_DAYS } from "@/lib/pricing";
 import { cn } from "@/lib/utils";
-import { motion, useReducedMotion } from "framer-motion";
-import { useEffect, useState, type ReactNode } from "react";
+import { motion, useInView, useReducedMotion } from "framer-motion";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, Check, Send, ShieldCheck, Trophy } from "lucide-react";
 import { INTEGRATIONS } from "@/lib/integrations";
@@ -266,10 +266,12 @@ const GlowStrokes = ({ side }: { side: "left" | "right" }) => {
 
 export const HeroVisual = () => {
   const reduced = useReducedMotion();
-  const phase = useDealLoop(!reduced);
+  const rootRef = useRef<HTMLDivElement>(null);
+  const inView = useInView(rootRef, { margin: "100px" });
+  const phase = useDealLoop(!reduced && inView);
   const holdDays = phase.settled ? HOLD_DONE_DAYS : phase.setterPaid ? HOLD_DONE_DAYS - 1 : phase.closerPaid ? 2 : 1;
   return (
-    <div className="relative mx-auto mt-16 w-full max-w-[1100px] md:mt-20">
+    <div ref={rootRef} className="relative mx-auto mt-16 w-full max-w-[1100px] md:mt-20">
       <div className="absolute inset-x-[15%] -top-10 bottom-0 -z-10 rounded-[48px] bg-[radial-gradient(closest-side,rgb(0_114_228/0.22),transparent)] blur-2xl" aria-hidden="true" />
 
       <FloatCard className="left-0 top-10 w-[224px]" delay={1.1}>
@@ -391,8 +393,9 @@ const Connector = ({ color, reverse = false }: { color: string; reverse?: boolea
             className="absolute -top-[3px] h-[7px] w-[7px] rounded-full"
             style={{ background: color, boxShadow: `0 0 10px ${color}` }}
             initial={{ left: reverse ? "0%" : "100%", opacity: 0 }}
-            animate={{ left: reverse ? ["0%", "100%"] : ["100%", "0%"], opacity: [0, 1, 1, 0] }}
-            transition={{ duration: 2.2, repeat: Infinity, delay: n * 1.1, ease: "easeInOut" }}
+            whileInView={{ left: reverse ? ["0%", "100%"] : ["100%", "0%"], opacity: [0, 1, 1, 0] }}
+            viewport={{ once: true }}
+            transition={{ duration: 2.2, repeat: 1, delay: n * 1.1, ease: "easeInOut" }}
           />
         ))}
     </div>
@@ -437,13 +440,13 @@ const ProviderCard = ({ slug, index }: { slug: string; index: number }) => {
 };
 
 /** RevSplitPay in the middle, wired to each payment provider. */
-const ProvidersHub = () => {
+export const ProvidersHub = () => {
   const slugs = paymentProviderLogos().map((mark) => mark.name.toLowerCase());
   const [left, right] = slugs;
   const hub = (
     <Reveal className="flex flex-col items-center gap-3 text-center">
       <span className="relative flex h-20 w-20 items-center justify-center rounded-[22px] bg-white shadow-[0_18px_40px_-16px_rgb(0_72_160/0.55)] ring-1 ring-[rgb(0_114_228/0.18)]">
-        <span className="v2-pulse-ring absolute inset-0 rounded-[22px] bg-[rgb(0_114_228/0.15)]" aria-hidden="true" />
+        <span className="v2-pulse-ring absolute inset-0 rounded-[22px] bg-[rgb(0_114_228/0.15)] [animation-iteration-count:3]" aria-hidden="true" />
         <img src={logo} alt="" className="relative h-11 w-11 rounded-xl" />
       </span>
       <span className="max-w-[14ch] text-sm font-medium text-foreground">RevSplitPay splits every payment</span>

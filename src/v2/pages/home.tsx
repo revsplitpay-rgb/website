@@ -1,6 +1,8 @@
 import { APP_SIGNUP_URL } from "@/lib/links";
+import { cn } from "@/lib/utils";
 import { COMMISSION_FEE_LABEL, HOLD_DAYS } from "@/lib/pricing";
 import { ArrowRight, Check, X } from "lucide-react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import CtaBand from "../components/cta-band";
 import Faq from "../components/faq";
@@ -14,7 +16,7 @@ import PlanCards from "../components/plan-cards";
 import { BeforeAfter } from "../components/problem-visual";
 import { MoneyPath, TrustList } from "../components/trust-visual";
 import ProductBento from "../components/product-bento";
-import { ButtonLink, Container, Grad, Section, SectionHeading } from "../components/ui";
+import { ButtonLink, Container, Grad, Section, SectionHeading, buttonClass } from "../components/ui";
 import VideoShowcase from "../components/video-showcase";
 import { faqs, home, offerLine, priceLine, problemRows, steps } from "../content/copy";
 import { paymentProviderLogos } from "../content/logos";
@@ -107,9 +109,21 @@ const Problem = () => (
         support={home.problemSupport}
       />
       <BeforeAfter />
+      <ProblemCards />
+    </Container>
+  </Section>
+);
+
+const PHONE_CARDS = 3;
+
+/** Before/after cards. Phones show the first three until "Show all". */
+const ProblemCards = () => {
+  const [showAll, setShowAll] = useState(false);
+  return (
+    <>
       <ul className="mt-16 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {problemRows.slice(0, 6).map(([before, after], index) => (
-          <li key={before}>
+          <li key={before} className={cn(index >= PHONE_CARDS && !showAll && "hidden md:block")}>
             <Reveal delay={(index % 3) * 90} className="h-full">
               <div className="v2-card v2-card-hover flex h-full flex-col p-6">
                 <p className="flex items-start gap-2.5 text-sm text-muted-foreground">
@@ -136,9 +150,16 @@ const Problem = () => (
           </li>
         ))}
       </ul>
-    </Container>
-  </Section>
-);
+      {!showAll && (
+        <div className="mt-6 flex justify-center md:hidden">
+          <button type="button" onClick={() => setShowAll(true)} className={buttonClass("secondary")}>
+            Show all {Math.min(problemRows.length, 6)}
+          </button>
+        </div>
+      )}
+    </>
+  );
+};
 
 const HowItWorks = () => (
   <Section labelledBy="how-title">

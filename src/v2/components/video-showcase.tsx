@@ -95,17 +95,18 @@ const VideoShowcase = () => {
                 className="h-full w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-[1.03]"
               />
               <span className="absolute inset-0 bg-[linear-gradient(180deg,rgb(0_20_60/0.05)_30%,rgb(0_20_60/0.65)_100%)]" />
-              <span className="absolute bottom-5 left-5 right-5 flex items-center justify-between gap-4 text-white md:bottom-8 md:left-8 md:right-8">
+              <span className="absolute bottom-3 left-3 right-3 flex items-center justify-between gap-4 text-white sm:bottom-5 sm:left-5 sm:right-5 md:bottom-8 md:left-8 md:right-8">
                 <span className="flex items-center gap-4 md:gap-5">
                   <span className="relative flex shrink-0 items-center justify-center">
-                    <span className="v2-pulse-ring absolute h-14 w-14 rounded-full bg-white/40 md:h-20 md:w-20" />
-                    <span className="relative flex h-14 w-14 items-center justify-center rounded-full bg-white text-primary shadow-[0_20px_40px_-12px_rgb(0_30_80/0.6)] transition-transform duration-300 group-hover:scale-110 md:h-20 md:w-20">
-                      <Play className="ml-1 h-6 w-6 fill-current md:h-8 md:w-8" />
+                    <span className="v2-pulse-ring absolute h-11 w-11 rounded-full bg-white/40 [animation-iteration-count:3] sm:h-14 sm:w-14 md:h-20 md:w-20" />
+                    <span className="relative flex h-11 w-11 items-center justify-center rounded-full bg-white text-primary shadow-[0_20px_40px_-12px_rgb(0_30_80/0.6)] transition-transform duration-300 group-hover:scale-110 sm:h-14 sm:w-14 md:h-20 md:w-20">
+                      <Play className="ml-0.5 h-5 w-5 fill-current sm:h-6 sm:w-6 md:h-8 md:w-8" />
                     </span>
                   </span>
-                  <span>
+                  <span className="text-sm font-semibold sm:hidden">Watch · {VIDEO_LENGTH_LABEL}</span>
+                  <span className="hidden sm:block">
                     <span className="block text-sm text-white/75">Product overview</span>
-                    <span className="mt-0.5 block text-base font-semibold tracking-tight sm:text-lg md:text-2xl">How RevSplitPay pays your whole team</span>
+                    <span className="mt-0.5 block text-lg font-semibold tracking-tight md:text-2xl">How RevSplitPay pays your whole team</span>
                   </span>
                 </span>
                 <span className="hidden rounded-full bg-white/15 px-3 py-1 font-mono text-sm sm:block">{VIDEO_LENGTH_LABEL}</span>

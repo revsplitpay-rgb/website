@@ -4,9 +4,10 @@ import { motion, useReducedMotion } from "framer-motion";
 import { AlertTriangle, Check, FileText, Link2, RefreshCw } from "lucide-react";
 import type { ReactNode } from "react";
 import { productRows } from "../content/copy";
+import { invoiceExample } from "../content/examples";
 import { LeaderboardExample, PayoutExample } from "./examples";
 import { EASE, Reveal } from "./motion";
-import { ExampleLabel } from "./ui";
+import { ExampleLabel, StatusPill } from "./ui";
 
 const row = (id: string) => productRows.find((r) => r.id === id)!;
 
@@ -43,6 +44,7 @@ export const SplitVisual = () => {
           <li key={item.role} className="flex items-center gap-2.5 rounded-xl bg-white px-3 py-2 ring-1 ring-border">
             <span className={cn("h-2.5 w-2.5 rounded-full", item.className)} aria-hidden="true" />
             <span className="text-sm text-foreground">{item.role}</span>
+            <span className="v2-num ml-auto text-xs text-muted-foreground">{item.share}%</span>
           </li>
         ))}
       </ul>
@@ -52,8 +54,15 @@ export const SplitVisual = () => {
 
 const PAY_TYPES = ["One-time", "Weekly", "Monthly", "Quarterly", "Annual", "Instalments", "Custom plan"];
 
+const SCHEDULE = [
+  { label: "Payment 1", when: "Paid Oct 1", status: "Paid" as const },
+  { label: "Payment 2", when: "Due Nov 1", status: "Pending" as const },
+  { label: "Payment 3", when: "Due Dec 1", status: "Pending" as const },
+];
+
 export const PayTypesVisual = () => (
-  <div className="flex flex-wrap gap-2" aria-hidden="true">
+  <div aria-hidden="true">
+  <div className="flex flex-wrap gap-2">
     {PAY_TYPES.map((type, index) => (
       <span
         key={type}
@@ -67,6 +76,20 @@ export const PayTypesVisual = () => (
         {type}
       </span>
     ))}
+  </div>
+  <div className="mt-4 rounded-xl bg-white ring-1 ring-border">
+    <p className="border-b border-border px-3.5 py-2 text-xs font-medium text-muted-foreground">Monthly plan · 3 payments</p>
+    <ul className="divide-y divide-border">
+      {SCHEDULE.map((row) => (
+        <li key={row.label} className="flex items-center justify-between gap-3 px-3.5 py-2 text-sm">
+          <span className="text-foreground">
+            {row.label} <span className="whitespace-nowrap text-muted-foreground">· {row.when}</span>
+          </span>
+          <StatusPill status={row.status} />
+        </li>
+      ))}
+    </ul>
+  </div>
   </div>
 );
 
@@ -110,7 +133,12 @@ export const InvoiceVisual = () => (
         <p className="text-sm font-medium text-foreground">Invoice from Setter</p>
         <p className="text-xs text-muted-foreground">Extra work · agreed bonus</p>
       </div>
+      <span className="v2-num text-sm font-semibold text-foreground">{invoiceExample.amount}</span>
     </div>
+    <p className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-[rgb(245_165_36/0.12)] px-2.5 py-0.5 text-xs font-medium text-[rgb(146_92_0)]">
+      <span className="h-1.5 w-1.5 rounded-full bg-current" />
+      Awaiting approval
+    </p>
     <div className="mt-4 flex gap-2">
       <span className="flex-1 rounded-full bg-[linear-gradient(180deg,#1a86f0,#0063c7)] py-2 text-center text-xs font-medium text-white">Approve and pay</span>
       <span className="rounded-full px-3 py-2 text-xs font-medium text-muted-foreground ring-1 ring-border">Reject</span>
@@ -157,7 +185,7 @@ const Card = ({
         <h3 className="text-[1.25rem] font-semibold leading-tight tracking-tight text-foreground">{title}</h3>
         <p className="mt-2 text-[0.9375rem] leading-relaxed text-muted-foreground">{text}</p>
       </div>
-      <div className={cn("mt-6 flex flex-1 flex-col justify-end", wide && "lg:mt-0")}>{visual}</div>
+      <div className={cn("mt-6 flex flex-col", wide && "lg:mt-0")}>{visual}</div>
     </article>
   </Reveal>
 );

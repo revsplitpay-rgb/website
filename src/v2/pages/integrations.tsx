@@ -1,4 +1,4 @@
-import { INTEGRATIONS, findIntegration, type Integration } from "@/lib/integrations";
+import { INTEGRATIONS, findIntegration, type Integration, type IntegrationSlug } from "@/lib/integrations";
 import { APP_SIGNUP_URL } from "@/lib/links";
 import { cn } from "@/lib/utils";
 import { motion, useReducedMotion } from "framer-motion";
@@ -38,16 +38,39 @@ const IntegrationMark = ({ item, scale = 1 }: { item: Integration; scale?: numbe
   );
 };
 
+const BRAND: Record<IntegrationSlug, { card: string; panel: string; text: string }> = {
+  stripe: {
+    card: "bg-[linear-gradient(160deg,#f3f1ff_0%,#ffffff_65%)] hover:border-[rgb(99_91_255/0.4)]",
+    panel: "bg-[linear-gradient(160deg,#f3f1ff_0%,#ffffff_65%)]",
+    text: "text-[rgb(83_74_230)]",
+  },
+  whop: {
+    card: "bg-[linear-gradient(160deg,#fff3ee_0%,#ffffff_65%)] hover:border-[rgb(250_70_22/0.4)]",
+    panel: "bg-[linear-gradient(160deg,#fff3ee_0%,#ffffff_65%)]",
+    text: "text-[rgb(214_56_12)]",
+  },
+  slack: {
+    card: "bg-[linear-gradient(160deg,#f7f0f8_0%,#ffffff_65%)] hover:border-[rgb(74_21_75/0.3)]",
+    panel: "bg-[linear-gradient(160deg,#f7f0f8_0%,#ffffff_65%)]",
+    text: "text-[rgb(74_21_75)]",
+  },
+  webhooks: {
+    card: "bg-[linear-gradient(160deg,#eaf4ff_0%,#ffffff_65%)] hover:border-[rgb(0_114_228/0.35)]",
+    panel: "bg-[linear-gradient(160deg,#eaf4ff_0%,#ffffff_65%)]",
+    text: "text-[rgb(var(--v2-deep))]",
+  },
+};
+
 const IntegrationCard = ({ item, index }: { item: Integration; index: number }) => (
   <Reveal delay={index * 90} className="h-full">
-    <Link to={v2Path(`/integrations/${item.slug}`)} className="v2-card v2-card-hover group flex h-full flex-col p-7">
+    <Link to={v2Path(`/integrations/${item.slug}`)} className={cn("v2-card v2-card-hover group flex h-full flex-col p-7", BRAND[item.slug].card)}>
       <div className="flex h-12 items-center justify-between gap-4">
         <IntegrationMark item={item} />
         <span className="rounded-full bg-muted px-2.5 py-1 text-xs font-medium text-muted-foreground">{item.kind}</span>
       </div>
       <h3 className="sr-only">{item.name}</h3>
       <p className="mt-6 text-[0.9375rem] leading-relaxed text-muted-foreground">{item.summary}</p>
-      <span className="mt-auto inline-flex items-center gap-1.5 pt-6 text-sm font-medium text-[rgb(var(--v2-link))]">
+      <span className={cn("mt-auto inline-flex items-center gap-1.5 pt-6 text-sm font-semibold", BRAND[item.slug].text)}>
         How it works with {item.name}
         <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" aria-hidden="true" />
       </span>
@@ -132,7 +155,7 @@ export const IntegrationsIndex = () => (
 const ConnectionVisual = ({ item }: { item: Integration }) => {
   const reduced = useReducedMotion();
   return (
-    <div className="v2-card relative overflow-hidden p-8" aria-hidden="true">
+    <div className={cn("v2-card relative overflow-hidden p-8", BRAND[item.slug].panel)} aria-hidden="true">
       <div className="v2-grid-bg absolute inset-0 opacity-70" />
       <div className="relative flex items-center justify-between gap-4">
         <span className="flex h-24 w-24 shrink-0 items-center justify-center rounded-[24px] bg-white shadow-[0_16px_36px_-18px_rgb(0_72_160/0.55)] ring-1 ring-[rgb(0_114_228/0.18)]">
@@ -144,8 +167,10 @@ const ConnectionVisual = ({ item }: { item: Integration }) => {
               <motion.span
                 key={n}
                 className="absolute -top-[3px] h-[7px] w-[7px] rounded-full bg-primary"
-                animate={{ left: ["0%", "100%"], opacity: [0, 1, 0] }}
-                transition={{ duration: 2.4, repeat: Infinity, delay: n * 0.8, ease: "easeInOut" }}
+                initial={{ opacity: 0 }}
+                whileInView={{ left: ["0%", "100%"], opacity: [0, 1, 0] }}
+                viewport={{ once: true }}
+                transition={{ duration: 2.4, repeat: 1, delay: n * 0.8, ease: "easeInOut" }}
               />
             ))}
         </div>
@@ -154,7 +179,7 @@ const ConnectionVisual = ({ item }: { item: Integration }) => {
         </span>
       </div>
       <ul className="relative mt-8 grid gap-2.5">
-        {item.points.slice(0, 3).map((point) => (
+        {item.points.map((point) => (
           <li key={point} className="flex items-center gap-3 rounded-xl bg-white px-4 py-2.5 text-sm text-foreground ring-1 ring-border">
             <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[rgb(16_160_110/0.12)] text-[rgb(4_120_87)]">
               <Check className="h-3 w-3" />
@@ -200,41 +225,29 @@ export const IntegrationDetail = () => {
       </PageHero>
       <Section>
         <Container>
-          <div className="grid gap-6 lg:grid-cols-2">
+          {/* The hero card already lists what you get; this section is how to start. */}
+          <div className={cn("grid gap-6", item.needs && "lg:grid-cols-[1.2fr_1fr]")}>
             <Reveal className="h-full">
-              <Panel className="h-full">
-                <h2 className="text-xl font-semibold tracking-tight text-foreground">What you get</h2>
-                <ul className="mt-6 space-y-3.5 text-[0.9375rem] text-foreground">
-                  {item.points.map((point) => (
-                    <li key={point} className="flex gap-3">
-                      <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[rgb(0_114_228/0.1)] text-primary">
-                        <Check className="h-3 w-3" aria-hidden="true" />
-                      </span>
-                      {point}
-                    </li>
-                  ))}
-                </ul>
-              </Panel>
-            </Reveal>
-            <Reveal delay={100} className="h-full">
-              <Panel className="h-full">
+              <Panel className={cn("h-full", BRAND[item.slug].panel)}>
                 <h2 className="text-xl font-semibold tracking-tight text-foreground">How to set it up</h2>
                 <ol className="mt-6 space-y-4 text-[0.9375rem] text-foreground">
                   {item.setup.map((step, index) => (
                     <li key={step} className="flex gap-4">
-                      <span className="v2-num v2-gradient-text text-lg font-semibold leading-6">{String(index + 1).padStart(2, "0")}</span>
+                      <span className={cn("v2-num text-lg font-semibold leading-6", BRAND[item.slug].text)}>{String(index + 1).padStart(2, "0")}</span>
                       {step}
                     </li>
                   ))}
                 </ol>
-                {item.needs && (
-                  <p className="mt-7 rounded-2xl bg-[rgb(0_114_228/0.05)] p-4 text-sm text-muted-foreground ring-1 ring-[rgb(0_114_228/0.12)]">
-                    <span className="font-medium text-foreground">You'll need: </span>
-                    {item.needs}
-                  </p>
-                )}
               </Panel>
             </Reveal>
+            {item.needs && (
+              <Reveal delay={100} className="h-full">
+                <Panel className="h-full">
+                  <h2 className="text-xl font-semibold tracking-tight text-foreground">What you'll need</h2>
+                  <p className="mt-4 leading-relaxed text-muted-foreground">{item.needs}</p>
+                </Panel>
+              </Reveal>
+            )}
           </div>
           {item.slug === "webhooks" && <WebhookTools />}
         </Container>

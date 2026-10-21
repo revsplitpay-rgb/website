@@ -1,7 +1,9 @@
 import { APP_SIGNUP_URL } from "@/lib/links";
 import { EXTRA_MEMBER_USD, PLANS, PLAN_FEATURES, formatUsd, type PlanId } from "@/lib/pricing";
 import { cn } from "@/lib/utils";
+import { useInView } from "framer-motion";
 import { ArrowRight, Building, Check, Sparkles } from "lucide-react";
+import { useRef } from "react";
 import { enterpriseLine } from "../content/copy";
 import { v2Path } from "../lib/paths";
 import { Reveal } from "./motion";
@@ -17,8 +19,11 @@ const highlights = (id: PlanId) => {
   return prev ? [`Everything in ${previousName[id]}`, ...rows] : rows;
 };
 
-const PlanCards = ({ compact = false }: { compact?: boolean }) => (
-  <div>
+const PlanCards = ({ compact = false }: { compact?: boolean }) => {
+  const gridRef = useRef<HTMLDivElement>(null);
+  const inView = useInView(gridRef, { once: true, amount: 0.4 });
+  return (
+  <div ref={gridRef}>
     <div className="grid items-stretch gap-5 md:grid-cols-2 lg:grid-cols-3">
       {PLANS.map((plan, index) => {
         const featured = Boolean(plan.badge);
@@ -27,9 +32,8 @@ const PlanCards = ({ compact = false }: { compact?: boolean }) => (
             <article
               className={cn(
                 "flex h-full flex-col rounded-[24px] p-7 lg:p-8",
-                featured
-                  ? "v2-spin-border v2-spin-border-deep text-white lg:-my-4 lg:py-12"
-                  : "v2-card v2-card-hover",
+                featured ? "v2-spin-border v2-spin-border-deep text-white lg:-my-4 lg:py-12" : "v2-card v2-card-hover",
+                featured && inView && "v2-spin-run",
               )}
               aria-labelledby={`plan-${plan.id}`}
             >
@@ -104,6 +108,7 @@ const PlanCards = ({ compact = false }: { compact?: boolean }) => (
       </div>
     </Reveal>
   </div>
-);
+  );
+};
 
 export default PlanCards;

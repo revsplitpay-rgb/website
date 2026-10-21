@@ -33,8 +33,10 @@ export const MoneyPath = () => {
           {!reduced && (
             <motion.span
               className="absolute -left-[4px] h-2.5 w-2.5 rounded-full bg-primary"
-              animate={{ top: ["0%", "100%"], opacity: [0, 1, 0] }}
-              transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
+              initial={{ opacity: 0 }}
+              whileInView={{ top: ["0%", "100%"], opacity: [0, 1, 0] }}
+              viewport={{ once: true }}
+              transition={{ duration: 1.6, repeat: 2, ease: "easeInOut" }}
             />
           )}
         </div>

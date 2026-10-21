@@ -8,6 +8,8 @@ import { EASE } from "./motion";
 import { ExampleLabel, StatusPill } from "./ui";
 
 const FLAG_COL = { closer: 2, setter: 3, paid: 4 } as const;
+// Columns dropped on phones so the rest are readable (Sale, Setter).
+const PHONE_HIDDEN = new Set([1, 3]);
 
 /** The "before": a messy commission spreadsheet with open questions. */
 const SpreadsheetMock = () => {
@@ -25,15 +27,15 @@ const SpreadsheetMock = () => {
         <table className="w-full table-fixed text-left font-mono text-xs text-muted-foreground sm:text-[0.8125rem]">
           <colgroup>
             <col className="w-[31%]" />
-            <col className="w-[17%]" />
+            <col className="hidden w-[17%] sm:table-column" />
             <col className="w-[16%]" />
-            <col className="w-[16%]" />
+            <col className="hidden w-[16%] sm:table-column" />
             <col className="w-[20%]" />
           </colgroup>
           <thead className="bg-[rgb(246_248_250)]">
             <tr>
-              {spreadsheetExample.columns.map((col) => (
-                <th key={col} className="truncate border-b border-r border-border px-3 py-3 font-medium last:border-r-0">
+              {spreadsheetExample.columns.map((col, index) => (
+                <th key={col} className={cn("truncate border-b border-r border-border px-3 py-3 font-medium last:border-r-0", PHONE_HIDDEN.has(index) && "hidden sm:table-cell")}>
                   {col}
                 </th>
               ))}
@@ -50,6 +52,7 @@ const SpreadsheetMock = () => {
                       className={cn(
                         "truncate border-b border-r border-border px-3 py-4 last:border-r-0",
                         flagged && "bg-[rgb(255_236_236)] text-destructive",
+                        PHONE_HIDDEN.has(col) && "hidden sm:table-cell",
                         col === 0 && "text-foreground",
                       )}
                     >

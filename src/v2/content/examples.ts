@@ -35,3 +35,6 @@ export const goalExamples = {
   awardRule: "hit $50K → $500 bonus",
   boost: "hit $100K → +2%",
 };
+
+// Invoice card in the product bento.
+export const invoiceExample = { amount: "$750.00" };

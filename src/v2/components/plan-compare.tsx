@@ -184,10 +184,14 @@ const CompareCards = () => (
           <dl className="divide-y divide-border">
             {GROUPS.flatMap((group) => group.rows).map((row) => {
               const value = row.cell(plan);
+              const isMark = value === "yes" || value === "no";
               return (
-                <div key={row.label} className="flex items-center justify-between gap-4 px-5 py-3">
+                <div
+                  key={row.label}
+                  className={cn("flex gap-4 px-5 py-3", isMark ? "items-center justify-between" : "flex-col items-start gap-1")}
+                >
                   <dt className="text-sm text-foreground">{row.label}</dt>
-                  <dd className="shrink-0 text-right text-sm">
+                  <dd className={cn("text-sm", isMark ? "shrink-0 text-right" : "font-medium text-foreground")}>
                     {value === "yes" ? (
                       <Check className="h-4 w-4 text-primary" aria-label="Included" />
                     ) : value === "no" ? (
