@@ -372,6 +372,12 @@ const PROVIDER_STYLE: Record<string, { card: string; tick: string; link: string;
   },
 };
 
+// Short, scannable points for the homepage; full details live on each integration page.
+const PROVIDER_POINTS: Record<string, string[]> = {
+  stripe: ["Card payments on your checkout links", "Payouts to each rep's own Stripe account"],
+  whop: ["Sell and get paid through Whop", "Payouts to each rep's own Whop account"],
+};
+
 /** Animated connector between the hub and a provider card (desktop only). */
 const Connector = ({ color, reverse = false }: { color: string; reverse?: boolean }) => {
   const reduced = useReducedMotion();
@@ -397,21 +403,22 @@ const ProviderCard = ({ slug, index }: { slug: string; index: number }) => {
   const item = INTEGRATIONS.find((i) => i.slug === slug);
   const mark = INTEGRATION_LOGOS[slug as keyof typeof INTEGRATION_LOGOS];
   const style = PROVIDER_STYLE[slug];
-  if (!item || !mark || !style) return null;
+  const points = PROVIDER_POINTS[slug];
+  if (!item || !mark || !style || !points) return null;
   return (
     <Reveal delay={index * 120} className="h-full">
       <Link
         to={v2Path(`/integrations/${slug}`)}
         className={cn(
-          "group flex h-full flex-col rounded-[24px] p-7 text-left ring-1 shadow-[0_20px_44px_-28px_rgb(11_26_51/0.35)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_30px_60px_-30px_rgb(11_26_51/0.45)]",
+          "group flex h-full flex-col rounded-[24px] p-6 text-left ring-1 shadow-[0_20px_44px_-28px_rgb(11_26_51/0.35)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_30px_60px_-30px_rgb(11_26_51/0.45)]",
           style.card,
         )}
       >
-        <div className="flex h-10 items-center">
-          <img src={mark.src} alt={mark.name} style={{ height: Math.round(mark.height * 1.25) }} className="w-auto" />
+        <div className="flex h-11 items-center">
+          <img src={mark.src} alt={mark.name} style={{ height: Math.round(mark.height * 1.4) }} className="w-auto" />
         </div>
-        <ul className="mt-6 space-y-3 text-[0.9375rem] text-foreground">
-          {item.points.slice(0, 3).map((point) => (
+        <ul className="mt-5 space-y-2.5 text-[0.9375rem] text-foreground">
+          {points.map((point) => (
             <li key={point} className="flex gap-3">
               <span className={cn("mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full", style.tick)}>
                 <Check className="h-3 w-3" aria-hidden="true" />
@@ -420,7 +427,7 @@ const ProviderCard = ({ slug, index }: { slug: string; index: number }) => {
             </li>
           ))}
         </ul>
-        <span className={cn("mt-auto inline-flex items-center gap-1.5 pt-6 text-sm font-semibold", style.link)}>
+        <span className={cn("mt-auto inline-flex items-center gap-1.5 pt-5 text-sm font-semibold", style.link)}>
           How it works with {item.name}
           <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" aria-hidden="true" />
         </span>
@@ -452,7 +459,7 @@ const ProvidersHub = () => {
     );
   }
   return (
-    <div className="mx-auto grid max-w-[1100px] items-stretch gap-6 lg:grid-cols-[1fr_96px_auto_96px_1fr] lg:gap-0">
+    <div className="mx-auto grid max-w-[1000px] items-stretch gap-5 lg:grid-cols-[1fr_88px_auto_88px_1fr] lg:gap-0">
       <ProviderCard slug={left} index={0} />
       <Connector color={PROVIDER_STYLE[left].line} />
       <div className="order-first flex items-center justify-center lg:order-none">{hub}</div>
