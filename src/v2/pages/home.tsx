@@ -17,7 +17,8 @@ import ProductBento from "../components/product-bento";
 import { ButtonLink, Container, Grad, Section, SectionHeading } from "../components/ui";
 import VideoShowcase from "../components/video-showcase";
 import { faqs, home, offerLine, priceLine, problemRows, steps } from "../content/copy";
-import { providersBadge, railsLine } from "../content/providers";
+import { paymentProviderLogos } from "../content/logos";
+import { railsLine } from "../content/providers";
 import { v2Path } from "../lib/paths";
 
 const [heroLead, heroRest] = home.heroTitle.split(", ");
@@ -36,7 +37,13 @@ const Hero = () => (
             <span className="v2-pulse-ring absolute inline-flex h-full w-full rounded-full bg-[rgb(var(--v2-highlight))]" />
             <span className="relative inline-flex h-2 w-2 rounded-full bg-[rgb(var(--v2-highlight))]" />
           </span>
-          {providersBadge()}
+          <span className="font-medium">Payments on</span>
+          {paymentProviderLogos().map((mark, index) => (
+            <span key={mark.name} className="inline-flex items-center gap-2.5">
+              {index > 0 && <span className="text-muted-foreground">or</span>}
+              <img src={mark.src} alt={mark.name} style={{ height: Math.round(mark.height * 0.62) }} className="w-auto" />
+            </span>
+          ))}
           <span className="hidden h-1 w-1 rounded-full bg-[rgb(var(--input))] sm:block" aria-hidden="true" />
           <span className="hidden text-muted-foreground sm:inline">Money moves between your own accounts</span>
         </p>

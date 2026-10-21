@@ -2,10 +2,12 @@ import { HOLD_DAYS } from "@/lib/pricing";
 import { cn } from "@/lib/utils";
 import { motion, useReducedMotion } from "framer-motion";
 import { useEffect, useState, type ReactNode } from "react";
+import { Link } from "react-router-dom";
 import { Send, ShieldCheck, Trophy } from "lucide-react";
 import { formatCents, split } from "../lib/split";
 import { INTEGRATION_LOGOS, WEBHOOK_TOOL_LOGOS, paymentProviderLogos } from "../content/logos";
 import { providerPhrase } from "../content/providers";
+import { v2Path } from "../lib/paths";
 import { EASE, Reveal, RollingNumber } from "./motion";
 import { ExampleLabel, StatusPill } from "./ui";
 
@@ -352,32 +354,64 @@ export const HeroStrokes = () => (
   </>
 );
 
+const PROVIDER_CAPTIONS: Record<string, string> = {
+  Stripe: "Card payments, and payouts to each rep's own account",
+  Whop: "Payments and payouts for businesses selling on Whop",
+};
+
 /**
- * Partner logos under the hero: where payments run, and the tools events
- * reach (Slack natively, the rest through custom webhooks). Greyscale until
- * hovered; scrolls slowly and pauses on hover.
+ * Under the hero: the payment providers first, large and in colour, then the
+ * tools events reach (Slack natively, the rest through custom webhooks) as a
+ * slow greyscale marquee that colours on hover.
  */
 export const LogoStrip = () => {
-  const marks = [...paymentProviderLogos(), INTEGRATION_LOGOS.slack!, ...WEBHOOK_TOOL_LOGOS];
+  const providers = paymentProviderLogos();
+  const tools = [INTEGRATION_LOGOS.slack!, ...WEBHOOK_TOOL_LOGOS];
   return (
     <div className="relative mt-16 md:mt-20">
-      <Reveal>
-        <p className="px-4 text-center text-sm text-muted-foreground">
-          Payments run on <span className="font-medium text-foreground">{providerPhrase()}</span>. Events reach Slack, and
-          your other tools through webhooks.
-        </p>
-      </Reveal>
-      <div className="v2-fade-x mt-8 overflow-hidden" aria-label="Integrations">
-        <ul className="v2-marquee flex w-max items-center gap-6 py-2 [animation-duration:40s]">
-          {[...marks, ...marks, ...marks, ...marks].map((mark, index) => (
+      <div className="mx-auto max-w-[1200px] px-4 sm:px-6">
+        <Reveal>
+          <div className="text-center">
+            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[rgb(var(--v2-deep))]">Payment providers</p>
+            <p className="mt-2 text-lg font-semibold tracking-tight text-foreground md:text-xl">
+              Take payments and pay your team on {providerPhrase()}.
+            </p>
+          </div>
+        </Reveal>
+        <ul className={cn("mx-auto mt-6 grid gap-4", providers.length > 1 ? "max-w-[760px] sm:grid-cols-2" : "max-w-[380px]")}>
+          {providers.map((mark, index) => (
+            <li key={mark.name}>
+              <Reveal delay={index * 100}>
+                <Link
+                  to={v2Path(`/integrations/${mark.name.toLowerCase()}`)}
+                  className="v2-card v2-card-hover group flex h-32 flex-col items-center justify-center gap-3 px-6 text-center"
+                >
+                  <img src={mark.src} alt={mark.name} style={{ height: Math.round(mark.height * 1.45) }} className="w-auto" />
+                  <span className="text-sm text-muted-foreground transition-colors group-hover:text-foreground">
+                    {PROVIDER_CAPTIONS[mark.name]}
+                  </span>
+                </Link>
+              </Reveal>
+            </li>
+          ))}
+        </ul>
+        <Reveal>
+          <p className="mt-12 text-center text-sm text-muted-foreground">
+            Events reach the tools your team already uses: Slack, or anything through webhooks.
+          </p>
+        </Reveal>
+      </div>
+      <div className="v2-fade-x mt-6 overflow-hidden" aria-label="Connected tools">
+        <ul className="v2-marquee flex w-max items-center gap-6 py-2 [animation-duration:36s]">
+          {[...tools, ...tools, ...tools, ...tools, ...tools, ...tools].map((mark, index) => (
             <li
               key={`${mark.name}-${index}`}
-              aria-hidden={index >= marks.length ? true : undefined}
+              aria-hidden={index >= tools.length ? true : undefined}
               className="group flex h-20 w-[200px] shrink-0 items-center justify-center rounded-2xl bg-white/70 ring-1 ring-[rgb(0_114_228/0.08)] transition-all duration-300 hover:bg-white hover:shadow-[0_16px_32px_-18px_rgb(0_72_160/0.45)]"
             >
               <img
                 src={mark.src}
-                alt={index < marks.length ? mark.name : ""}
+                alt={index < tools.length ? mark.name : ""}
                 style={{ height: mark.height }}
                 className="w-auto opacity-60 grayscale transition-all duration-300 group-hover:opacity-100 group-hover:grayscale-0"
               />
