@@ -16,7 +16,7 @@ const NotFound = () => {
   return (
     <>
       <PageMeta title="Page not found | RevSplitPay" description="This page moved or never existed." path={pathname} noindex />
-      <Section tone="sky" className="-mt-16 pt-36 md:pt-44">
+      <Section tone="sky" className="-mt-16 pt-36 md:pt-44 lg:pt-44">
         <div className="v2-grid-bg absolute inset-0" aria-hidden="true" />
         <Container className="relative max-w-[760px] text-center">
           <p className="v2-num v2-gradient-text text-[6rem] font-semibold leading-none tracking-tight md:text-[8rem]">404</p>

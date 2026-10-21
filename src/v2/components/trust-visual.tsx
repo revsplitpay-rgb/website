@@ -77,11 +77,11 @@ export const MoneyPath = () => {
 const ICONS = [ShieldCheck, Lock, Eye, Activity, KeyRound];
 
 export const TrustList = () => (
-  <ul className="grid gap-x-10 gap-y-8 sm:grid-cols-2 lg:grid-cols-3">
+  <ul className="grid gap-x-10 gap-y-8 sm:grid-cols-2 lg:grid-cols-6">
     {trustPoints.map((point, index) => {
       const Icon = ICONS[index % ICONS.length];
       return (
-        <li key={point.title}>
+        <li key={point.title} className={index < 3 ? "lg:col-span-2" : "lg:col-span-3"}>
           <Reveal delay={(index % 2) * 80} className="flex gap-4">
             <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[rgb(0_114_228/0.08)] text-primary">
               <Icon className="h-4 w-4" aria-hidden="true" />

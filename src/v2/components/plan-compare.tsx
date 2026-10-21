@@ -42,8 +42,15 @@ const GROUPS: { title: string; rows: Row[] }[] = [
     rows: [
       { label: "Private Slack channel with our team", cell: (p) => yes(has("Private Slack channel with our team", p.id)) },
       { label: "One-time personal setup call", cell: (p) => yes(has("Personal setup call (one-time)", p.id)) },
-      { label: "Priority support", hint: "Replies within 4 business hours", cell: (p) => yes(has("Priority support", p.id)) },
-      { label: "Support replies", cell: (p) => p.supportReplies },
+      {
+        label: "Support response time",
+        cell: (p) =>
+          has("Priority support", p.id) ? (
+            <span className="font-medium text-[rgb(var(--v2-deep))]">Priority · {p.supportReplies.toLowerCase()}</span>
+          ) : (
+            p.supportReplies
+          ),
+      },
     ],
   },
   {
@@ -64,16 +71,11 @@ const GROUPS: { title: string; rows: Row[] }[] = [
 
 const EVERY_PLAN = PLAN_FEATURES.filter((row) => PLANS.every((plan) => row.plans[plan.id])).map((row) => row.label);
 
-const Mark = ({ value, featured }: { value: Cell; featured: boolean }) => {
+const Mark = ({ value }: { value: Cell }) => {
   if (value === "yes")
     return (
       <span
-        className={cn(
-          "mx-auto flex h-7 w-7 items-center justify-center rounded-full",
-          featured
-            ? "bg-[linear-gradient(140deg,#3fc1ff,#0072e4)] text-white shadow-[0_6px_14px_-6px_rgb(0_114_228/0.7)]"
-            : "bg-[rgb(0_114_228/0.1)] text-primary",
-        )}
+        className="mx-auto flex h-7 w-7 items-center justify-center rounded-full bg-[linear-gradient(140deg,#3fc1ff,#0072e4)] text-white shadow-[0_6px_14px_-6px_rgb(0_114_228/0.7)]"
       >
         <Check className="h-4 w-4" aria-label="Included" />
       </span>
@@ -155,7 +157,7 @@ const CompareTable = () => (
               </th>
               {PLANS.map((plan) => (
                 <td key={plan.id} className={cn("px-5 py-4 text-center align-middle", plan.badge && featuredCol)}>
-                  <Mark value={row.cell(plan)} featured={Boolean(plan.badge)} />
+                  <Mark value={row.cell(plan)} />
                 </td>
               ))}
             </tr>

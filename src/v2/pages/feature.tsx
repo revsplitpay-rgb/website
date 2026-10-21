@@ -110,8 +110,8 @@ const Feature = () => {
 
       <section aria-label="Features" className="bg-background">
         <Container className="grid gap-10 py-16 md:py-24 lg:grid-cols-[240px_1fr] lg:gap-14">
-          <nav aria-label="On this page" className="hidden lg:block">
-            <ul className="v2-card sticky top-24 space-y-0.5 p-2 text-[0.9375rem]">
+          <nav aria-label="On this page" className="hidden lg:sticky lg:top-24 lg:block lg:self-start">
+            <ul className="v2-card space-y-0.5 p-2 text-[0.9375rem]">
               {featureGroups.map((group) => {
                 const Icon = GROUP_ICONS[group.id] ?? Check;
                 const isActive = active === group.id;

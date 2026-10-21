@@ -40,7 +40,7 @@ export const Section = ({
   <section
     id={id}
     aria-labelledby={labelledBy}
-    className={cn("relative scroll-mt-20 overflow-hidden py-12 md:py-16 lg:py-20", toneClass[surface ? "tint" : tone], className)}
+    className={cn("relative scroll-mt-20 overflow-clip py-12 md:py-16 lg:py-20", toneClass[surface ? "tint" : tone], className)}
   >
     {children}
   </section>

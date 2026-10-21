@@ -171,7 +171,7 @@ html[data-v2-theme] .v2-stat {
 
 /* Brand gradient text: deep blue to sky. */
 html[data-v2-theme] .v2-gradient-text {
-  background: linear-gradient(100deg, #003d82 0%, #0058b8 22%, #0072e4 55%, #3fc1ff 100%);
+  background: linear-gradient(100deg, #003d82 0%, #0058b8 25%, #0072e4 60%, #1a8fd6 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;

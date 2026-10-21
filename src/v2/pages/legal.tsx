@@ -1,4 +1,4 @@
-import { LEGAL_DOCS, LegalBody, legalToc, legalUpdated, type LegalSlug } from "@/lib/legal";
+import { LEGAL_DOCS, LegalBody, legalToc, type LegalSlug } from "@/lib/legal";
 import { useEffect, useState } from "react";
 import { Reveal } from "../components/motion";
 import PageHero from "../components/page-hero";
@@ -36,7 +36,6 @@ const useActiveSection = (ids: string[]) => {
 const LegalPage = ({ slug }: { slug: LegalSlug }) => {
   const doc = LEGAL_DOCS[slug];
   const toc = legalToc(doc);
-  const updated = legalUpdated(doc);
   const active = useActiveSection(toc.map((item) => item.id));
   const path = `/legal/${slug}`;
 
@@ -48,11 +47,11 @@ const LegalPage = ({ slug }: { slug: LegalSlug }) => {
         path={path}
         jsonLd={[breadcrumbLd([{ name: doc.title, path }])]}
       />
-      <PageHero eyebrow="Legal" title={doc.title} support={updated ? `Last updated ${updated}` : undefined} />
+      <PageHero eyebrow="Legal" title={doc.title} support={DESCRIPTIONS[slug]} />
       <Section>
         <Container className="grid gap-10 lg:grid-cols-[240px_minmax(0,1fr)] lg:gap-16">
-          <nav aria-label="Sections" className="hidden lg:block">
-            <ol className="v2-card sticky top-24 max-h-[calc(100vh-8rem)] space-y-0.5 overflow-y-auto p-2 text-sm">
+          <nav aria-label="Sections" className="hidden lg:sticky lg:top-24 lg:block lg:self-start">
+            <ol className="v2-card max-h-[calc(100vh-8rem)] space-y-0.5 overflow-y-auto p-2 text-sm">
               {toc.map((item) => (
                 <li key={item.id}>
                   <a
@@ -72,7 +71,7 @@ const LegalPage = ({ slug }: { slug: LegalSlug }) => {
           </nav>
           <Reveal blur={false} y={12}>
             <article className="v2-card px-6 py-8 sm:px-10 sm:py-10">
-              <LegalBody doc={doc} className="v2-prose v2-legal max-w-[72ch]" />
+              <LegalBody doc={doc} className="v2-prose v2-legal max-w-[66ch]" />
             </article>
           </Reveal>
         </Container>

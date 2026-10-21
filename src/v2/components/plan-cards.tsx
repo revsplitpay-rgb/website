@@ -49,6 +49,11 @@ const PlanCards = ({ compact = false }: { compact?: boolean }) => (
                 <span className={cn("v2-stat", featured ? "text-white" : "text-foreground")}>{formatUsd(plan.priceUsd)}</span>
                 <span className={featured ? "text-white/85" : "text-muted-foreground"}>/month</span>
               </p>
+              {!compact && (
+                <ButtonLink href={APP_SIGNUP_URL} variant={featured ? "white" : "secondary"} className="mt-6 w-full">
+                  Get started <ArrowRight aria-hidden="true" />
+                </ButtonLink>
+              )}
               <ul className={cn("mt-6 space-y-2.5 border-t pt-6 text-[0.9375rem]", featured ? "border-white/20 text-white" : "border-border text-foreground")}>
                 <li>
                   Up to <span className="font-semibold">{plan.salesLimitLabel}</span> in sales a month
@@ -70,11 +75,13 @@ const PlanCards = ({ compact = false }: { compact?: boolean }) => (
                   ))}
                 </ul>
               )}
-              <div className="mt-auto pt-8">
-                <ButtonLink href={APP_SIGNUP_URL} variant={featured ? "white" : "secondary"} className="w-full">
-                  Get started <ArrowRight aria-hidden="true" />
-                </ButtonLink>
-              </div>
+              {compact && (
+                <div className="mt-auto pt-8">
+                  <ButtonLink href={APP_SIGNUP_URL} variant={featured ? "white" : "secondary"} className="w-full">
+                    Get started <ArrowRight aria-hidden="true" />
+                  </ButtonLink>
+                </div>
+              )}
             </article>
           </Reveal>
         );

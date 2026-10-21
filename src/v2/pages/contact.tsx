@@ -1,6 +1,6 @@
 import { BOOKING_URL, CONTACT_EMAIL } from "@/lib/links";
 import { ENTERPRISE_THRESHOLD_LABEL, PLANS } from "@/lib/pricing";
-import { Mail } from "lucide-react";
+import { ChevronDown, Mail } from "lucide-react";
 import { useId, useState, type FormEvent } from "react";
 import CopyButton from "../components/copy-button";
 import PageMeta from "../components/page-meta";
@@ -56,7 +56,7 @@ const Contact = () => {
         path="/contact"
         jsonLd={[breadcrumbLd([{ name: "Contact", path: "/contact" }])]}
       />
-      <Section tone="sky" className="-mt-16 pt-32 md:pt-40">
+      <Section tone="sky" className="-mt-16 pt-36 md:pt-44 lg:pt-44">
         <div className="v2-grid-bg absolute inset-0" aria-hidden="true" />
         <div className="v2-blob -left-24 top-10 h-72 w-72 bg-[rgb(63_193_255/0.4)]" aria-hidden="true" />
         <Container className="relative grid items-start gap-12 lg:grid-cols-[1fr_minmax(0,560px)] lg:gap-16">
@@ -119,23 +119,29 @@ const Contact = () => {
                   <label htmlFor={`${uid}-team`} className="text-sm font-medium text-foreground">
                     Team size <span className="font-normal text-muted-foreground">(optional)</span>
                   </label>
-                  <select id={`${uid}-team`} name="team" className={fieldClass} defaultValue="">
+                  <span className="relative block">
+                    <select id={`${uid}-team`} name="team" className={`${fieldClass} appearance-none pr-10`} defaultValue="">
                     <option value="">Choose one</option>
                     {TEAM_SIZES.map((size) => (
                       <option key={size}>{size}</option>
                     ))}
                   </select>
+                    <ChevronDown className="pointer-events-none absolute right-3.5 top-1/2 mt-1 h-4 w-4 -translate-y-1/2 text-muted-foreground" aria-hidden="true" />
+                  </span>
                 </div>
                 <div>
                   <label htmlFor={`${uid}-sales`} className="text-sm font-medium text-foreground">
                     Monthly sales <span className="font-normal text-muted-foreground">(optional)</span>
                   </label>
-                  <select id={`${uid}-sales`} name="sales" className={fieldClass} defaultValue="">
+                  <span className="relative block">
+                    <select id={`${uid}-sales`} name="sales" className={`${fieldClass} appearance-none pr-10`} defaultValue="">
                     <option value="">Choose one</option>
                     {SALES_BANDS.map((band) => (
                       <option key={band}>{band}</option>
                     ))}
                   </select>
+                    <ChevronDown className="pointer-events-none absolute right-3.5 top-1/2 mt-1 h-4 w-4 -translate-y-1/2 text-muted-foreground" aria-hidden="true" />
+                  </span>
                 </div>
                 <div className="sm:col-span-2">
                   <label htmlFor={`${uid}-message`} className="text-sm font-medium text-foreground">
