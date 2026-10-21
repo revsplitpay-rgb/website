@@ -20,9 +20,9 @@ const innerLinks = [
 ];
 
 const utilityLinks = [
-  { title: "Terms and conditions", href: "/legal/terms-&-condition" },
-  { title: "Privacy policy", href: "/legal/privacy-policy" },
-  { title: "Cookie policy", href: "/legal/cookie-policy" },
+  { title: "Terms and conditions", href: "/legal/terms" },
+  { title: "Privacy policy", href: "/legal/privacy" },
+  { title: "Cookie policy", href: "/legal/cookies" },
 ];
 
 const socialLinks = [

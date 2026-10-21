@@ -556,3 +556,47 @@ html[data-v2-theme] .v2-editable:focus {
     scroll-behavior: auto !important;
   }
 }
+
+/* Legal documents: section rhythm, nested lists and tables. */
+html[data-v2-theme] .v2-legal h2 {
+  scroll-margin-top: 6rem;
+  padding-top: 0.25rem;
+}
+html[data-v2-theme] .v2-legal h3 {
+  scroll-margin-top: 6rem;
+}
+html[data-v2-theme] .v2-legal li > ul {
+  margin-top: 0.5rem;
+  list-style: circle;
+}
+html[data-v2-theme] .v2-legal li > p {
+  margin-top: 0.5rem;
+}
+html[data-v2-theme] .v2-legal .legal-table {
+  overflow-x: auto;
+  border: 1px solid rgb(var(--border));
+  border-radius: 14px;
+}
+html[data-v2-theme] .v2-legal table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9375rem;
+  line-height: 1.5rem;
+}
+html[data-v2-theme] .v2-legal th {
+  background: rgb(244 248 255);
+  text-align: left;
+  font-weight: 600;
+}
+html[data-v2-theme] .v2-legal th,
+html[data-v2-theme] .v2-legal td {
+  padding: 0.75rem 1rem;
+  vertical-align: top;
+  border-bottom: 1px solid rgb(var(--border));
+}
+html[data-v2-theme] .v2-legal tr:last-child td {
+  border-bottom: 0;
+}
+html[data-v2-theme] .v2-legal hr {
+  margin: 2rem 0;
+}

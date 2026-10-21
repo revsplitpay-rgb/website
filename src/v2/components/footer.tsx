@@ -24,9 +24,9 @@ const columns = [
   {
     title: "Legal",
     links: [
-      { label: "Terms and conditions", to: "/legal/terms-&-condition" },
-      { label: "Privacy policy", to: "/legal/privacy-policy" },
-      { label: "Cookie policy", to: "/legal/cookie-policy" },
+      { label: "Terms and conditions", to: v2Path("/legal/terms") },
+      { label: "Privacy policy", to: v2Path("/legal/privacy") },
+      { label: "Cookie policy", to: v2Path("/legal/cookies") },
     ],
   },
 ];

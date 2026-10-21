@@ -20,4 +20,7 @@ export const STATIC_ROUTES: SeoRoute[] = [
   { path: "/about", changefreq: "yearly", priority: 0.5 },
   { path: "/contact", changefreq: "yearly", priority: 0.5 },
   { path: "/blog", changefreq: "weekly", priority: 0.6 },
+  { path: "/legal/terms", changefreq: "yearly", priority: 0.3 },
+  { path: "/legal/privacy", changefreq: "yearly", priority: 0.3 },
+  { path: "/legal/cookies", changefreq: "yearly", priority: 0.3 },
 ];

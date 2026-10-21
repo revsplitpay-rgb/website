@@ -13,9 +13,7 @@ import Feature from "./pages/feature";
 import Home from "./pages/home";
 import Integration from "./pages/integration";
 import IntegrationDetailsPage from "./pages/integration/[slug]";
-import CookiePolicyPage from "./pages/legal/cookie-policy";
-import PrivacyPolicyPage from "./pages/legal/privacy-&-policy";
-import TermsAndConditionPage from "./pages/legal/terms-&-condition";
+import LegalPage from "./pages/legal/legal-page";
 import LoginPage from "./pages/login";
 import NotFound from "./pages/not-found";
 import Pricing from "./pages/pricing";
@@ -52,12 +50,13 @@ const AppTree = () => (
         path="/signup"
         element={<ExternalRedirect to={APP_SIGNUP_URL} />}
       />
-      <Route
-        path="/legal/terms-&-condition"
-        element={<TermsAndConditionPage />}
-      />
-      <Route path="/legal/privacy-policy" element={<PrivacyPolicyPage />} />
-      <Route path="/legal/cookie-policy" element={<CookiePolicyPage />} />
+      <Route path="/legal/terms" element={<LegalPage slug="terms" />} />
+      <Route path="/legal/privacy" element={<LegalPage slug="privacy" />} />
+      <Route path="/legal/cookies" element={<LegalPage slug="cookies" />} />
+      {/* Old legal URLs (Vercel also 301s these) */}
+      <Route path="/legal/terms-&-condition" element={<Navigate to="/legal/terms" replace />} />
+      <Route path="/legal/privacy-policy" element={<Navigate to="/legal/privacy" replace />} />
+      <Route path="/legal/cookie-policy" element={<Navigate to="/legal/cookies" replace />} />
       <Route path="/v2/*" element={<V2Boundary />} />
       <Route path="*" element={<NotFound />} />
     </Routes>

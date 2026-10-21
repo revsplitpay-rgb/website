@@ -16,6 +16,9 @@ const SKIP_DIRS = new Set(["node_modules", "dist", ".git", ".gstack"]);
 const isV2 = (rel) => rel.startsWith("src/v2/") || rel.startsWith("public/v2/");
 const isLive = (rel) => (rel.startsWith("src/") && !rel.startsWith("src/v2/")) || rel === "index.html";
 const isTest = (rel) => /\.test\.(ts|tsx|mjs)$/.test(rel);
+// Owner-supplied legal documents are kept verbatim; src/lib/legal.test.ts keeps
+// their fees and limits in step with src/lib/pricing.ts instead.
+const isLegalText = (rel) => rel.startsWith("src/content/legal/");
 
 // Strip the parts of a line that legitimately hold numbers: Tailwind arbitrary
 // values like w-[50%] and SVG geometry attributes like x="50%".
@@ -44,7 +47,7 @@ export const RULES = [
   {
     id: "stale-fee-copy",
     re: /no platform fee|0% platform fee|3% fee|payment requests are 3%/i,
-    scope: () => true,
+    scope: (rel) => !isLegalText(rel),
     fix: "use COMMISSION_FEE_LABEL / INVOICE_FEE_LABEL from src/lib/pricing.ts",
   },
   {
@@ -54,7 +57,7 @@ export const RULES = [
     allow: ["src/app-tree.tsx"], // the route table (redirects for old URLs)
     fix: "link to APP_SIGNUP_URL from src/lib/links.ts",
   },
-  { id: "app-url", re: /app\.revsplitpay\.com/, scope: (rel) => rel.startsWith("src/"), allow: ["src/lib/links.ts"], fix: "import APP_URL / APP_SIGNUP_URL from src/lib/links.ts" },
+  { id: "app-url", re: /app\.revsplitpay\.com/, scope: (rel) => rel.startsWith("src/") && !isLegalText(rel), allow: ["src/lib/links.ts"], fix: "import APP_URL / APP_SIGNUP_URL from src/lib/links.ts" },
   { id: "google-fonts", re: /fonts\.(googleapis|gstatic)\.com/, scope: () => true, fix: "self-host fonts (GDPR)" },
   { id: "offer-code", re: /WELCOME50/, scope: (rel) => rel.startsWith("src/") && !isTest(rel), allow: ["src/lib/pricing.ts"], fix: "render the code from WELCOME_OFFER in src/lib/pricing.ts" },
 

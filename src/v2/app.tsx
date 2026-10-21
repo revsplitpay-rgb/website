@@ -8,6 +8,7 @@ import { BlogArticle, BlogIndex } from "./pages/blog";
 import Contact from "./pages/contact";
 import Feature from "./pages/feature";
 import Home from "./pages/home";
+import LegalPage from "./pages/legal";
 import { IntegrationDetail, IntegrationsIndex } from "./pages/integrations";
 import NotFound from "./pages/not-found";
 import Pricing from "./pages/pricing";
@@ -59,6 +60,9 @@ const V2App = () => (
         <Route path="contact" element={<Contact />} />
         <Route path="blog" element={<BlogIndex />} />
         <Route path="blog/:slug" element={<BlogArticle />} />
+        <Route path="legal/terms" element={<LegalPage slug="terms" />} />
+        <Route path="legal/privacy" element={<LegalPage slug="privacy" />} />
+        <Route path="legal/cookies" element={<LegalPage slug="cookies" />} />
         <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>

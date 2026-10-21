@@ -50,8 +50,8 @@ const innerPages = [
   { name: "Whop", href: "/integration/whop" },
   { name: "Slack", href: "/integration/slack" },
   { name: "Webhooks", href: "/integration/webhooks" },
-  { name: "Terms and conditions", href: "/legal/terms-&-condition" },
-  { name: "Privacy policy", href: "/legal/privacy-policy" }
+  { name: "Terms and conditions", href: "/legal/terms" },
+  { name: "Privacy policy", href: "/legal/privacy" }
 ]
 
 const Navbar = () => {
