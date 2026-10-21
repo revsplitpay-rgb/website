@@ -1,8 +1,9 @@
 import { lazy, Suspense, useEffect, useLayoutEffect } from "react";
 
-// Eager, tiny entry for /v2/*. It marks <html> as the v2 light theme before the
-// lazy v2 chunk paints, and removes the mark when the visitor leaves /v2 so the
-// live dark site is untouched. index.html does the same on a hard load.
+// Eager, tiny entry for the marketing site. It marks <html> as the light theme
+// before the lazy chunk paints, and removes the mark when the visitor moves to
+// the blog admin tools (login, dashboard), which keep their own dark style.
+// index.html does the same on a hard load.
 const V2App = lazy(() => import("./app"));
 
 export function setV2Theme(on: boolean) {

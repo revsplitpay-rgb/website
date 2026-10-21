@@ -11,22 +11,16 @@
     { "source": "/pricing/professional", "destination": "/pricing", "permanent": true },
     { "source": "/legal/terms-&-condition", "destination": "/legal/terms", "permanent": true },
     { "source": "/legal/privacy-policy", "destination": "/legal/privacy", "permanent": true },
-    { "source": "/legal/cookie-policy", "destination": "/legal/cookies", "permanent": true }
-  ],
-  "headers": [
-    {
-      "source": "/v2/(.*)",
-      "headers": [{ "key": "X-Robots-Tag", "value": "noindex, nofollow" }]
-    },
-    {
-      "source": "/v2",
-      "headers": [{ "key": "X-Robots-Tag", "value": "noindex, nofollow" }]
-    }
+    { "source": "/legal/cookie-policy", "destination": "/legal/cookies", "permanent": true },
+    { "source": "/feature", "destination": "/features", "permanent": true },
+    { "source": "/integration", "destination": "/integrations", "permanent": true },
+    { "source": "/integration/:slug", "destination": "/integrations/:slug", "permanent": true },
+    { "source": "/v2", "destination": "/", "permanent": true },
+    { "source": "/v2/:path*", "destination": "/:path*", "permanent": true }
   ],
   "rewrites": [
-    {
-      "source": "/(.*)",
-      "destination": "/index.html"
-    }
+    { "source": "/login", "destination": "/spa.html" },
+    { "source": "/dashboard/:path*", "destination": "/spa.html" },
+    { "source": "/blog/:slug", "destination": "/spa.html" }
   ]
 }

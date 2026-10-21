@@ -1,7 +1,7 @@
 import { CONTACT_EMAIL, SITE_URL } from "@/lib/links";
 import { V2_BASE } from "../lib/paths";
 
-/** v2 is a noindex preview until it replaces the live site (V2_BASE becomes ""). */
+/** True only if the site is served under a preview prefix again (pages go noindex). */
 export const IS_PREVIEW = V2_BASE !== "";
 
 /** Final public URL for a site path ("/" gives the bare domain with a slash). */
@@ -21,7 +21,6 @@ export const ORGANIZATION = {
   logo: LOGO_URL,
   email: CONTACT_EMAIL,
   country: "IE",
-  // TODO(owner): legal company name, registered address and CRO number.
   // TODO(owner): official profile URLs (LinkedIn, X, YouTube...) for sameAs.
   sameAs: [] as string[],
 };

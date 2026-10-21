@@ -1,5 +1,7 @@
 import { Component, type ErrorInfo, type ReactNode } from "react";
 import { Navigate, Route, Routes, useParams } from "react-router-dom";
+import ExternalRedirect from "@/components/external-redirect";
+import { APP_SIGNUP_URL } from "@/lib/links";
 import { buttonClass } from "./components/ui";
 import V2Layout from "./layout";
 import { v2Path } from "./lib/paths";
@@ -44,7 +46,16 @@ const LegacyIntegrationRedirect = () => {
   return <Navigate to={v2Path(rest ? `/integrations/${rest}` : "/integrations")} replace />;
 };
 
-/** Routes are relative to /v2 (mounted at /v2/* in src/App.tsx). */
+/** Links shared while the redesign was previewed at /v2 land on the real page. */
+const PreviewRedirect = () => {
+  const rest = useParams()["*"];
+  return <Navigate to={rest ? `/${rest}` : "/"} replace />;
+};
+
+/**
+ * The marketing site's routes (mounted at /* in src/app-tree.tsx). Old URLs
+ * redirect here as well as in vercel.json, so client-side links also land.
+ */
 const V2App = () => (
   <V2ErrorBoundary>
     <Routes>
@@ -63,6 +74,15 @@ const V2App = () => (
         <Route path="legal/terms" element={<LegalPage slug="terms" />} />
         <Route path="legal/privacy" element={<LegalPage slug="privacy" />} />
         <Route path="legal/cookies" element={<LegalPage slug="cookies" />} />
+        {/* Old URLs from the previous site */}
+        <Route path="legal/terms-&-condition" element={<Navigate to={v2Path("/legal/terms")} replace />} />
+        <Route path="legal/privacy-policy" element={<Navigate to={v2Path("/legal/privacy")} replace />} />
+        <Route path="legal/cookie-policy" element={<Navigate to={v2Path("/legal/cookies")} replace />} />
+        <Route path="pricing/starter" element={<Navigate to={v2Path("/pricing")} replace />} />
+        <Route path="pricing/professional" element={<Navigate to={v2Path("/pricing")} replace />} />
+        <Route path="early-access" element={<Navigate to={v2Path("/")} replace />} />
+        <Route path="signup" element={<ExternalRedirect to={APP_SIGNUP_URL} />} />
+        <Route path="v2/*" element={<PreviewRedirect />} />
         <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>

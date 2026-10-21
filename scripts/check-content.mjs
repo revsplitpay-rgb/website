@@ -13,7 +13,7 @@ import { fileURLToPath } from "node:url";
 const TEXT_EXT = new Set([".ts", ".tsx", ".js", ".mjs", ".css", ".html", ".json", ".md", ".svg"]);
 const SKIP_DIRS = new Set(["node_modules", "dist", ".git", ".gstack"]);
 
-const isV2 = (rel) => rel.startsWith("src/v2/") || rel.startsWith("public/v2/");
+const isV2 = (rel) => rel.startsWith("src/v2/");
 const isLive = (rel) => (rel.startsWith("src/") && !rel.startsWith("src/v2/")) || rel === "index.html";
 const isTest = (rel) => /\.test\.(ts|tsx|mjs)$/.test(rel);
 // Owner-supplied legal documents are kept verbatim; src/lib/legal.test.ts keeps
@@ -83,7 +83,7 @@ export const RULES = [
   },
   {
     id: "v2-links",
-    re: /\b(to|href)=["']\/(?!legal\/|v2\/)/,
+    re: /\b(to|href)=["']\/(?!legal\/|fonts\/|logos\/)/,
     scope: (rel) => rel.startsWith("src/v2/") && rel.endsWith(".tsx") && !isTest(rel),
     fix: "build internal links with v2Path() from src/v2/lib/paths.ts",
   },

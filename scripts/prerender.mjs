@@ -1,9 +1,12 @@
-// Build-time prerender for the v2 site, plus sitemap.xml, robots.txt and
+// Build-time prerender for the marketing site, plus sitemap.xml, robots.txt and
 // llms.txt. Runs after `vite build` (client) and `vite build --ssr` (server):
 //   node scripts/prerender.mjs
-// Each public v2 route is rendered to static HTML with its own head tags, so
+// Each public route is rendered to static HTML with its own head tags, so
 // search engines and AI crawlers that don't run JavaScript see the full page.
-// The browser then hydrates that HTML (src/main.tsx).
+// The browser then hydrates that HTML (src/main.tsx). Also writes:
+//   spa.html  the empty app shell, for client-only routes (login, dashboard,
+//             blog posts published after the last build); see vercel.json
+//   404.html  the not-found page, served by Vercel with a 404 status
 
 import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
@@ -17,6 +20,8 @@ const server = await import(pathToFileURL(path.join(serverDir, "entry-server.js"
 const { render, listBlogPosts, STATIC_ROUTES, SITE_URL, IS_PREVIEW, v2Path, buildLlmsTxt, buildLlmsFullTxt } = server;
 
 const template = await readFile(path.join(dist, "index.html"), "utf8");
+// Saved before the home page overwrites index.html.
+await writeFile(path.join(dist, "spa.html"), template);
 const manifest = JSON.parse(await readFile(path.join(dist, ".vite", "manifest.json"), "utf8"));
 
 // The v2 app is a lazy chunk; link its CSS up front so prerendered HTML is
@@ -73,6 +78,9 @@ for (const route of routes) {
   written += 1;
 }
 
+// Any path no route matches renders the not-found page (noindex).
+await writeFile(path.join(dist, "404.html"), page(await render("/404", "/404")));
+
 // sitemap.xml lists final public URLs (what each page's canonical points to).
 const sitemap = [
   '<?xml version="1.0" encoding="UTF-8"?>',
@@ -102,8 +110,7 @@ const robots = [
   ...AI_BOTS.map((bot) => `User-agent: ${bot}`),
   ...rules,
   "",
-  // While v2 is a noindex preview the sitemap lists URLs that don't exist on
-  // the live site yet, so it is only advertised after the switchover.
+  // Only advertised when the build is the live site, not a /v2 preview.
   ...(IS_PREVIEW ? ["# Sitemap is advertised once v2 replaces the live site."] : [`Sitemap: ${SITE_URL}/sitemap.xml`]),
   "",
 ].join("\n");
@@ -114,4 +121,4 @@ await writeFile(path.join(dist, "llms.txt"), buildLlmsTxt());
 await writeFile(path.join(dist, "llms-full.txt"), buildLlmsFullTxt());
 await rm(serverDir, { recursive: true, force: true });
 
-console.log(`prerender: ${written} pages (${posts.length} blog posts), sitemap.xml, robots.txt, llms.txt, llms-full.txt${IS_PREVIEW ? " [preview: v2 stays noindex]" : ""}`);
+console.log(`prerender: ${written} pages (${posts.length} blog posts), 404.html, spa.html, sitemap.xml, robots.txt, llms.txt, llms-full.txt${IS_PREVIEW ? " [preview: v2 stays noindex]" : ""}`);

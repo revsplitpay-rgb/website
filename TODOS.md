@@ -107,22 +107,21 @@ Phase 1-3 groundwork is built: build-time prerender of every v2 page
 (`src/v2/components/page-meta.tsx`, `src/v2/seo/`), generated `sitemap.xml`,
 `robots.txt` (AI crawlers allowed), `llms.txt` and `llms-full.txt`.
 
-### Switchover steps (when v2 replaces the live site)
+### After the switchover
+
+v2 replaced the old site at the root on 2026-10-21: the old pages, sections, Lottie files and unused images and packages were removed; old URLs and `/v2/*` 301 to their new pages (`vercel.json`); unknown URLs get a real 404 page; `/login` and `/dashboard` load the client-only shell (`spa.html`).
 
 **What:**
-1. Set `V2_BASE = ""` in `src/v2/lib/paths.ts`. This drops the preview noindex, advertises the sitemap in robots.txt and prerenders pages at the root.
-2. Point the root routes in `src/app-tree.tsx` at v2, then remove the old site's pages, sections and Lottie (cuts about 2.5 MB of JS).
-3. Add 301s in `vercel.json`: `/feature` to `/features`, `/integration` to `/integrations`, `/integration/:slug` to `/integrations/:slug`. (Legal URL redirects are already live.)
-4. Restrict the catch-all rewrite to real app routes so unknown URLs return a real 404 instead of a soft 404.
-5. Remove the index.html inline v2-theme script and the Inter Tight preload.
-6. Compress `video-explain.mp4` (61 MB) to under 5 MB, and convert images to WebP.
-7. Verify revsplitpay.com in Google Search Console and Bing Webmaster Tools (DNS), submit the sitemap, and add IndexNow on deploy.
+1. Check the first Vercel preview deploy: `/`, `/pricing`, a blog post, `/login`, `/v2/pricing` (should 301 to `/pricing`) and a made-up URL (should return 404).
+2. Verify revsplitpay.com in Google Search Console and Bing Webmaster Tools (DNS), submit the sitemap, and add IndexNow on deploy.
+3. Convert the blog cover images (`public/images/blog-*.png`) to WebP.
+4. Delete `bun.lockb` if nobody installs with Bun (Vercel uses npm and `package-lock.json`).
 
-**Priority:** P1 at switchover
+**Priority:** P1
 
 ### Owner inputs for trust and structured data
 
-**What:** Legal company name, registered address and CRO number (footer and Organization JSON-LD); official social profile URLs (`ORGANIZATION.sameAs` in `src/v2/seo/site.ts`); a domain email with SPF, DKIM and DMARC; refund policy and DPA text (terms, privacy and cookie policies are live as of 2026-10-21); decide whether the privacy and cookie policies should also name Wistia (video) and Supabase (blog) for revsplitpay.com; founder story and photos for About; an analytics choice (Plausible, or GA4 with consent).
+**What:** Official social profile URLs (`ORGANIZATION.sameAs` in `src/v2/seo/site.ts`); a domain email with SPF, DKIM and DMARC; refund policy and DPA text (terms, privacy and cookie policies are live as of 2026-10-21); decide whether the privacy and cookie policies should also name Wistia (video) and Supabase (blog) for revsplitpay.com; founder story and photos for About; an analytics choice (Plausible, or GA4 with consent).
 
 **Priority:** P1
 

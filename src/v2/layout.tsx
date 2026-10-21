@@ -16,7 +16,7 @@ const V2Layout = () => {
   return (
     <div className="min-h-screen bg-background text-foreground antialiased">
       <Helmet>
-        <link rel="preload" href="/v2/fonts/Geist-Variable.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
+        <link rel="preload" href="/fonts/geist/Geist-Variable.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
       </Helmet>
       <a
         href="#main"

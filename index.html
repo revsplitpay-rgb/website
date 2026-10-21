@@ -13,7 +13,6 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <link rel="preload" href="/fonts/inter-tight/inter-tight-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
 
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="RevSplitPay" />
@@ -30,9 +29,10 @@
     <meta name="twitter:description" content="One payment in, everyone paid out. Commission splits and payouts for sales teams, on Stripe or Whop.">
     <meta name="twitter:image" content="https://revsplitpay.com/og-image.png">
     <meta name="twitter:image:alt" content="RevSplitPay: one payment in, everyone paid out.">
-    <!-- v2 preview: mark the light theme before first paint so /v2 never flashes dark. -->
+    <!-- The marketing site is light; only the blog admin tools (/login, /dashboard) keep the dark theme.
+         Prerendered pages already carry the attribute; this covers client-rendered routes before first paint. -->
     <script>
-      if (/^\/v2(\/|$)/.test(location.pathname)) document.documentElement.setAttribute("data-v2-theme", "light");
+      if (!/^\/(login|dashboard)(\/|$)/.test(location.pathname)) document.documentElement.setAttribute("data-v2-theme", "light");
     </script>
     <style>
       html[data-v2-theme="light"] { --background: 255 255 255; --foreground: 11 26 51; background: #fff; color: #0b1a33; color-scheme: light; }

@@ -1,7 +1,7 @@
 import type { IntegrationSlug } from "@/lib/integrations";
 import { whopAvailable } from "./providers";
 
-// Partner marks supplied by the owner (public/v2/logos). Webhooks has no mark.
+// Partner marks supplied by the owner (public/logos). Webhooks has no mark.
 export interface Logo {
   name: string;
   src: string;
@@ -10,9 +10,9 @@ export interface Logo {
 }
 
 export const INTEGRATION_LOGOS: Partial<Record<IntegrationSlug, Logo>> = {
-  stripe: { name: "Stripe", src: "/v2/logos/stripe.svg", height: 30 },
-  whop: { name: "Whop", src: "/v2/logos/whop.svg", height: 22 },
-  slack: { name: "Slack", src: "/v2/logos/slack.svg", height: 28 },
+  stripe: { name: "Stripe", src: "/logos/stripe.svg", height: 30 },
+  whop: { name: "Whop", src: "/logos/whop.svg", height: 22 },
+  slack: { name: "Slack", src: "/logos/slack.svg", height: 28 },
 };
 
 /** Follows WHOP_LIVE, like every other provider mention. */
@@ -24,7 +24,7 @@ export const paymentProviderLogos = (): Logo[] =>
  * not native integrations, so copy must always say "through webhooks".
  */
 export const WEBHOOK_TOOL_LOGOS: Logo[] = [
-  { name: "Zapier", src: "/v2/logos/zapier.svg", height: 26 },
-  { name: "n8n", src: "/v2/logos/n8n.svg", height: 24 },
-  { name: "WhatsApp", src: "/v2/logos/whatsapp.svg", height: 28 },
+  { name: "Zapier", src: "/logos/zapier.svg", height: 26 },
+  { name: "n8n", src: "/logos/n8n.svg", height: 24 },
+  { name: "WhatsApp", src: "/logos/whatsapp.svg", height: 28 },
 ];

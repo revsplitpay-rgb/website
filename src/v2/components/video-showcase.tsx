@@ -9,7 +9,7 @@ import { buttonClass } from "./ui";
 const WISTIA_MEDIA_ID = "xyba3e68fp";
 const WISTIA_ASPECT = "1.7777777777777777";
 const VIDEO_LENGTH_LABEL = "1:15";
-const POSTER = "/v2/video-poster.png";
+const POSTER = "/video-poster.png";
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace

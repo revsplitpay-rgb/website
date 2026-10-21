@@ -10,8 +10,8 @@ import V2Boundary from "./v2/boundary";
 import { V2_BASE } from "./v2/lib/paths";
 
 // Build-time renderer (see scripts/prerender.mjs). Renders the same shell as
-// the browser with only the v2 route, which is all that is prerendered; the
-// live site's pages pull in browser-only code (Lottie) and stay client-rendered.
+// the browser with only the marketing site (src/v2); the blog admin tools
+// (login, dashboard) need a signed-in browser and stay client-rendered.
 
 export { SITE_URL } from "./lib/links";
 export { V2_BASE, v2Path } from "./v2/lib/paths";

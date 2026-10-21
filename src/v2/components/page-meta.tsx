@@ -5,7 +5,7 @@ import { IS_PREVIEW, OG_IMAGE, SITE_NAME, absoluteUrl } from "../seo/site";
 /**
  * Per-page head: title, description, canonical, Open Graph, Twitter and one
  * JSON-LD graph (Organization + WebSite on every page, plus `jsonLd` nodes).
- * `path` is the final public path, without the /v2 preview prefix.
+ * `path` is the final public path, without any preview prefix.
  */
 const PageMeta = ({
   title,

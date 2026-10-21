@@ -15,7 +15,7 @@ const AuthNavbar = () => {
 
                 <nav className="hidden lg:flex items-center gap-8 text-white/70">
                     <Link to="/about" className="hover:text-white transition-colors">About</Link>
-                    <Link to="/feature" className="hover:text-white transition-colors">Features</Link>
+                    <Link to="/features" className="hover:text-white transition-colors">Features</Link>
                     <Link to="/pricing" className="hover:text-white transition-colors">Pricing</Link>
                     <Link to="/blog" className="hover:text-white transition-colors">Blogs</Link>
                 </nav>
