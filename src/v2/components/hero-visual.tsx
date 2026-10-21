@@ -3,7 +3,9 @@ import { cn } from "@/lib/utils";
 import { motion, useReducedMotion } from "framer-motion";
 import { useEffect, useState, type ReactNode } from "react";
 import { Link } from "react-router-dom";
-import { Send, ShieldCheck, Trophy } from "lucide-react";
+import { ArrowRight, Check, Send, ShieldCheck, Trophy } from "lucide-react";
+import { INTEGRATIONS } from "@/lib/integrations";
+import logo from "../../../LOGO BLUE.png";
 import { formatCents, split } from "../lib/split";
 import { INTEGRATION_LOGOS, WEBHOOK_TOOL_LOGOS, paymentProviderLogos } from "../content/logos";
 import { providerPhrase } from "../content/providers";
@@ -354,18 +356,118 @@ export const HeroStrokes = () => (
   </>
 );
 
-const PROVIDER_CAPTIONS: Record<string, string> = {
-  Stripe: "Card payments, and payouts to each rep's own account",
-  Whop: "Payments and payouts for businesses selling on Whop",
+// Brand tints for the provider cards (Stripe purple, Whop orange).
+const PROVIDER_STYLE: Record<string, { card: string; tick: string; link: string; line: string }> = {
+  stripe: {
+    card: "bg-[linear-gradient(160deg,#f3f1ff_0%,#ffffff_65%)] ring-[rgb(99_91_255/0.22)] hover:ring-[rgb(99_91_255/0.45)]",
+    tick: "bg-[rgb(99_91_255/0.12)] text-[rgb(83_74_230)]",
+    link: "text-[rgb(83_74_230)]",
+    line: "rgb(99 91 255)",
+  },
+  whop: {
+    card: "bg-[linear-gradient(160deg,#fff3ee_0%,#ffffff_65%)] ring-[rgb(250_70_22/0.2)] hover:ring-[rgb(250_70_22/0.42)]",
+    tick: "bg-[rgb(250_70_22/0.12)] text-[rgb(214_56_12)]",
+    link: "text-[rgb(214_56_12)]",
+    line: "rgb(250 70 22)",
+  },
+};
+
+/** Animated connector between the hub and a provider card (desktop only). */
+const Connector = ({ color, reverse = false }: { color: string; reverse?: boolean }) => {
+  const reduced = useReducedMotion();
+  return (
+    <div className="relative hidden h-px w-full self-center lg:block" aria-hidden="true">
+      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgb(0_114_228/0.25),rgb(0_114_228/0.08))]" style={reverse ? { transform: "scaleX(-1)" } : undefined} />
+      {!reduced &&
+        [0, 1].map((n) => (
+          <motion.span
+            key={n}
+            className="absolute -top-[3px] h-[7px] w-[7px] rounded-full"
+            style={{ background: color, boxShadow: `0 0 10px ${color}` }}
+            initial={{ left: reverse ? "0%" : "100%", opacity: 0 }}
+            animate={{ left: reverse ? ["0%", "100%"] : ["100%", "0%"], opacity: [0, 1, 1, 0] }}
+            transition={{ duration: 2.2, repeat: Infinity, delay: n * 1.1, ease: "easeInOut" }}
+          />
+        ))}
+    </div>
+  );
+};
+
+const ProviderCard = ({ slug, index }: { slug: string; index: number }) => {
+  const item = INTEGRATIONS.find((i) => i.slug === slug);
+  const mark = INTEGRATION_LOGOS[slug as keyof typeof INTEGRATION_LOGOS];
+  const style = PROVIDER_STYLE[slug];
+  if (!item || !mark || !style) return null;
+  return (
+    <Reveal delay={index * 120} className="h-full">
+      <Link
+        to={v2Path(`/integrations/${slug}`)}
+        className={cn(
+          "group flex h-full flex-col rounded-[24px] p-7 text-left ring-1 shadow-[0_20px_44px_-28px_rgb(11_26_51/0.35)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_30px_60px_-30px_rgb(11_26_51/0.45)]",
+          style.card,
+        )}
+      >
+        <div className="flex h-10 items-center">
+          <img src={mark.src} alt={mark.name} style={{ height: Math.round(mark.height * 1.25) }} className="w-auto" />
+        </div>
+        <ul className="mt-6 space-y-3 text-[0.9375rem] text-foreground">
+          {item.points.slice(0, 3).map((point) => (
+            <li key={point} className="flex gap-3">
+              <span className={cn("mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full", style.tick)}>
+                <Check className="h-3 w-3" aria-hidden="true" />
+              </span>
+              {point}
+            </li>
+          ))}
+        </ul>
+        <span className={cn("mt-auto inline-flex items-center gap-1.5 pt-6 text-sm font-semibold", style.link)}>
+          How it works with {item.name}
+          <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" aria-hidden="true" />
+        </span>
+      </Link>
+    </Reveal>
+  );
+};
+
+/** RevSplitPay in the middle, wired to each payment provider. */
+const ProvidersHub = () => {
+  const slugs = paymentProviderLogos().map((mark) => mark.name.toLowerCase());
+  const [left, right] = slugs;
+  const hub = (
+    <Reveal className="flex flex-col items-center gap-3 text-center">
+      <span className="relative flex h-20 w-20 items-center justify-center rounded-[22px] bg-white shadow-[0_18px_40px_-16px_rgb(0_72_160/0.55)] ring-1 ring-[rgb(0_114_228/0.18)]">
+        <span className="v2-pulse-ring absolute inset-0 rounded-[22px] bg-[rgb(0_114_228/0.15)]" aria-hidden="true" />
+        <img src={logo} alt="" className="relative h-11 w-11 rounded-xl" />
+      </span>
+      <span className="max-w-[14ch] text-sm font-medium text-foreground">RevSplitPay splits every payment</span>
+    </Reveal>
+  );
+  if (!right) {
+    return (
+      <div className="mx-auto grid max-w-[720px] items-stretch gap-6 lg:grid-cols-[auto_120px_1fr]">
+        {hub}
+        <Connector color={PROVIDER_STYLE[left].line} reverse />
+        <ProviderCard slug={left} index={0} />
+      </div>
+    );
+  }
+  return (
+    <div className="mx-auto grid max-w-[1100px] items-stretch gap-6 lg:grid-cols-[1fr_96px_auto_96px_1fr] lg:gap-0">
+      <ProviderCard slug={left} index={0} />
+      <Connector color={PROVIDER_STYLE[left].line} />
+      <div className="order-first flex items-center justify-center lg:order-none">{hub}</div>
+      <Connector color={PROVIDER_STYLE[right].line} reverse />
+      <ProviderCard slug={right} index={1} />
+    </div>
+  );
 };
 
 /**
- * Under the hero: the payment providers first, large and in colour, then the
- * tools events reach (Slack natively, the rest through custom webhooks) as a
- * slow greyscale marquee that colours on hover.
+ * Under the hero: the payment providers wired to RevSplitPay, then the tools
+ * events reach (Slack natively, the rest through custom webhooks) as a slow
+ * marquee in full colour.
  */
 export const LogoStrip = () => {
-  const providers = paymentProviderLogos();
   const tools = [INTEGRATION_LOGOS.slack!, ...WEBHOOK_TOOL_LOGOS];
   return (
     <div className="relative mt-16 md:mt-20">
@@ -373,48 +475,29 @@ export const LogoStrip = () => {
         <Reveal>
           <div className="text-center">
             <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[rgb(var(--v2-deep))]">Payment providers</p>
-            <p className="mt-2 text-lg font-semibold tracking-tight text-foreground md:text-xl">
-              Take payments and pay your team on {providerPhrase()}.
+            <p className="mx-auto mt-3 max-w-[26ch] text-2xl font-semibold tracking-tight text-foreground md:text-[1.75rem]">
+              Runs on the payment provider you already use.
             </p>
           </div>
         </Reveal>
-        <ul className={cn("mx-auto mt-6 grid gap-4", providers.length > 1 ? "max-w-[760px] sm:grid-cols-2" : "max-w-[380px]")}>
-          {providers.map((mark, index) => (
-            <li key={mark.name}>
-              <Reveal delay={index * 100}>
-                <Link
-                  to={v2Path(`/integrations/${mark.name.toLowerCase()}`)}
-                  className="v2-card v2-card-hover group flex h-32 flex-col items-center justify-center gap-3 px-6 text-center"
-                >
-                  <img src={mark.src} alt={mark.name} style={{ height: Math.round(mark.height * 1.45) }} className="w-auto" />
-                  <span className="text-sm text-muted-foreground transition-colors group-hover:text-foreground">
-                    {PROVIDER_CAPTIONS[mark.name]}
-                  </span>
-                </Link>
-              </Reveal>
-            </li>
-          ))}
-        </ul>
+        <div className="mt-10">
+          <ProvidersHub />
+        </div>
         <Reveal>
-          <p className="mt-12 text-center text-sm text-muted-foreground">
+          <p className="mt-14 text-center text-sm text-muted-foreground">
             Events reach the tools your team already uses: Slack, or anything through webhooks.
           </p>
         </Reveal>
       </div>
       <div className="v2-fade-x mt-6 overflow-hidden" aria-label="Connected tools">
-        <ul className="v2-marquee flex w-max items-center gap-6 py-2 [animation-duration:36s]">
+        <ul className="v2-marquee flex w-max items-center gap-6 py-3 [animation-duration:36s]">
           {[...tools, ...tools, ...tools, ...tools, ...tools, ...tools].map((mark, index) => (
             <li
               key={`${mark.name}-${index}`}
               aria-hidden={index >= tools.length ? true : undefined}
-              className="group flex h-20 w-[200px] shrink-0 items-center justify-center rounded-2xl bg-white/70 ring-1 ring-[rgb(0_114_228/0.08)] transition-all duration-300 hover:bg-white hover:shadow-[0_16px_32px_-18px_rgb(0_72_160/0.45)]"
+              className="flex h-20 w-[200px] shrink-0 items-center justify-center rounded-2xl bg-white ring-1 ring-[rgb(0_114_228/0.08)] shadow-[0_10px_24px_-18px_rgb(0_58_130/0.35)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_16px_32px_-18px_rgb(0_72_160/0.45)]"
             >
-              <img
-                src={mark.src}
-                alt={index < tools.length ? mark.name : ""}
-                style={{ height: mark.height }}
-                className="w-auto opacity-60 grayscale transition-all duration-300 group-hover:opacity-100 group-hover:grayscale-0"
-              />
+              <img src={mark.src} alt={index < tools.length ? mark.name : ""} style={{ height: mark.height }} className="w-auto" />
             </li>
           ))}
         </ul>
