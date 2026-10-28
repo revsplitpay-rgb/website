@@ -46,9 +46,9 @@ export const RULES = [
   { id: "stale-price", re: /"\$(300|600|900|1,500)"|3\.5%/, scope: () => true, fix: "use PLANS and fee constants from src/lib/pricing.ts" },
   {
     id: "stale-fee-copy",
-    re: /no platform fee|0% platform fee|3% fee|payment requests are 3%/i,
+    re: /0% platform fee|3% fee|payment requests are 3%|(?<![\d.])0\.5%/i,
     scope: (rel) => !isLegalText(rel),
-    fix: "use COMMISSION_FEE_LABEL / INVOICE_FEE_LABEL from src/lib/pricing.ts",
+    fix: "use COMMISSION_FEE_LABEL from src/lib/pricing.ts; invoices and paid awards have no fee since 2026-10-27",
   },
   {
     id: "dead-routes",
@@ -59,7 +59,7 @@ export const RULES = [
   },
   { id: "app-url", re: /app\.revsplitpay\.com/, scope: (rel) => rel.startsWith("src/") && !isLegalText(rel), allow: ["src/lib/links.ts"], fix: "import APP_URL / APP_SIGNUP_URL from src/lib/links.ts" },
   { id: "google-fonts", re: /fonts\.(googleapis|gstatic)\.com/, scope: () => true, fix: "self-host fonts (GDPR)" },
-  { id: "offer-code", re: /WELCOME50/, scope: (rel) => rel.startsWith("src/") && !isTest(rel), allow: ["src/lib/pricing.ts"], fix: "render the code from WELCOME_OFFER in src/lib/pricing.ts" },
+  { id: "ended-offer", re: /WELCOME50/, scope: (rel) => rel.startsWith("src/") && !isTest(rel), fix: "the WELCOME50 offer ended on 2026-10-27; mention the free trial (TRIAL_DAYS)" },
 
   // v2 design-system and content rules
   {

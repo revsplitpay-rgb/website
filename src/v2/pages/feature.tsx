@@ -20,9 +20,10 @@ import {
   CalendarCheck,
   LifeBuoy,
   Eye,
+  Palette,
   type LucideIcon,
 } from "lucide-react";
-import { useEffect, useState, type ComponentType } from "react";
+import { useEffect, useState, type CSSProperties, type ComponentType } from "react";
 import CtaBand from "../components/cta-band";
 import { LeaderboardExample, PayoutExample } from "../components/examples";
 import { InvoiceVisual, PayTypesVisual, SplitVisual } from "../components/product-bento";
@@ -136,6 +137,89 @@ const OnboardingVisual = () => (
   </div>
 );
 
+// The eight preset brand colours offered in the app, as RGB channels.
+const BRAND_PRESETS = [
+  { name: "Violet", rgb: "124 58 237" },
+  { name: "Indigo", rgb: "79 70 229" },
+  { name: "Teal", rgb: "13 148 136" },
+  { name: "Emerald", rgb: "5 150 105" },
+  { name: "Amber", rgb: "217 119 6" },
+  { name: "Orange", rgb: "234 88 12" },
+  { name: "Rose", rgb: "225 29 72" },
+  { name: "Slate", rgb: "51 65 85" },
+];
+
+/** A Scale workspace's sidebar in the visitor's chosen colour. */
+const BrandingVisual = () => {
+  const [brand, setBrand] = useState(BRAND_PRESETS[0]);
+  return (
+    <div className="overflow-hidden rounded-xl bg-white ring-1 ring-border" style={{ "--brand": brand.rgb } as CSSProperties}>
+      <div className="flex items-center justify-between border-b border-border px-4 py-2.5">
+        <p className="text-sm font-medium text-foreground">Your dashboard</p>
+        <ExampleLabel />
+      </div>
+      <div className="grid grid-cols-[112px_1fr]" aria-hidden="true">
+        <div className="flex flex-col border-r border-border bg-[rgb(248_250_252)] p-2.5">
+          <div className="flex items-center gap-2 px-1.5 py-1">
+            <span className="flex h-6 w-6 items-center justify-center rounded-md bg-[rgb(var(--brand))] text-[0.6875rem] font-bold text-white transition-colors duration-300">
+              Y
+            </span>
+            <span className="text-xs font-semibold text-foreground">Your logo</span>
+          </div>
+          <ul className="mt-3 space-y-0.5 text-xs">
+            {["Overview", "Deals", "Payouts", "Team"].map((item, index) => (
+              <li
+                key={item}
+                className={cn(
+                  "rounded-md px-2 py-1.5 transition-colors duration-300",
+                  index === 0 ? "bg-[rgb(var(--brand)/0.12)] font-medium text-[rgb(var(--brand))]" : "text-muted-foreground",
+                )}
+              >
+                {item}
+              </li>
+            ))}
+          </ul>
+          <p className="mt-auto px-1.5 pt-6 text-[0.625rem] leading-tight text-muted-foreground">Powered by RevSplitPay</p>
+        </div>
+        <div className="p-3">
+          <p className="text-xs text-muted-foreground">Sales this month</p>
+          <div className="mt-2 flex h-16 items-end gap-1.5">
+            {[40, 62, 48, 80, 100].map((height, index) => (
+              <span
+                key={index}
+                className="flex-1 rounded-t bg-[rgb(var(--brand))] transition-colors duration-300"
+                style={{ height: `${height}%`, opacity: 0.35 + index * 0.16 }}
+              />
+            ))}
+          </div>
+          <span className="mt-3 block rounded-full bg-[rgb(var(--brand))] py-1.5 text-center text-xs font-medium text-white transition-colors duration-300">
+            New checkout link
+          </span>
+        </div>
+      </div>
+      <div className="flex items-center justify-between gap-3 border-t border-border px-4 py-3">
+        <p className="text-xs text-muted-foreground">Try a colour</p>
+        <div role="group" aria-label="Try a brand colour" className="flex gap-1.5">
+          {BRAND_PRESETS.map((preset) => (
+            <button
+              key={preset.name}
+              type="button"
+              aria-label={preset.name}
+              aria-pressed={preset.name === brand.name}
+              onClick={() => setBrand(preset)}
+              className={cn(
+                "h-5 w-5 rounded-full ring-offset-2 transition-transform hover:scale-110",
+                preset.name === brand.name && "ring-2 ring-[rgb(var(--brand))]",
+              )}
+              style={{ backgroundColor: `rgb(${preset.rgb})` }}
+            />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const GROUP_VISUALS: Record<string, ComponentType> = {
   selling: PayTypesVisual,
   commissions: SplitVisual,
@@ -143,6 +227,7 @@ const GROUP_VISUALS: Record<string, ComponentType> = {
   invoices: InvoiceVisual,
   rewards: LeaderboardExample,
   team: TeamVisual,
+  branding: BrandingVisual,
   reporting: ReportingVisual,
   integrations: IntegrationsVisual,
   onboarding: OnboardingVisual,
@@ -166,6 +251,7 @@ const GROUP_ICONS: Record<string, LucideIcon> = {
   invoices: FileText,
   rewards: Trophy,
   team: Users,
+  branding: Palette,
   reporting: BarChart3,
   integrations: Plug,
   onboarding: Rocket,
@@ -212,7 +298,7 @@ const Feature = () => {
         support={`Sell, split every commission, pay the team and keep them motivated, all on ${providerPhrase()}.`}
       >
         <ButtonLink href={APP_SIGNUP_URL}>
-          Get started <ArrowRight aria-hidden="true" />
+          Start free trial <ArrowRight aria-hidden="true" />
         </ButtonLink>
       </PageHero>
 
@@ -265,8 +351,13 @@ const Feature = () => {
                           <p className="v2-num text-xs font-medium tracking-[0.14em] text-muted-foreground">
                             {String(index + 1).padStart(2, "0")} / {String(featureGroups.length).padStart(2, "0")}
                           </p>
-                          <h2 id={`${group.id}-title`} className="mt-1 text-[1.75rem] font-semibold leading-tight tracking-tight text-foreground">
+                          <h2 id={`${group.id}-title`} className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-[1.75rem] font-semibold leading-tight tracking-tight text-foreground">
                             {group.title}
+                            {group.badge && (
+                              <span className="rounded-full bg-[rgb(0_114_228/0.1)] px-2.5 py-1 text-xs font-semibold tracking-normal text-[rgb(var(--v2-deep))]">
+                                {group.badge} plan
+                              </span>
+                            )}
                           </h2>
                           <p className="mt-2 max-w-[60ch] text-muted-foreground">{group.summary}</p>
                         </div>

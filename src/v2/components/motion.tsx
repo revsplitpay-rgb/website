@@ -24,16 +24,17 @@ export const Reveal = ({
   onLoad?: boolean;
 }) => {
   const reduced = useReducedMotion();
-  if (reduced) return <div className={className}>{children}</div>;
   const shown = { opacity: 1, y: 0, filter: "blur(0px)", transitionEnd: { filter: "none" } };
   // Above-the-fold entrances are quicker so the hero is readable almost at once.
   const duration = onLoad ? 0.6 : REVEAL_MS / 1000;
+  // Always a motion.div, so it hydrates over the prerendered (hidden) markup.
+  // With reduced motion it jumps straight to the shown state on mount.
   return (
     <motion.div
       className={className}
-      initial={{ opacity: 0, y: onLoad ? Math.min(y, 14) : y, filter: blur ? `blur(${onLoad ? 5 : 8}px)` : "blur(0px)" }}
-      {...(onLoad ? { animate: shown } : { whileInView: shown, viewport: { once: true, margin: "-60px" } })}
-      transition={{ duration, ease: EASE, delay: delay / 1000 }}
+      initial={reduced ? false : { opacity: 0, y: onLoad ? Math.min(y, 14) : y, filter: blur ? `blur(${onLoad ? 5 : 8}px)` : "blur(0px)" }}
+      {...(onLoad || reduced ? { animate: shown } : { whileInView: shown, viewport: { once: true, margin: "-60px" } })}
+      transition={reduced ? { duration: 0 } : { duration, ease: EASE, delay: delay / 1000 }}
     >
       {children}
     </motion.div>

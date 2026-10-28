@@ -1,52 +1,68 @@
+import { APP_SIGNUP_URL } from "@/lib/links";
 import {
   COMMISSION_FEE_BP,
   COMMISSION_FEE_LABEL,
   EXTRA_MEMBER_USD,
-  INVOICE_FEE_LABEL,
   PLANS,
-  WELCOME_OFFER,
+  STARTING_PRICE_USD,
+  TRIAL_DAYS,
+  YEARLY_DISCOUNT_PCT,
+  formatBp,
   formatUsd,
   recommendPlan,
 } from "@/lib/pricing";
-import { Check, Tag } from "lucide-react";
+import { ArrowRight, CalendarClock, Check, CreditCard, MousePointerClick, ShieldCheck } from "lucide-react";
 import { useId, useState } from "react";
-import CopyButton from "../components/copy-button";
 import CtaBand from "../components/cta-band";
 import Faq from "../components/faq";
 import PageMeta from "../components/page-meta";
 import { breadcrumbLd, faqLd, softwareLd } from "../seo/jsonld";
 import PlanCards from "../components/plan-cards";
-import PlanCompare from "../components/plan-compare";
+import PlanCompare, { EveryPlan } from "../components/plan-compare";
 import PageHero from "../components/page-hero";
 import { Reveal } from "../components/motion";
 import { ButtonLink, Container, Grad, Panel, Section, SectionHeading } from "../components/ui";
-import { billingPoints, enterpriseLine, faqs, priceLine } from "../content/copy";
+import { billingPoints, enterpriseLine, faqs, priceLine, trial } from "../content/copy";
 import { v2Path } from "../lib/paths";
 import { formatCents, parseSaleInput } from "../lib/split";
+import { providerPhrase } from "../content/providers";
 
 const EXAMPLE_COMMISSION_CENTS = 500 * 100;
 const exampleFeeCents = Math.round((EXAMPLE_COMMISSION_CENTS * COMMISSION_FEE_BP) / 10_000);
 const MAX_MEMBERS = 200;
 
-const OfferCallout = () => (
-  <div className="v2-glass v2-gradient-border relative mx-auto flex max-w-[700px] flex-col gap-4 rounded-[20px] p-4 text-left sm:flex-row sm:items-center sm:justify-between sm:pl-5">
-    <p className="flex items-center gap-3 text-[0.9375rem] text-foreground">
-      <span className="v2-icon-tile h-9 w-9 shrink-0">
-        <Tag className="h-4 w-4" aria-hidden="true" />
-      </span>
-      <span>
-        <span className="font-semibold">
-          {WELCOME_OFFER.percentOff}% off {WELCOME_OFFER.appliesTo}
-        </span>{" "}
-        on any plan, at signup.
-      </span>
-    </p>
-    <CopyButton value={WELCOME_OFFER.code} label="Copy code" className="shrink-0 flex-nowrap" />
-  </div>
+const TRIAL_ICONS = [CreditCard, MousePointerClick, CalendarClock, ShieldCheck];
+
+/** How the free trial works: four promises from the app's trial rules. */
+const TrialHow = () => (
+  <Section tone="tint" labelledBy="trial-title">
+    <Container>
+      <SectionHeading id="trial-title" center eyebrow="Free trial" title="How the free trial works." support={trial.promise} />
+      <ol className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        {trial.points.map((point, index) => {
+          const Icon = TRIAL_ICONS[index];
+          return (
+            <li key={point.title}>
+              <Reveal delay={index * 80} className="h-full">
+                <div className="v2-card v2-card-hover h-full p-6">
+                  <span className="v2-icon-tile h-10 w-10" aria-hidden="true">
+                    <Icon className="h-4 w-4" />
+                  </span>
+                  <h3 className="mt-4 text-base font-semibold text-foreground">{point.title}</h3>
+                  <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">{point.text}</p>
+                </div>
+              </Reveal>
+            </li>
+          );
+        })}
+      </ol>
+      <p className="mt-8 text-center text-sm text-muted-foreground">{trial.footnote}</p>
+    </Container>
+  </Section>
 );
 
 const FeeStrip = () => (
-  <Section tone="tint" labelledBy="fees-title">
+  <Section labelledBy="fees-title">
     <Container>
       <SectionHeading
         id="fees-title"
@@ -62,8 +78,10 @@ const FeeStrip = () => (
           </p>
         </Panel>
         <Panel>
-          <p className="v2-stat v2-gradient-text">{INVOICE_FEE_LABEL}</p>
-          <p className="mt-3 text-[0.9375rem] text-muted-foreground">On invoices from team members and on paid awards.</p>
+          <p className="v2-stat v2-gradient-text">{formatBp(0)}</p>
+          <p className="mt-3 text-[0.9375rem] text-muted-foreground">
+            On your own share, on invoices from team members and on paid awards. Payment processing fees from {providerPhrase()} still apply.
+          </p>
         </Panel>
         <Panel raised className="v2-gradient-border">
           <p className="text-sm font-medium uppercase tracking-[0.12em] text-[rgb(var(--v2-deep))]">Worked example</p>
@@ -98,7 +116,7 @@ const PlanPicker = () => {
   const plan = rec?.kind === "plan" ? PLANS.find((p) => p.id === rec.planId) : undefined;
 
   return (
-    <Section labelledBy="picker-title">
+    <Section tone="tint" labelledBy="picker-title">
       <Container className="relative grid items-center gap-10 lg:grid-cols-[1fr_1fr] lg:gap-16">
         <SectionHeading
           id="picker-title"
@@ -177,7 +195,7 @@ const PlanPicker = () => {
 };
 
 const Compare = () => (
-  <Section tone="tint" labelledBy="compare-title">
+  <Section labelledBy="compare-title">
     <Container>
       <SectionHeading
         id="compare-title"
@@ -231,18 +249,22 @@ const Pricing = () => (
       eyebrow="Pricing"
       title={
         <>
-          Simple plans. <Grad>Fees shown up front.</Grad>
+          Try any plan <Grad>free for {TRIAL_DAYS} days.</Grad>
         </>
       }
-      support={priceLine()}
+      support={`${trial.promise} From ${formatUsd(STARTING_PRICE_USD)} a month, or save ${YEARLY_DISCOUNT_PCT}% yearly.`}
     >
-      <OfferCallout />
+      <ButtonLink href={APP_SIGNUP_URL}>
+        Start free trial <ArrowRight aria-hidden="true" />
+      </ButtonLink>
     </PageHero>
     <Section>
       <Container>
         <PlanCards />
+        <EveryPlan />
       </Container>
     </Section>
+    <TrialHow />
     <FeeStrip />
     <PlanPicker />
     <Compare />

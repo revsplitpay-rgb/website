@@ -135,7 +135,15 @@ Typical customer: a sales agency or info-product business with between 2 and 100
 - **Custom webhooks:** send events (deal closed, invoice paid and more) to your own tools.
 - **Stripe and Whop:** choose either as your payment provider.
 
-### 5.9 Onboarding and support
+### 5.9 Custom branding *(Scale)*
+
+- **Your logo** at the top of the sidebar, in place of ours, and your name and logo in the browser tab.
+- **Your brand colour** across buttons, links, highlights, charts and the active menu item, in light and dark mode (hard-to-read colours are adjusted slightly so text stays readable).
+- **For your whole team:** everyone in the workspace sees your branding.
+- **Set up in a minute:** pick one of 8 preset colours or enter your own, upload a logo, and preview it in light and dark mode before saving.
+- A small "Powered by RevSplitPay" credit stays at the bottom of the sidebar.
+
+### 5.10 Onboarding and support
 
 - **Guided setup:** a checklist walks every role through getting started.
 - **Support inbox:** contact the RevSplitPay team from inside the app.
@@ -171,14 +179,15 @@ Typical customer: a sales agency or info-product business with between 2 and 100
 
 ## 8. Plans and pricing
 
-All prices are in **USD**, billed **monthly in advance**.
+All prices are in **USD**, billed **monthly or yearly in advance**. Paying yearly saves 20% (rounded down to the $10).
 
 | | **Starter** | **Growth** (most popular) | **Scale** |
 |---|---|---|---|
 | **Price** | **$97/month** | **$299/month** | **$997/month** |
+| **Yearly price** | **$930/year** ($77.50/month) | **$2,870/year** ($239.17/month) | **$9,570/year** ($797.50/month) |
 | **Sales per month** | up to $100K | up to $500K | up to $2M |
-| **Team members included** | 5 | 25 | 75 |
-| **Extra team members** | $25/month each | $25/month each | $25/month each |
+| **Team members included** | 5 | 20 | 50 |
+| **Extra team members** | $20/month or $192/year each | $20/month or $192/year each | $20/month or $192/year each |
 | Selling, checkout links, recurring, instalments, payment plans | ✓ | ✓ | ✓ |
 | Automatic commission splits and payouts | ✓ | ✓ | ✓ |
 | Invoices from team members | ✓ | ✓ | ✓ |
@@ -187,6 +196,7 @@ All prices are in **USD**, billed **monthly in advance**.
 | **Award rules (automatic bonuses)** | — | ✓ | ✓ |
 | **Commission boosts** | — | ✓ | ✓ |
 | **Goal tracker for reps** | — | ✓ | ✓ |
+| **Your logo and colours in the dashboard** | — | — | ✓ |
 | **Private Slack channel with our team** | — | — | ✓ |
 | **Personal setup call (one-time)** | — | — | ✓ |
 | **Priority support** | — | — | ✓ (replies within 4 business hours) |
@@ -199,12 +209,13 @@ All prices are in **USD**, billed **monthly in advance**.
 
 - **Team members:**
   - the owner never counts as a team member;
-  - an extra member costs $25/month, charged when they join;
+  - an extra member costs $20/month ($192/year on yearly billing), charged when they join;
   - a paid seat stays paid until the next bill, so someone can be replaced at no extra cost.
-- **Free trials** are given through promo codes (for example 7 days free). A card is needed to start a trial, and each card gets one trial.
+- **Free trial:** every new business gets 14 days free on any plan. A card is needed to start, but nothing is charged unless the owner clicks **Start plan**. Starting early keeps the free days (the first charge is on the day the trial would have ended). If they don't start, nothing is charged; new activity pauses and data and earnings stay safe until a plan is chosen. One free trial per card.
+- **Yearly billing** saves 20% on any plan. The sales limit stays monthly. Switching to yearly is charged now, with credit for the unused month; switching back to monthly happens at the end of the year.
 - **Discount codes** can be applied at signup or later from Billing.
 - **Changing plans:**
-  - **upgrades** happen instantly; you pay only the difference for the rest of the month;
+  - **upgrades** happen instantly; you pay only the difference for the rest of the month or year;
   - **downgrades** take effect at the next bill;
   - you can switch any time from Billing, and the exact amount is shown before you confirm.
 - **Usage warnings** arrive at 80% and 90% of the plan's monthly sales limit.
@@ -213,12 +224,12 @@ All prices are in **USD**, billed **monthly in advance**.
   - Existing links, subscriptions and instalments keep collecting.
   - Payouts keep going out.
 - **You are never moved down a plan automatically.**
-- **Cancel any time:** everything works until the end of the month you paid for, with no final bill.
+- **Cancel any time:** everything works until the end of the period you paid for, with no final bill.
 
 ### Platform fees
 
 - **Commissions:** 2.9% of each commission paid to a team member.
-- **Invoices and paid awards:** 0.5%.
+- **Invoices and paid awards:** no RevSplitPay fee (since October 27, 2026).
 - The payment provider's own processing fees (Stripe or Whop) apply as usual.
 - The owner's own share of a sale carries no RevSplitPay fee.
 
@@ -277,16 +288,16 @@ The deal is flagged and the payment is retried automatically. For payment plans,
 Yes: recurring subscriptions (weekly to annual), equal instalments, and fully custom payment plans with your own amounts and dates.
 
 **Do I pay per team member?**
-Each plan includes a number of team members (5, 25 or 75). Extra members are $25/month each. You never count as one.
+Each plan includes a number of team members (5, 20 or 50). Extra members are $20/month each ($192/year on yearly billing). You never count as one.
 
 **What happens if we sell more than our plan's limit?**
 You're warned at 80% and 90%. At 100% on Starter or Growth, new deals pause until you upgrade. Nothing already earned or in motion stops. Scale never pauses.
 
 **Can I change or cancel my plan?**
-Yes, any time from Billing. Upgrades are instant; downgrades apply at your next bill. Cancelling keeps everything working until the end of the month you paid for.
+Yes, any time from Billing. Upgrades are instant; downgrades apply at your next bill. Cancelling keeps everything working until the end of the period you paid for.
 
 **Is there a free trial?**
-Trials are available with a promo code. Ask us for one.
+Yes. Every plan starts with 14 days free. A card is needed to start, but nothing is charged unless you click Start plan.
 
 **Does RevSplitPay hold our money?**
 No. Payments go through Stripe or Whop to the business, and each person's share is paid out to their own account. RevSplitPay is not a bank.

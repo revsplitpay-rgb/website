@@ -55,7 +55,8 @@ const loadWistia = () =>
 
 type VideoState = "idle" | "loading" | "ready" | "error";
 
-const VideoShowcase = () => {
+/** `priority` loads the poster straight away, for when the video is above the fold. */
+const VideoShowcase = ({ priority = false }: { priority?: boolean }) => {
   const reduced = useReducedMotion();
   const frameRef = useRef<HTMLDivElement>(null);
   const [state, setState] = useState<VideoState>("idle");
@@ -77,7 +78,7 @@ const VideoShowcase = () => {
     <div className="relative" style={{ perspective: 1600 }}>
       <motion.div
         ref={frameRef}
-        style={reduced ? undefined : { scale, borderRadius: radius, rotateX: tilt }}
+        style={reduced ? { scale: 1, borderRadius: 28, rotateX: 0 } : { scale, borderRadius: radius, rotateX: tilt }}
         className="relative overflow-hidden rounded-[28px] bg-[rgb(var(--foreground))] p-1.5 shadow-[0_50px_100px_-40px_rgb(0_40_110/0.55)] ring-1 ring-[rgb(0_114_228/0.15)]"
       >
         <div className="relative aspect-video w-full overflow-hidden rounded-[22px] bg-black">
@@ -91,7 +92,7 @@ const VideoShowcase = () => {
               <img
                 src={POSTER}
                 alt=""
-                loading="lazy"
+                loading={priority ? "eager" : "lazy"}
                 className="h-full w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-[1.03]"
               />
               <span className="absolute inset-0 bg-[linear-gradient(180deg,rgb(0_20_60/0.05)_30%,rgb(0_20_60/0.65)_100%)]" />

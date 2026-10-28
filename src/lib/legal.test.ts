@@ -6,7 +6,7 @@ describe("legal markdown parser", () => {
     expect(LEGAL_DOCS.terms.title).toBe("Terms and Conditions");
     expect(LEGAL_DOCS.privacy.title).toBe("Privacy Policy");
     expect(LEGAL_DOCS.cookies.title).toBe("Cookie Policy");
-    expect(legalUpdated(LEGAL_DOCS.terms)).toBe("October 21, 2026");
+    expect(legalUpdated(LEGAL_DOCS.terms)).toBe("October 27, 2026");
     expect(legalToc(LEGAL_DOCS.terms)).toHaveLength(21);
     expect(legalToc(LEGAL_DOCS.privacy)).toHaveLength(15);
   });
@@ -38,11 +38,13 @@ describe("legal markdown parser", () => {
 
 describe("legal text stays in step with pricing", () => {
   it("states the current fees, seat price and payout hold", async () => {
-    const { COMMISSION_FEE_LABEL, INVOICE_FEE_LABEL, EXTRA_MEMBER_USD, HOLD_DAYS, USAGE_WARNING_PCTS } = await import("./pricing");
+    const { COMMISSION_FEE_LABEL, EXTRA_MEMBER_USD, EXTRA_MEMBER_YEARLY_USD, HOLD_DAYS, USAGE_WARNING_PCTS } = await import("./pricing");
     const terms = JSON.stringify(LEGAL_DOCS.terms.blocks);
     expect(terms).toContain(`currently **${COMMISSION_FEE_LABEL}**`);
-    expect(terms).toContain(`currently **${INVOICE_FEE_LABEL}**`);
-    expect(terms).toContain(`currently **$${EXTRA_MEMBER_USD} per month**`);
+    expect(terms).toContain("paid awards** paid through the Service currently carry **no RevSplitPay fee**");
+    expect(terms).toContain("**We will not charge your card when a trial ends unless you have chosen to start your Plan.**");
+    expect(terms).toContain("**monthly or yearly** as you choose");
+    expect(terms).toContain(`currently **$${EXTRA_MEMBER_USD} per month**, or **$${EXTRA_MEMBER_YEARLY_USD} per year**`);
     expect(terms).toContain(`held for **${HOLD_DAYS} days**`);
     expect(terms).toContain(`${USAGE_WARNING_PCTS[0]}% and ${USAGE_WARNING_PCTS[1]}%`);
   });

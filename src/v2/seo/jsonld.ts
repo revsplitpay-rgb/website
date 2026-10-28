@@ -42,22 +42,27 @@ export const softwareLd = () => ({
   description: `${home.heroSupport} Runs on ${providerPhrase()}.`,
   image: OG_IMAGE,
   publisher: { "@id": ORG_ID },
-  offers: PLANS.map((plan) => ({
-    "@type": "Offer",
-    name: plan.name,
-    price: plan.priceUsd.toFixed(2),
-    priceCurrency: "USD",
-    description: plan.summary,
-    url: absoluteUrl("/pricing"),
-    category: "subscription",
-    priceSpecification: {
-      "@type": "UnitPriceSpecification",
-      price: plan.priceUsd.toFixed(2),
+  offers: PLANS.flatMap((plan) =>
+    [
+      { suffix: "", price: plan.priceUsd, unitText: "MONTH", billingDuration: "P1M" },
+      { suffix: ", yearly", price: plan.yearlyPriceUsd, unitText: "YEAR", billingDuration: "P1Y" },
+    ].map((term) => ({
+      "@type": "Offer",
+      name: `${plan.name}${term.suffix}`,
+      price: term.price.toFixed(2),
       priceCurrency: "USD",
-      unitText: "MONTH",
-      billingDuration: "P1M",
-    },
-  })),
+      description: plan.summary,
+      url: absoluteUrl("/pricing"),
+      category: "subscription",
+      priceSpecification: {
+        "@type": "UnitPriceSpecification",
+        price: term.price.toFixed(2),
+        priceCurrency: "USD",
+        unitText: term.unitText,
+        billingDuration: term.billingDuration,
+      },
+    })),
+  ),
 });
 
 export const faqLd = (items: { q: string; a: string }[]) => ({

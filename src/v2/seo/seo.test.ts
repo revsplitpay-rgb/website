@@ -1,5 +1,5 @@
 import { INTEGRATIONS } from "@/lib/integrations";
-import { COMMISSION_FEE_LABEL, HOLD_DAYS, PLANS, WELCOME_OFFER, formatUsd } from "@/lib/pricing";
+import { COMMISSION_FEE_LABEL, HOLD_DAYS, PLANS, TRIAL_DAYS, formatUsd } from "@/lib/pricing";
 import { describe, expect, it } from "vitest";
 import { faqs } from "../content/copy";
 import { breadcrumbLd, faqLd, graph, organizationLd, softwareLd } from "./jsonld";
@@ -8,10 +8,11 @@ import { STATIC_ROUTES } from "./routes";
 import { absoluteUrl } from "./site";
 
 describe("structured data", () => {
-  it("offers exactly the real plans at their real monthly prices", () => {
+  it("offers exactly the real plans at their real monthly and yearly prices", () => {
     const offers = softwareLd().offers;
-    expect(offers.map((offer) => offer.name)).toEqual(PLANS.map((plan) => plan.name));
-    expect(offers.map((offer) => Number(offer.price))).toEqual(PLANS.map((plan) => plan.priceUsd));
+    expect(offers.map((offer) => offer.name)).toEqual(PLANS.flatMap((plan) => [plan.name, `${plan.name}, yearly`]));
+    expect(offers.map((offer) => Number(offer.price))).toEqual(PLANS.flatMap((plan) => [plan.priceUsd, plan.yearlyPriceUsd]));
+    expect(offers.map((offer) => offer.priceSpecification.billingDuration)).toEqual(PLANS.flatMap(() => ["P1M", "P1Y"]));
     expect(offers.every((offer) => offer.priceCurrency === "USD")).toBe(true);
   });
 
@@ -34,12 +35,14 @@ describe("structured data", () => {
 });
 
 describe("llms.txt", () => {
-  it("states every plan price, the team fee, the hold and the offer", () => {
+  it("states every plan price, the team fee, the hold and the trial", () => {
     const full = buildLlmsFullTxt();
-    for (const plan of PLANS) expect(full).toContain(`${formatUsd(plan.priceUsd)}/month`);
+    for (const plan of PLANS) expect(full).toContain(`${formatUsd(plan.priceUsd)}/month, or ${formatUsd(plan.yearlyPriceUsd)}/year`);
     expect(full).toContain(COMMISSION_FEE_LABEL);
     expect(full).toContain(`${HOLD_DAYS}-day`);
-    expect(full).toContain(WELCOME_OFFER.code);
+    expect(full).toContain(`free for ${TRIAL_DAYS} days`);
+    expect(full).toContain("Start plan");
+    expect(full).not.toMatch(/WELCOME50|0\.5%/);
   });
 
   it("links every public page by its final URL", () => {

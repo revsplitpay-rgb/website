@@ -1,9 +1,10 @@
 import { APP_SIGNUP_URL } from "@/lib/links";
-import { EXTRA_MEMBER_USD, PLANS, PLAN_FEATURES, formatUsd, type Plan, type PlanId } from "@/lib/pricing";
+import { EVERY_PLAN_INCLUDES, EXTRA_MEMBER_USD, EXTRA_MEMBER_YEARLY_USD, PLANS, PLAN_FEATURES, formatUsd, type Plan, type PlanId } from "@/lib/pricing";
 import { cn } from "@/lib/utils";
 import { Check, Minus, Sparkles } from "lucide-react";
 import type { ReactNode } from "react";
 import { goalExamples } from "../content/examples";
+import { providerPhrase } from "../content/providers";
 import { Reveal } from "./motion";
 import { ButtonLink } from "./ui";
 
@@ -26,7 +27,14 @@ const GROUPS: { title: string; rows: Row[] }[] = [
     rows: [
       { label: "Sales a month", cell: (p) => <span className="v2-num">Up to {p.salesLimitLabel}</span> },
       { label: "Team members included", cell: (p) => <span className="v2-num">{p.includedMembers}</span> },
-      { label: "Each extra member", cell: () => <span className="v2-num">{formatUsd(EXTRA_MEMBER_USD)}/mo</span> },
+      {
+        label: "Each extra member",
+        cell: () => (
+          <span className="v2-num">
+            {formatUsd(EXTRA_MEMBER_USD)}/mo or {formatUsd(EXTRA_MEMBER_YEARLY_USD)}/yr
+          </span>
+        ),
+      },
     ],
   },
   {
@@ -35,6 +43,16 @@ const GROUPS: { title: string; rows: Row[] }[] = [
       { label: "Automatic bonuses when a rep hits a goal", hint: goalExamples.awardRule, cell: (p) => yes(has("Award rules (automatic bonuses)", p.id)) },
       { label: "Higher commission when a rep hits a goal", hint: goalExamples.boost, cell: (p) => yes(has("Commission boosts", p.id)) },
       { label: "Goal tracker reps can see", hint: "Progress toward those goals", cell: (p) => yes(has("Goal tracker for reps", p.id)) },
+    ],
+  },
+  {
+    title: "Your brand",
+    rows: [
+      {
+        label: "Your logo and colours in the dashboard",
+        hint: "For everyone in your workspace",
+        cell: (p) => yes(has("Your logo and colours in the dashboard", p.id)),
+      },
     ],
   },
   {
@@ -68,8 +86,6 @@ const GROUPS: { title: string; rows: Row[] }[] = [
     ],
   },
 ];
-
-const EVERY_PLAN = PLAN_FEATURES.filter((row) => PLANS.every((plan) => row.plans[plan.id])).map((row) => row.label);
 
 const Mark = ({ value }: { value: Cell }) => {
   if (value === "yes")
@@ -131,7 +147,7 @@ const CompareTable = () => (
                   <span className="text-sm text-muted-foreground">/mo</span>
                 </span>
                 <ButtonLink href={APP_SIGNUP_URL} variant={featured ? "primary" : "secondary"} className="mt-4 min-h-10 w-full px-4 text-sm">
-                  Get started
+                  Start free trial
                 </ButtonLink>
               </th>
             );
@@ -214,13 +230,20 @@ const PlanCompare = () => (
   <Reveal>
     <CompareTable />
     <CompareCards />
-    <div className="v2-card mt-5 flex flex-col gap-4 p-6 lg:flex-row lg:items-center lg:gap-8">
-      <p className="shrink-0 text-sm font-semibold uppercase tracking-[0.12em] text-[rgb(var(--v2-deep))]">On every plan</p>
+  </Reveal>
+);
+
+/** What every plan includes, shown under the plan cards on the pricing page. */
+export const EveryPlan = () => (
+  <Reveal>
+    <div className="v2-card mt-5 flex flex-col gap-4 p-6 lg:flex-row lg:items-start lg:gap-8 lg:p-7">
+      <p className="shrink-0 pt-1.5 text-sm font-semibold uppercase tracking-[0.12em] text-[rgb(var(--v2-deep))]">On every plan</p>
       <ul className="flex flex-wrap gap-2">
-        {EVERY_PLAN.map((label) => (
+        {EVERY_PLAN_INCLUDES.map((label) => (
           <li key={label} className="inline-flex items-center gap-1.5 rounded-full bg-[rgb(0_114_228/0.06)] px-3 py-1.5 text-sm text-foreground">
             <Check className="h-3.5 w-3.5 text-primary" aria-hidden="true" />
-            {label}
+            {/* Provider names follow WHOP_LIVE, like the rest of the site. */}
+            {label.replace("Stripe or Whop", providerPhrase())}
           </li>
         ))}
       </ul>

@@ -200,7 +200,8 @@ const FloatCard = ({ className, children, delay }: { className?: string; childre
     <motion.div
       className={cn("absolute z-20 hidden xl:block", className)}
       initial={reduced ? false : { opacity: 0, y: 24, scale: 0.94, filter: "blur(6px)" }}
-      animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)", transitionEnd: { filter: "none" } }}
+      whileInView={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)", transitionEnd: { filter: "none" } }}
+      viewport={{ once: true, amount: 0.3 }}
       transition={{ duration: 0.9, delay, ease: EASE }}
       aria-hidden="true"
     >
@@ -273,7 +274,7 @@ export const HeroVisual = () => {
   const phase = useDealLoop(!reduced && inView);
   const holdDays = phase.settled ? HOLD_DONE_DAYS : phase.setterPaid ? HOLD_DONE_DAYS - 1 : phase.closerPaid ? 2 : 1;
   return (
-    <div ref={rootRef} className="relative mx-auto mt-16 w-full max-w-[1100px] md:mt-20">
+    <div ref={rootRef} className="relative isolate mx-auto mt-14 w-full max-w-[1100px] md:mt-16">
       <div className="absolute inset-x-[15%] -top-10 bottom-0 -z-10 rounded-[48px] bg-[radial-gradient(closest-side,rgb(0_114_228/0.22),transparent)] blur-2xl" aria-hidden="true" />
 
       <FloatCard className="left-0 top-10 w-[224px]" delay={1.1}>
@@ -343,8 +344,9 @@ export const HeroVisual = () => {
 
       <motion.div
         initial={reduced ? false : { opacity: 0, y: 48, filter: "blur(10px)" }}
-        animate={{ opacity: 1, y: 0, filter: "blur(0px)", transitionEnd: { filter: "none" } }}
-        transition={{ duration: 1, delay: 0.45, ease: EASE }}
+        whileInView={{ opacity: 1, y: 0, filter: "blur(0px)", transitionEnd: { filter: "none" } }}
+        viewport={{ once: true, amount: 0.2 }}
+        transition={{ duration: 1, delay: 0.15, ease: EASE }}
         className="mx-auto max-w-[600px]"
       >
         <DealCard phase={phase} />

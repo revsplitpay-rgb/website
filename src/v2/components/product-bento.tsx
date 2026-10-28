@@ -1,4 +1,3 @@
-import { INVOICE_FEE_LABEL } from "@/lib/pricing";
 import { cn } from "@/lib/utils";
 import { motion, useReducedMotion } from "framer-motion";
 import { AlertTriangle, Check, FileText, Link2, RefreshCw } from "lucide-react";
@@ -143,7 +142,7 @@ export const InvoiceVisual = () => (
       <span className="flex-1 rounded-full bg-[linear-gradient(180deg,#1a86f0,#0063c7)] py-2 text-center text-xs font-medium text-white">Approve and pay</span>
       <span className="rounded-full px-3 py-2 text-xs font-medium text-muted-foreground ring-1 ring-border">Reject</span>
     </div>
-    <p className="mt-3 text-xs text-muted-foreground">{INVOICE_FEE_LABEL} fee on invoices</p>
+    <p className="mt-3 text-xs text-muted-foreground">No RevSplitPay fee on invoices</p>
   </div>
 );
 

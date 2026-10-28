@@ -1,7 +1,7 @@
 # Terms and Conditions
 
-**Last updated: October 21, 2026**
-*(Previous version: May 27, 2026)*
+**Last updated: October 27, 2026**
+*(Previous version: October 21, 2026)*
 
 These Terms and Conditions ("Terms") govern your access to and use of RevSplitPay, including the web application at app.revsplitpay.com and any related pages, emails and services (together, the "Service"). The Service is operated by **RevSplitPay Limited**, a company registered in Ireland ("RevSplitPay", "we", "our" or "us").
 
@@ -30,6 +30,7 @@ If you use the Service on behalf of a business or other organisation, you confir
 ## 3. Description of Service
 
 RevSplitPay is a secure, multi-tenant revenue-splitting, commission and payout platform. It allows Businesses to:
+
 - create products and checkout links for one-time payments, recurring subscriptions, instalments and custom payment plans;
 - assign the Team Members who worked each sale and the Commission each one earns;
 - have Commissions calculated automatically and paid out to Team Members' own payout accounts through the Payment Provider;
@@ -52,6 +53,7 @@ Businesses using the platform must be duly organised and in good standing under 
 ## 5. Account Registration and Security
 
 You may register using Google sign-in, email or other supported authentication methods. You agree to provide accurate information and keep it up to date. You are responsible for:
+
 - maintaining the confidentiality of your account credentials;
 - all activities that occur under your account;
 - notifying us immediately at revsplitpay@gmail.com of any unauthorised access or security breach.
@@ -64,35 +66,36 @@ We reserve the right to suspend or terminate accounts that we believe have been 
 
 ### 6.1 Plans
 
-Access to the Service requires an active Plan. Each Plan includes a monthly sales limit, a number of Team Members ("seats") and a set of features, as shown on our pricing and billing pages at the time you subscribe. A Business may sell above $2,000,000 a month under a separately agreed Enterprise arrangement.
+Access to the Service requires an active Plan. Each Plan includes a monthly sales limit, a number of Team Members ("seats") and a set of features, as shown on our pricing and billing pages at the time you subscribe. The sales limit is monthly on every Plan, including Plans billed yearly. A Business may sell above $2,000,000 a month under a separately agreed Enterprise arrangement.
 
 ### 6.2 Billing
 
-- Plan fees are billed **monthly in advance**, in **US dollars**, to the payment method on file, through Stripe.
-- By subscribing, you authorise us to charge your designated payment method on a recurring basis.
-- Subscriptions **renew automatically** each month unless cancelled before the renewal date.
+- Plan fees are billed **in advance**, **monthly or yearly** as you choose, in **US dollars**, to the payment method on file, through Stripe. Yearly billing is offered at a discount to the monthly price, as shown on our pricing and billing pages.
+- By starting a Plan, you authorise us to charge your designated payment method on a recurring basis.
+- Plans **renew automatically** at the end of each month or year unless cancelled before the renewal date.
 - Prices exclude any taxes that may apply. Where we are required to charge tax, it will be added to your bill.
 
 ### 6.3 Seats (team members)
 
 - Each Plan includes a number of seats. The Owner never uses a seat.
-- When a Team Member joins and all included and paid seats are in use, an extra seat is added at the price shown (currently **$25 per month**). It is **charged in full when the person joins**.
+- When a Team Member joins and all included and paid seats are in use, an extra seat is added at the price shown (currently **$20 per month**, or **$192 per year** on yearly billing). It is **charged when the person joins**: a full month on monthly billing, or the months left in the current year on yearly billing.
 - A paid seat remains paid until the next renewal and can be reused if someone leaves.
 - At each renewal, extra seats are billed for the team as it is on that date.
 - Only the Owner or an admin can add a paid seat.
 
 ### 6.4 Free trials and promotional codes
 
-- Free trials are offered only through promotional codes we issue. A valid payment method is required to start a trial.
-- Each payment card may be used for one free trial only, and a trial is not available to a Business that previously held a subscription.
-- **Unless you cancel before the trial ends, your payment method will be charged for the Plan when the trial ends.** We will remind you before the trial ends.
+- New Businesses may be offered a free trial, for the length shown when they sign up. Promotional codes may give a different trial length. A valid payment card is required to start a trial; it is saved so the Plan can start in one click, and to check eligibility.
+- Each payment card may be used for one free trial only, and a trial is not available to a Business that previously held a Plan or a trial.
+- **We will not charge your card when a trial ends unless you have chosen to start your Plan.** You can start your Plan at any time during the trial; you then keep the rest of the trial, and the first charge is made when it ends. If you do not start a Plan, nothing is charged and the workspace is paused when the trial ends (see section 6.6) until you start one. We will remind you before the trial ends.
 - Discount codes reduce the Plan fee (including extra seats) for the period stated with the code.
 - Codes are issued at our discretion, may expire, may be limited in number, cannot be exchanged for cash, and may be withdrawn if misused.
 
 ### 6.5 Changing Plans
 
-- **Upgrades** take effect immediately. You are charged the difference for the remainder of the current billing month, with credit for unused time on your previous Plan.
-- **Downgrades** take effect at the next renewal. A downgrade may be refused while your sales in the current billing month exceed the lower Plan's limit.
+- **Upgrades** take effect immediately. You are charged the difference for the remainder of the current billing month or year, with credit for unused time on your previous Plan.
+- **Switching from monthly to yearly billing** takes effect immediately: the first year is charged, with credit for the unused part of the current month.
+- **Downgrades**, and **switching from yearly to monthly billing**, take effect at the next renewal. A downgrade may be refused while your sales in the current month exceed the lower Plan's limit.
 - The amount to be charged is shown before you confirm any change.
 - We may correct or change a Business's Plan on its behalf (for example after an agreement with you). Any resulting price change applies from the next bill.
 
@@ -104,10 +107,12 @@ Access to the Service requires an active Plan. Each Plan includes a monthly sale
 - We never move a Business down to a lower Plan automatically.
 
 A workspace may also be paused when:
+
 - no Plan is active (for example after a free period or a cancellation ends);
 - a Plan payment remains unpaid after a grace period.
 
 **While a workspace is paused:**
+
 - new deals, checkout links, invoices and invites cannot be created;
 - existing pages and records remain accessible;
 - payments already in progress (existing checkout links, subscriptions, instalments and payment plans) continue;
@@ -121,14 +126,15 @@ If a Plan payment fails, we notify the Owner and retry. If the payment remains u
 
 ### 6.8 Cancellation and refunds
 
-- The Owner may cancel at any time from the Billing page. The Plan remains active until the end of the billing month already paid. **No further Plan fee is charged** after cancellation, and the workspace is then paused until a Plan is chosen again.
+- The Owner may cancel at any time from the Billing page. The Plan remains active until the end of the billing month or year already paid. **No further Plan fee is charged** after cancellation, and the workspace is then paused until a Plan is chosen again.
 - **Fees are non-refundable**, including for partial billing periods and unused seats, unless required by applicable law.
 
 ### 6.9 Platform fees on payments
 
-In addition to Plan fees, RevSplitPay charges the following platform fees, which are deducted automatically at the time of each payment:
+In addition to Plan fees, RevSplitPay charges the following platform fee, which is deducted automatically at the time of each payment:
+
 - **Commissions:** a percentage of each Commission paid to a Team Member, currently **2.9%**. No platform fee is charged on the share of a payment that remains with the Business.
-- **Invoices, payment requests and paid awards** paid through the Service: currently **0.5%** of the amount.
+- **Invoices, payment requests and paid awards** paid through the Service currently carry **no RevSplitPay fee**. Invoices and awards are intended for genuine additional work and bonuses; if they are used in place of Commissions to avoid the Commission fee, we may apply the Commission fee to them.
 - **Payment Provider fees** (card processing, bank transfer and other fees charged by Stripe or Whop) apply in addition and are deducted as set by that Payment Provider.
 
 The fee that applies to a payment is the one in effect when the payment is made. Details of the fee on each Commission, invoice and award are shown in the relevant details view in the Service.
@@ -185,12 +191,13 @@ Where a recurring, instalment or payment-plan charge fails, the Service may retr
 
 - Team Members may submit invoices and payment requests to their Business through the Service. The Business decides whether to approve, reject or pay them.
 - Businesses may give awards and bonuses to Team Members, including cash awards paid through a payment link and awards granted automatically under award rules.
-- Payments for invoices and awards are made by the Business to the Team Member through the Payment Provider. The platform fees in section 6.9 apply.
+- Payments for invoices and awards are made by the Business to the Team Member through the Payment Provider. The platform fees in section 6.9, if any, apply.
 - RevSplitPay is not responsible for the merits of any invoice, award or bonus arrangement between a Business and its Team Members.
 
 ## 9. Acceptable Use
 
 You agree not to use RevSplitPay to:
+
 - violate any applicable laws, regulations or third-party rights;
 - process transactions for illegal goods, services or activities, or for any business or activity prohibited by your Payment Provider;
 - engage in money laundering, fraud or any deceptive practices, including misleading Customers about prices, recurring charges or payment schedules;
@@ -203,6 +210,7 @@ You agree not to use RevSplitPay to:
 ## 10. Third-Party Services and Integrations
 
 The Service relies on and connects to third-party services, including:
+
 - Payment Providers;
 - our authentication, hosting, database and email providers;
 - integrations you choose to connect, such as Slack and custom webhooks.
@@ -223,12 +231,14 @@ All content, features, functionality, branding and technology on the RevSplitPay
 Our Privacy Policy explains how we collect and use personal data.
 
 **Where a Business uses the Service to process personal data of its Customers and Team Members,** such as names, emails, sales and commission records:
+
 - the Business is responsible for having a lawful basis for that processing and for providing any required notices;
 - we process that data on the Business's behalf to provide the Service, as described in the Privacy Policy.
 
 ## 14. Limitation of Liability
 
 To the maximum extent permitted by applicable law, RevSplitPay and its officers, directors, employees and agents shall not be liable for any indirect, incidental, special, consequential or punitive damages arising out of or in connection with your use of the Service, including:
+
 - loss of revenue, loss of profits or loss of data;
 - amounts lost through a Payment Provider;
 - amounts lost through a configuration error made by a user.
@@ -244,6 +254,7 @@ The Service is provided "as is" and "as available" without warranties of any kin
 ## 16. Indemnification
 
 You agree to indemnify, defend and hold harmless RevSplitPay and its affiliates, officers, directors and employees from any claims, liabilities, damages, losses and expenses (including reasonable legal fees) arising out of:
+
 - your use of the Service;
 - your violation of these Terms;
 - your sales to Customers;

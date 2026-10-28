@@ -8,7 +8,6 @@ import CtaBand from "../components/cta-band";
 import Faq from "../components/faq";
 import { HeroStrokes, HeroVisual, LogoStrip } from "../components/hero-visual";
 import Ledger from "../components/ledger";
-import MoneyFlow from "../components/money-flow";
 import { Reveal } from "../components/motion";
 import PageMeta from "../components/page-meta";
 import { faqLd, softwareLd } from "../seo/jsonld";
@@ -18,7 +17,7 @@ import { MoneyPath, TrustList } from "../components/trust-visual";
 import ProductBento from "../components/product-bento";
 import { ButtonLink, Container, Grad, Section, SectionHeading, buttonClass } from "../components/ui";
 import VideoShowcase from "../components/video-showcase";
-import { faqs, home, offerLine, priceLine, problemRows, steps } from "../content/copy";
+import { faqs, home, priceLine, problemRows, steps, trialLine } from "../content/copy";
 import { paymentProviderLogos } from "../content/logos";
 import { railsLine } from "../content/providers";
 import { v2Path } from "../lib/paths";
@@ -46,8 +45,6 @@ const Hero = () => (
               <img src={mark.src} alt={mark.name} style={{ height: Math.round(mark.height * 0.62) }} className="w-auto" />
             </span>
           ))}
-          <span className="hidden h-1 w-1 rounded-full bg-[rgb(var(--input))] sm:block" aria-hidden="true" />
-          <span className="hidden text-muted-foreground sm:inline">Money moves between your own accounts</span>
         </p>
       </Reveal>
       <Reveal onLoad delay={100}>
@@ -62,41 +59,28 @@ const Hero = () => (
       <Reveal onLoad delay={300}>
         <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
           <ButtonLink href={APP_SIGNUP_URL} className="w-full sm:w-auto">
-            Get started <ArrowRight aria-hidden="true" />
+            Start free trial <ArrowRight aria-hidden="true" />
           </ButtonLink>
-          <ButtonLink href="#overview" variant="secondary" className="w-full sm:w-auto">
-            Watch the overview
+          <ButtonLink href={v2Path("/pricing")} variant="secondary" className="w-full sm:w-auto">
+            See pricing
           </ButtonLink>
         </div>
-        <p className="mt-6 text-sm text-muted-foreground">
-          {priceLine()}
-          <span className="mx-2" aria-hidden="true">
+        <p className="mt-6 flex flex-col items-center gap-1 text-sm text-muted-foreground sm:flex-row sm:justify-center sm:gap-0">
+          <span className="font-medium text-[rgb(var(--v2-deep))]">{trialLine()}</span>
+          <span className="mx-2 hidden sm:inline" aria-hidden="true">
             ·
           </span>
-          <span className="font-medium text-[rgb(var(--v2-deep))]">{offerLine()}</span>
+          <span>{priceLine()}</span>
         </p>
       </Reveal>
-      <HeroVisual />
+      <Reveal onLoad delay={400}>
+        <div id="overview" className="mx-auto mt-14 max-w-[1040px] md:mt-16">
+          <VideoShowcase priority />
+        </div>
+      </Reveal>
     </Container>
     <LogoStrip />
   </section>
-);
-
-const VideoSection = () => (
-  <Section id="overview" labelledBy="overview-title">
-    <Container>
-      <SectionHeading
-        id="overview-title"
-        center
-        eyebrow="Watch the overview"
-        title="See it work in one minute."
-        support="From checkout link to every person paid, in one short walkthrough."
-      />
-      <div className="mx-auto mt-12 max-w-[1080px] md:mt-16">
-        <VideoShowcase />
-      </div>
-    </Container>
-  </Section>
 );
 
 const Problem = () => (
@@ -170,7 +154,7 @@ const HowItWorks = () => (
         <div className="v2-blob -bottom-32 -right-20 h-80 w-80 bg-[rgb(0_114_228/0.14)]" aria-hidden="true" />
         <div className="relative">
           <SectionHeading id="how-title" center eyebrow="How it works" title={home.howTitle} support={home.howSupport} />
-          <MoneyFlow />
+          <HeroVisual />
           <ol className="mx-auto mt-14 grid max-w-[1000px] gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {steps.map((step, index) => (
               <li key={step.title}>
@@ -268,8 +252,8 @@ const PricingTeaser = () => (
         }
         support={home.pricingSupport}
       />
-      <div className="mt-16">
-        <PlanCards compact />
+      <div className="mt-12">
+        <PlanCards />
       </div>
       <Reveal>
         <div className="mt-10 flex justify-center">
@@ -307,7 +291,6 @@ const Home = () => (
       jsonLd={[softwareLd(), faqLd(faqs.filter((item) => item.group !== "billing"))]}
     />
     <Hero />
-    <VideoSection />
     <Problem />
     <HowItWorks />
     <SplitSection />

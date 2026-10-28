@@ -4,26 +4,47 @@ import {
   COMMISSION_FEE_LABEL,
   ENTERPRISE_THRESHOLD_LABEL,
   EXTRA_MEMBER_USD,
+  EXTRA_MEMBER_YEARLY_USD,
   HOLD_DAYS,
-  INVOICE_FEE_LABEL,
   PLANS,
   STARTING_PRICE_USD,
+  TRIAL_DAYS,
   USAGE_WARNING_PCTS,
-  WELCOME_OFFER,
+  YEARLY_DISCOUNT_PCT,
   formatUsd,
 } from "@/lib/pricing";
 import { holdsMoneyAnswer, providerPhrase, providersAnswer, trustProviderLine, whopBalanceLine } from "./providers";
 
 const starting = formatUsd(STARTING_PRICE_USD);
 const seat = formatUsd(EXTRA_MEMBER_USD);
+const seatYearly = formatUsd(EXTRA_MEMBER_YEARLY_USD);
 const counts = PLANS.map((plan) => String(plan.includedMembers));
 const seatCounts = `${counts.slice(0, -1).join(", ")} or ${counts[counts.length - 1]}`;
 const [warnLow, warnHigh] = USAGE_WARNING_PCTS;
+const growth = PLANS.find((plan) => plan.id === "growth") ?? PLANS[0];
 
 export const priceLine = () => `From ${starting} a month · Cancel any time`;
 
-export const offerLine = () =>
-  `${WELCOME_OFFER.percentOff}% off ${WELCOME_OFFER.appliesTo} with ${WELCOME_OFFER.code}`;
+export const trialLine = () => `${TRIAL_DAYS}-day free trial`;
+
+// The free trial (product_updates.md, section 2).
+export const trial = {
+  title: `Try any plan free for ${TRIAL_DAYS} days.`,
+  promise: "We never charge without asking.",
+  points: [
+    { title: "A card to start", text: "A card is needed to start your trial, and it's saved so your plan can start in one click." },
+    { title: "Nothing charged until you say so", text: "When the trial ends, nothing is charged unless you click Start plan." },
+    { title: "Start early, keep your free days", text: "Start your plan during the trial and your first charge is on the day the trial would have ended." },
+    { title: "Your data stays safe", text: "If you don't start, nothing is charged. New activity pauses, and your data and your team's earnings stay safe until you choose a plan." },
+  ],
+  footnote: "One free trial per card. Your dashboard shows how many trial days are left at the top of every page.",
+};
+
+// Custom branding on Scale (product_updates.md, section 3).
+export const branding = {
+  title: "Your brand, your dashboard.",
+  support: "On Scale, your team works in a dashboard with your logo and your colours, not ours.",
+};
 
 export const home = {
   title: "RevSplitPay | One payment in, everyone paid out",
@@ -38,7 +59,7 @@ export const home = {
   productTitle: "Everything between a sale and a paid team.",
   productSupport: "Checkout links, automatic splits, payouts, invoices and rewards in one place.",
   pricingTitle: "Plans that grow with your team.",
-  pricingSupport: `From ${starting} a month. Your own share is never charged a fee.`,
+  pricingSupport: `From ${starting} a month, or save ${YEARLY_DISCOUNT_PCT}% yearly. Every plan starts with a ${TRIAL_DAYS}-day free trial.`,
   trustTitle: "Your money stays where it should.",
   trustSupport: `Payments run on ${providerPhrase()}. RevSplitPay never stores card details.`,
   faqTitle: "Questions owners ask first.",
@@ -89,7 +110,7 @@ export const productRows = [
   {
     id: "invoices",
     title: "Invoices from your team",
-    text: `Team members invoice you for extra work or an agreed bonus. You approve and pay in one click by card, bank transfer ${whopBalanceLine() ?? ""}`.trim() + `. Invoices carry a ${INVOICE_FEE_LABEL} fee.`,
+    text: `Team members invoice you for extra work or an agreed bonus. You approve and pay in one click by card, bank transfer ${whopBalanceLine() ?? ""}`.trim() + ". RevSplitPay adds no fee.",
   },
   {
     id: "rewards",
@@ -116,10 +137,11 @@ export const faqs: { group: FaqGroup; q: string; a: string }[] = [
   { group: "payouts", q: "What if a customer's card fails on an instalment or renewal?", a: "The deal is flagged and the payment is retried automatically. For payment plans, the customer is emailed a link to pay." },
   { group: "payouts", q: `Who pays the ${COMMISSION_FEE_LABEL} fee?`, a: "It comes out of each team member's commission when it's paid out. Your own share has no RevSplitPay fee." },
   { group: "billing", q: "Can I sell subscriptions and payment plans?", a: "Yes: recurring subscriptions from weekly to annual, equal instalments, and fully custom payment plans with your own amounts and dates." },
-  { group: "billing", q: "Do I pay per team member?", a: `Each plan includes a number of team members (${seatCounts}). Extra members are ${seat} a month each. You never count as one.` },
+  { group: "billing", q: "Do I pay per team member?", a: `Each plan includes a number of team members (${seatCounts}). Extra members are ${seat} a month each, or ${seatYearly} a year on yearly billing. You never count as one.` },
   { group: "billing", q: "What happens if we sell more than our plan's limit?", a: `You're warned at ${warnLow}% and ${warnHigh}%. At the limit on Starter or Growth, new deals pause until you upgrade. Nothing already earned or in motion stops. Scale never pauses.` },
-  { group: "billing", q: "Can I change or cancel my plan?", a: "Yes, any time from Billing. Upgrades are instant; downgrades apply at your next bill. Cancelling keeps everything working until the end of the month you paid for." },
-  { group: "billing", q: "Is there a free trial?", a: `There's no public free trial. New customers get ${WELCOME_OFFER.percentOff}% off ${WELCOME_OFFER.appliesTo} on any plan with code ${WELCOME_OFFER.code}. Talk to us if you'd like a walkthrough first.` },
+  { group: "billing", q: "Can I change or cancel my plan?", a: "Yes, any time from Billing. Upgrades are instant; downgrades apply at your next bill. Cancelling keeps everything working until the end of the period you paid for." },
+  { group: "billing", q: "Can I pay yearly?", a: `Yes. Paying yearly saves ${YEARLY_DISCOUNT_PCT}% on any plan: Growth is ${formatUsd(growth.yearlyPriceUsd)} a year instead of ${formatUsd(growth.priceUsd * 12)} paid monthly. Your sales limit stays monthly.` },
+  { group: "billing", q: "Is there a free trial?", a: `Yes. Every plan starts with ${TRIAL_DAYS} days free. A card is needed to start, but nothing is charged unless you click Start plan. Start early and you keep your free days.` },
   { group: "providers", q: "Does RevSplitPay hold our money?", a: holdsMoneyAnswer() },
   { group: "providers", q: "Which payment providers do you support?", a: providersAnswer() },
 ];
@@ -185,7 +207,7 @@ export const featureGroups = [
     points: [
       "Owners review and approve or reject each request",
       `Pay in one click by card, bank transfer ${whopBalanceLine() ?? ""}`.trim(),
-      `${INVOICE_FEE_LABEL} fee on invoices and paid awards`,
+      "No RevSplitPay fee on invoices or paid awards",
       "Invoices appear in the member's payouts and the business records",
     ],
   },
@@ -212,6 +234,20 @@ export const featureGroups = [
       "Eight roles with the right access for each",
       "Invites and join codes with role and commission already set",
       "Change roles and rates, set override shares, remove members",
+    ],
+  },
+  {
+    id: "branding",
+    title: "Custom branding",
+    badge: "Scale",
+    summary: "Make RevSplitPay look like your own, for everyone in your workspace.",
+    points: [
+      "Your logo at the top of the sidebar, in place of ours",
+      "Your brand colour across buttons, links, highlights, charts and the active menu item",
+      "Works in light and dark mode: a colour that would be hard to read is adjusted slightly so text stays readable",
+      "Your name and logo in the browser tab",
+      "Pick one of 8 preset colours or enter your own, upload a logo, and preview it before saving",
+      "A small \"Powered by RevSplitPay\" credit stays at the bottom of the sidebar",
     ],
   },
   {
@@ -244,15 +280,17 @@ export const featureGroups = [
 
 export const billingPoints = [
   "The owner never counts as a team member.",
-  `An extra team member costs ${seat} a month, charged when they join. A paid seat stays paid until the next bill, so someone can be replaced at no extra cost.`,
-  "Discount codes can be applied at signup or later from Billing.",
-  "Upgrades happen instantly and you pay only the difference for the rest of the month. Downgrades take effect at the next bill.",
-  "You can switch any time from Billing, and the exact amount is shown before you confirm.",
+  `Every plan starts with ${TRIAL_DAYS} days free. Nothing is charged unless you click Start plan.`,
+  `Yearly billing saves ${YEARLY_DISCOUNT_PCT}%, and the sales limit stays monthly. Switch to yearly any time (charged now, with credit for the unused month); switching back to monthly happens at the end of the year.`,
+  `An extra team member costs ${seat} a month (${seatYearly} a year on yearly billing), charged when they join. A paid seat stays paid until the next bill, so someone can be replaced at no extra cost.`,
+  "Upgrades happen instantly and you pay only the difference for the rest of the month or year. Downgrades take effect at the next bill.",
+  "The exact amount is shown before you confirm any change.",
   `Usage warnings arrive at ${warnLow}% and ${warnHigh}% of your plan's monthly sales limit.`,
   "At the limit on Starter and Growth, new deals and links pause until you upgrade. Your team keeps access to everything they've earned, existing links, subscriptions and instalments keep collecting, and payouts keep going out.",
   "You are never moved down a plan automatically.",
-  "Cancel any time: everything works until the end of the month you paid for, with no final bill.",
-  "All prices are in USD, billed monthly in advance.",
+  "Discount codes can be applied at signup or later from Billing.",
+  "Cancel any time: everything works until the end of the period you paid for, with no final bill.",
+  "All prices are in USD, billed monthly or yearly in advance.",
 ];
 
 export const enterpriseLine = () => `Selling over ${ENTERPRISE_THRESHOLD_LABEL} a month? We'll agree a price with you.`;

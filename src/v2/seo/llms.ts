@@ -4,14 +4,15 @@ import {
   COMMISSION_FEE_LABEL,
   ENTERPRISE_THRESHOLD_LABEL,
   EXTRA_MEMBER_USD,
+  EXTRA_MEMBER_YEARLY_USD,
   HOLD_DAYS,
-  INVOICE_FEE_LABEL,
   PLANS,
   PLAN_FEATURES,
-  WELCOME_OFFER,
+  TRIAL_DAYS,
+  YEARLY_DISCOUNT_PCT,
   formatUsd,
 } from "@/lib/pricing";
-import { billingPoints, faqs, featureGroups, home, roles, steps } from "../content/copy";
+import { billingPoints, faqs, featureGroups, home, roles, steps, trial } from "../content/copy";
 import { holdsMoneyAnswer, providerPhrase } from "../content/providers";
 import { absoluteUrl } from "./site";
 
@@ -28,14 +29,11 @@ const pages: { title: string; path: string; note: string }[] = [
   { title: "Contact", path: "/contact", note: "How to reach the team" },
 ];
 
-/** The offer copy is written for the page ("your first month"); llms.txt is third person. */
-const offerScope = () => WELCOME_OFFER.appliesTo.replace(/^your /, "the ");
-
 const summary = () =>
   `${home.heroSupport} RevSplitPay is a payment and commission platform for high-ticket sales teams (coaching, consulting, courses, agencies). Payments run on ${providerPhrase()}; RevSplitPay never holds the money.`;
 
 const planLine = (plan: (typeof PLANS)[number]) =>
-  `- **${plan.name}**: ${formatUsd(plan.priceUsd)}/month. Up to ${plan.salesLimitLabel} in sales a month, ${plan.includedMembers} team members included, then ${formatUsd(EXTRA_MEMBER_USD)}/month per extra member. Support replies: ${plan.supportReplies}.${plan.badge ? ` (${plan.badge})` : ""}`;
+  `- **${plan.name}**: ${formatUsd(plan.priceUsd)}/month, or ${formatUsd(plan.yearlyPriceUsd)}/year. Up to ${plan.salesLimitLabel} in sales a month, ${plan.includedMembers} team members included, then ${formatUsd(EXTRA_MEMBER_USD)}/month (${formatUsd(EXTRA_MEMBER_YEARLY_USD)}/year on yearly billing) per extra member. Support replies: ${plan.supportReplies}.${plan.badge ? ` (${plan.badge})` : ""}`;
 
 export const buildLlmsTxt = () =>
   [
@@ -43,7 +41,7 @@ export const buildLlmsTxt = () =>
     "",
     `> ${summary()}`,
     "",
-    `Plans start at ${formatUsd(PLANS[0].priceUsd)}/month. A ${COMMISSION_FEE_LABEL} fee is taken from each team member's commission payout; the owner's own share has no fee. Commissions are paid after a ${HOLD_DAYS}-day safety hold. New customers get ${WELCOME_OFFER.percentOff}% off ${offerScope()} with code ${WELCOME_OFFER.code}.`,
+    `Plans start at ${formatUsd(PLANS[0].priceUsd)}/month. A ${COMMISSION_FEE_LABEL} fee is taken from each team member's commission payout; the owner's own share has no fee. Commissions are paid after a ${HOLD_DAYS}-day safety hold. Every plan starts with a ${TRIAL_DAYS}-day free trial, never charged without the owner clicking Start plan, and paying yearly saves ${YEARLY_DISCOUNT_PCT}%.`,
     "",
     "## Pages",
     "",
@@ -68,7 +66,7 @@ export const buildLlmsFullTxt = () =>
     "",
     holdsMoneyAnswer(),
     "",
-    "## Plans and pricing (USD, billed monthly in advance)",
+    "## Plans and pricing (USD, billed monthly or yearly in advance)",
     "",
     ...PLANS.map(planLine),
     `- **Enterprise**: for teams selling over ${ENTERPRISE_THRESHOLD_LABEL} a month; pricing agreed directly.`,
@@ -80,12 +78,15 @@ export const buildLlmsFullTxt = () =>
     "### Fees",
     "",
     `- ${COMMISSION_FEE_LABEL} of each commission paid to a team member, deducted from that member's payout. The owner pays no fee on their own share.`,
-    `- ${INVOICE_FEE_LABEL} on invoices from team members and on paid awards.`,
+    "- No RevSplitPay fee on invoices from team members or on paid awards.",
     `- Payment provider processing fees (${providerPhrase()}) are separate.`,
     "",
-    "### Offer",
+    "### Free trial and yearly billing",
     "",
-    `- ${WELCOME_OFFER.percentOff}% off ${offerScope()} on any plan with code ${WELCOME_OFFER.code}. There is no public free trial.`,
+    `- ${trial.title} ${trial.promise}`,
+    ...trial.points.map((point) => `- ${point.title}: ${point.text}`),
+    `- ${trial.footnote}`,
+    `- Paying yearly saves ${YEARLY_DISCOUNT_PCT}% compared with twelve monthly payments. The sales limit stays monthly.`,
     "",
     "### Billing rules",
     "",
