@@ -18,6 +18,7 @@ const columns = [
     links: [
       { label: "About", to: v2Path("/about") },
       { label: "Blog", to: v2Path("/blog") },
+      { label: "Affiliates", to: v2Path("/affiliates") },
       { label: "Contact", to: v2Path("/contact") },
     ],
   },

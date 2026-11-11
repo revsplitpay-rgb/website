@@ -27,7 +27,8 @@ const PageHero = ({
     <div className="v2-blob -left-24 top-10 -z-10 h-72 w-72 bg-[rgb(63_193_255/0.4)]" aria-hidden="true" />
     <div className="v2-blob -right-24 top-24 -z-10 h-80 w-80 bg-[rgb(0_114_228/0.22)] [animation-delay:-8s]" aria-hidden="true" />
     <Container className={cn(center && "text-center", aside && "grid items-center gap-12 lg:grid-cols-[1.1fr_0.9fr]")}>
-      <div>
+      {/* min-w-0: grid columns may shrink below their content (a long unbroken string would otherwise widen the page). */}
+      <div className="min-w-0">
       <Reveal onLoad>
         <Eyebrow>{eyebrow}</Eyebrow>
       </Reveal>
@@ -46,7 +47,7 @@ const PageHero = ({
       )}
       </div>
       {aside && (
-        <Reveal onLoad delay={250}>
+        <Reveal onLoad delay={250} className="min-w-0">
           {aside}
         </Reveal>
       )}

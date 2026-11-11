@@ -1,7 +1,8 @@
 import { cn } from "@/lib/utils";
-import type { ReactNode } from "react";
+import { motion, useReducedMotion } from "framer-motion";
+import { useId, type ReactNode } from "react";
 import { Link } from "react-router-dom";
-import { Reveal } from "./motion";
+import { EASE, Reveal } from "./motion";
 
 // v2 primitives. Cards 20px, buttons pill, inputs 10px. Colour comes from the
 // section tones (white, tint, sky, deep) and the brand gradient utilities in v2.css.
@@ -131,15 +132,22 @@ export const ButtonLink = ({
   href,
   variant = "primary",
   className,
+  newTab = false,
   children,
 }: {
   href: string;
   variant?: ButtonVariant;
   className?: string;
+  /** Open an external link in a new tab (for pages outside the site, like the affiliate sign-up). */
+  newTab?: boolean;
   children: ReactNode;
 }) =>
   /^(https?:|mailto:)/.test(href) ? (
-    <a href={href} className={buttonClass(variant, className)}>
+    <a
+      href={href}
+      className={buttonClass(variant, className)}
+      {...(newTab ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+    >
       {children}
     </a>
   ) : (
@@ -147,6 +155,57 @@ export const ButtonLink = ({
       {children}
     </Link>
   );
+
+/** Pill switch between a few options (billing period, plan); the white pill slides to the chosen one. */
+export const Segmented = <T extends string>({
+  items,
+  value,
+  onChange,
+  label,
+  fill = false,
+  className,
+}: {
+  items: { id: T; label: string }[];
+  value: T;
+  onChange: (next: T) => void;
+  label: string;
+  /** Stretch to the container's width with equal-width options. */
+  fill?: boolean;
+  className?: string;
+}) => {
+  const reduced = useReducedMotion();
+  const pillId = useId();
+  return (
+    <div role="group" aria-label={label} className={cn("relative rounded-full bg-[rgb(0_114_228/0.07)] p-1 ring-1 ring-[rgb(0_114_228/0.12)]", fill ? "flex w-full" : "inline-flex", className)}>
+      {items.map((item) => {
+        const active = item.id === value;
+        return (
+          <button
+            key={item.id}
+            type="button"
+            aria-pressed={active}
+            onClick={() => onChange(item.id)}
+            className={cn(
+              "relative rounded-full px-5 py-2 text-[0.9375rem] font-medium transition-colors",
+              fill && "flex-1",
+              active ? "text-foreground" : "text-muted-foreground hover:text-foreground",
+            )}
+          >
+            {active && (
+              <motion.span
+                layoutId={reduced ? undefined : pillId}
+                transition={{ duration: 0.35, ease: EASE }}
+                className="absolute inset-0 -z-0 rounded-full bg-white shadow-[0_4px_14px_-6px_rgb(0_40_110/0.35)] ring-1 ring-[rgb(0_114_228/0.1)]"
+                aria-hidden="true"
+              />
+            )}
+            <span className="relative">{item.label}</span>
+          </button>
+        );
+      })}
+    </div>
+  );
+};
 
 export const ExampleLabel = ({ className }: { className?: string }) => (
   <span

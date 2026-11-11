@@ -1,4 +1,5 @@
 import { INTEGRATIONS } from "@/lib/integrations";
+import { AFFILIATE_COMMISSION_LABEL, AFFILIATE_COOKIE_DAYS } from "@/lib/affiliate";
 import { APP_URL, CONTACT_EMAIL } from "@/lib/links";
 import {
   COMMISSION_FEE_LABEL,
@@ -27,6 +28,7 @@ const pages: { title: string; path: string; note: string }[] = [
   { title: "Integrations", path: "/integrations", note: `${providerPhrase()}, Slack and webhooks` },
   { title: "About", path: "/about", note: "Who it is for and company facts" },
   { title: "Contact", path: "/contact", note: "How to reach the team" },
+  { title: "Affiliate program", path: "/affiliates", note: `Earn ${AFFILIATE_COMMISSION_LABEL} recurring commission for referring sales teams` },
 ];
 
 const summary = () =>
@@ -102,6 +104,10 @@ export const buildLlmsFullTxt = () =>
     "## Integrations",
     "",
     ...INTEGRATIONS.flatMap((item) => [`### ${item.name} (${item.kind})`, "", item.overview, ...(item.needs ? ["", `Needs: ${item.needs}`] : []), ""]),
+    "## Affiliate program",
+    "",
+    `Anyone can join for free and earn ${AFFILIATE_COMMISSION_LABEL} of every payment from the teams they refer, for as long as those teams stay subscribed. Sign-ups within ${AFFILIATE_COOKIE_DAYS} days of clicking an affiliate's link are credited to them; commission starts when the team's ${TRIAL_DAYS}-day free trial ends and they pay. Details: ${absoluteUrl("/affiliates")}`,
+    "",
     "## Frequently asked questions",
     "",
     ...faqs.flatMap((item) => [`### ${item.q}`, "", item.a, ""]),

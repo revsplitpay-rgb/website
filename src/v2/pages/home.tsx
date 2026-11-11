@@ -17,7 +17,7 @@ import { MoneyPath, TrustList } from "../components/trust-visual";
 import ProductBento from "../components/product-bento";
 import { ButtonLink, Container, Grad, Section, SectionHeading, buttonClass } from "../components/ui";
 import VideoShowcase from "../components/video-showcase";
-import { faqs, home, priceLine, problemRows, steps, trialLine } from "../content/copy";
+import { faqsIn, home, priceLine, problemRows, steps, trialLine, type FaqGroup } from "../content/copy";
 import { paymentProviderLogos } from "../content/logos";
 import { railsLine } from "../content/providers";
 import { v2Path } from "../lib/paths";
@@ -282,13 +282,16 @@ const Trust = () => (
   </Section>
 );
 
+// The FAQ groups the home page shows; its FAQ structured data lists exactly these.
+const FAQ_GROUPS: FaqGroup[] = ["payouts", "providers"];
+
 const Home = () => (
   <>
     <PageMeta
       title={home.title}
       description={home.description}
       path="/"
-      jsonLd={[softwareLd(), faqLd(faqs.filter((item) => item.group !== "billing"))]}
+      jsonLd={[softwareLd(), faqLd(faqsIn(FAQ_GROUPS))]}
     />
     <Hero />
     <Problem />
@@ -297,7 +300,7 @@ const Home = () => (
     <Product />
     <PricingTeaser />
     <Trust />
-    <Faq groups={["payouts", "providers"]} title={home.faqTitle} />
+    <Faq groups={FAQ_GROUPS} title={home.faqTitle} />
     <CtaBand />
   </>
 );

@@ -16,11 +16,11 @@ import {
 import { cn } from "@/lib/utils";
 import { motion, useInView, useReducedMotion } from "framer-motion";
 import { ArrowRight, Building, Check, Sparkles } from "lucide-react";
-import { useId, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { enterpriseLine } from "../content/copy";
 import { v2Path } from "../lib/paths";
 import { EASE, Reveal } from "./motion";
-import { ButtonLink } from "./ui";
+import { ButtonLink, Segmented } from "./ui";
 
 // Each card lists what it adds over the plan below it, starting with how far it scales up.
 const highlights = (plan: Plan, index: number) => {
@@ -35,44 +35,14 @@ const PERIODS: { id: BillingPeriod; label: string }[] = [
 ];
 
 /** Monthly / Yearly switch with the yearly saving beside it. */
-const PeriodToggle = ({ period, onChange }: { period: BillingPeriod; onChange: (next: BillingPeriod) => void }) => {
-  const reduced = useReducedMotion();
-  const pillId = useId();
-  return (
-    <div className="flex flex-wrap items-center justify-center gap-3">
-      <div role="group" aria-label="Billing period" className="relative inline-flex rounded-full bg-[rgb(0_114_228/0.07)] p-1 ring-1 ring-[rgb(0_114_228/0.12)]">
-        {PERIODS.map((item) => {
-          const active = item.id === period;
-          return (
-            <button
-              key={item.id}
-              type="button"
-              aria-pressed={active}
-              onClick={() => onChange(item.id)}
-              className={cn(
-                "relative rounded-full px-5 py-2 text-[0.9375rem] font-medium transition-colors",
-                active ? "text-foreground" : "text-muted-foreground hover:text-foreground",
-              )}
-            >
-              {active && (
-                <motion.span
-                  layoutId={reduced ? undefined : pillId}
-                  transition={{ duration: 0.35, ease: EASE }}
-                  className="absolute inset-0 -z-0 rounded-full bg-white shadow-[0_4px_14px_-6px_rgb(0_40_110/0.35)] ring-1 ring-[rgb(0_114_228/0.1)]"
-                  aria-hidden="true"
-                />
-              )}
-              <span className="relative">{item.label}</span>
-            </button>
-          );
-        })}
-      </div>
-      <span className="rounded-full bg-[rgb(16_185_129/0.12)] px-3 py-1 text-sm font-semibold text-[rgb(4_120_87)]">
-        Save {YEARLY_DISCOUNT_PCT}% yearly
-      </span>
-    </div>
-  );
-};
+const PeriodToggle = ({ period, onChange }: { period: BillingPeriod; onChange: (next: BillingPeriod) => void }) => (
+  <div className="flex flex-wrap items-center justify-center gap-3">
+    <Segmented items={PERIODS} value={period} onChange={onChange} label="Billing period" />
+    <span className="rounded-full bg-[rgb(16_185_129/0.12)] px-3 py-1 text-sm font-semibold text-[rgb(4_120_87)]">
+      Save {YEARLY_DISCOUNT_PCT}% yearly
+    </span>
+  </div>
+);
 
 /** "$239.17" with the cents set smaller, so long prices still fit the card. */
 const Price = ({ usd, className }: { usd: number; className?: string }) => {

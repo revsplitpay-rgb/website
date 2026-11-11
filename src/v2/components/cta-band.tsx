@@ -13,8 +13,27 @@ const SEGMENTS = [
   { label: "You keep", pct: 85, bar: "bg-[linear-gradient(90deg,#ffffff,#9fe2ff)]", dot: "bg-white" },
 ];
 
-/** Closing call to action on a deep blue gradient panel. */
-const CtaBand = () => {
+type CtaLink = { label: string; href: string; newTab?: boolean };
+
+/**
+ * Closing call to action on a deep blue gradient panel. With no props it is
+ * the owner offer (free trial, the example split bar); other pages pass their own.
+ */
+const CtaBand = ({
+  title = home.ctaTitle,
+  support = `${priceLine()}.`,
+  pill = trialLine(),
+  primary = { label: "Start free trial", href: APP_SIGNUP_URL },
+  secondary = { label: "Talk to us", href: v2Path("/contact") },
+  showSplit = true,
+}: {
+  title?: string;
+  support?: string;
+  pill?: string;
+  primary?: CtaLink;
+  secondary?: CtaLink;
+  showSplit?: boolean;
+}) => {
   const reduced = useReducedMotion();
   return (
   <section aria-labelledby="cta-title" className="bg-background py-12 md:py-16 lg:py-20">
@@ -28,17 +47,18 @@ const CtaBand = () => {
             aria-hidden="true"
           />
           <h2 id="cta-title" className="v2-h2 mx-auto text-white">
-            {home.ctaTitle.split(/(?<=\.) /).map((sentence) => (
+            {title.split(/(?<=[.?]) /).map((sentence) => (
               <span key={sentence} className="block">
                 {sentence}
               </span>
             ))}
           </h2>
-          <p className="v2-lede mx-auto mt-5 max-w-[52ch] text-white/80">{priceLine()}.</p>
+          <p className="v2-lede mx-auto mt-5 max-w-[52ch] text-white/80">{support}</p>
           <p className="mx-auto mt-4 inline-flex items-center gap-2 rounded-full bg-white/12 px-4 py-1.5 text-sm font-medium text-white ring-1 ring-white/25">
             <span className="h-1.5 w-1.5 rounded-full bg-[rgb(var(--v2-highlight))]" aria-hidden="true" />
-            {trialLine()}
+            {pill}
           </p>
+          {showSplit && (
           <div className="mx-auto mt-10 max-w-[440px]" aria-hidden="true">
             <div className="flex h-2 overflow-hidden rounded-full bg-white/15 ring-1 ring-white/20">
               {SEGMENTS.map((seg, i) => (
@@ -60,16 +80,17 @@ const CtaBand = () => {
               ))}
             </ul>
           </div>
+          )}
           <div className="mt-9 flex flex-col justify-center gap-3 sm:flex-row">
-            <ButtonLink href={APP_SIGNUP_URL} variant="white">
-              Start free trial <ArrowRight aria-hidden="true" />
+            <ButtonLink href={primary.href} variant="white" newTab={primary.newTab}>
+              {primary.label} <ArrowRight aria-hidden="true" />
             </ButtonLink>
             <ButtonLink
-              href={v2Path("/contact")}
+              href={secondary.href}
               variant="ghost"
               className="text-white ring-1 ring-white/35 hover:bg-white/10"
             >
-              Talk to us
+              {secondary.label}
             </ButtonLink>
           </div>
         </div>

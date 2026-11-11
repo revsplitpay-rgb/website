@@ -1,5 +1,6 @@
 // v2 site copy. Product facts come from product.md; every number is rendered
-// from src/lib/pricing.ts so prices and fees can never drift between pages.
+// from src/lib/pricing.ts (and src/lib/affiliate.ts) so prices and fees can never drift between pages.
+import { AFFILIATE_COMMISSION_LABEL, AFFILIATE_COOKIE_DAYS, commissionCents } from "@/lib/affiliate";
 import {
   COMMISSION_FEE_LABEL,
   ENTERPRISE_THRESHOLD_LABEL,
@@ -12,6 +13,7 @@ import {
   USAGE_WARNING_PCTS,
   YEARLY_DISCOUNT_PCT,
   formatUsd,
+  formatUsdCents,
 } from "@/lib/pricing";
 import { holdsMoneyAnswer, providerPhrase, providersAnswer, trustProviderLine, whopBalanceLine } from "./providers";
 
@@ -44,6 +46,48 @@ export const trial = {
 export const branding = {
   title: "Your brand, your dashboard.",
   support: "On Scale, your team works in a dashboard with your logo and your colours, not ours.",
+};
+
+// The affiliate program (owner, 2026-11-11). Duration of the recurring commission
+// is "for as long as they stay" until the owner confirms otherwise.
+const pct = AFFILIATE_COMMISSION_LABEL;
+const creditDays = AFFILIATE_COOKIE_DAYS;
+const growthCommission = formatUsdCents(commissionCents(growth) / 100);
+
+export const affiliate = {
+  title: `Affiliate program: earn ${pct} recurring | RevSplitPay`,
+  description: `Earn ${pct} of every payment from the sales teams you refer to RevSplitPay, every month they stay. Free to join, with a ${creditDays}-day referral window.`,
+  heroLead: "Earn ",
+  heroGrad: `${pct} every month`,
+  heroTail: " for every team you refer.",
+  heroSupport: `Recommend RevSplitPay to sales teams you know. When they subscribe, you earn ${pct} of what they pay, for as long as they stay.`,
+  facts: [`${pct} recurring`, `${creditDays}-day referral window`, "Free to join"],
+  visualSummary: `Example: a referral link brings in a new team on the Growth plan, and you earn ${growthCommission} every month they pay.`,
+  calcTitle: "See what your referrals are worth.",
+  calcSupport: "Pick a plan and how many teams you refer. You earn on every payment they make.",
+  calcFootnote: `Example using monthly plan prices. You earn ${pct} of what each team actually pays, so yearly plans and discounts change the amount. Not a promise of earnings.`,
+  stepsTitle: "Three steps to your first commission.",
+  steps: [
+    { title: "Join for free", text: "Sign up for the affiliate program and get your own referral link." },
+    { title: "Share your link", text: `Send it to sales teams you know or share it with your audience. Anyone who signs up within ${creditDays} days of clicking it is credited to you.` },
+    { title: "Earn every month", text: `When their ${TRIAL_DAYS}-day free trial ends and they start paying, you earn ${pct} of each payment, for as long as they stay.` },
+  ],
+  whoTitle: "Made for people who know sales teams.",
+  who: [
+    "Sales coaches and trainers",
+    "Consultants and agency owners",
+    "Creators and communities for sales professionals",
+    "Anyone who already works with high-ticket sales teams",
+  ],
+  getTitle: "What you get",
+  get: [
+    "Your own referral link",
+    "A dashboard for your clicks, sign-ups and earnings",
+    `${pct} of every payment, for as long as they stay`,
+  ],
+  ctaTitle: "Know a sales team that should be paid automatically?",
+  ctaSupport: `Refer them to RevSplitPay and earn ${pct} of what they pay, every month they stay.`,
+  ctaPill: "Free to join",
 };
 
 export const home = {
@@ -128,7 +172,7 @@ export const trustPoints = [
   { title: "Secure accounts", text: "Sign-in is handled by a dedicated authentication provider, and each role only sees what it should." },
 ];
 
-export type FaqGroup = "payouts" | "billing" | "providers";
+export type FaqGroup = "payouts" | "billing" | "providers" | "affiliates";
 
 export const faqs: { group: FaqGroup; q: string; a: string }[] = [
   { group: "payouts", q: "Do my reps need to do anything to get paid?", a: `They connect their own ${providerPhrase()} payout account once. After that, every commission is paid to them automatically.` },
@@ -144,7 +188,15 @@ export const faqs: { group: FaqGroup; q: string; a: string }[] = [
   { group: "billing", q: "Is there a free trial?", a: `Yes. Every plan starts with ${TRIAL_DAYS} days free. A card is needed to start, but nothing is charged unless you click Start plan. Start early and you keep your free days.` },
   { group: "providers", q: "Does RevSplitPay hold our money?", a: holdsMoneyAnswer() },
   { group: "providers", q: "Which payment providers do you support?", a: providersAnswer() },
+  { group: "affiliates", q: "Who can join the affiliate program?", a: "Anyone. Joining is free, and you get your own referral link to share." },
+  { group: "affiliates", q: "How much do I earn?", a: `${pct} of every payment a team you refer makes, for as long as they stay subscribed. A team on Growth at ${formatUsd(growth.priceUsd)} a month earns you ${growthCommission} a month.` },
+  { group: "affiliates", q: "How long do I have to get credit?", a: `Anyone who signs up within ${creditDays} days of clicking your link, on the same device and browser, is credited to you.` },
+  { group: "affiliates", q: "When does my commission start?", a: `When the team's ${TRIAL_DAYS}-day free trial ends and they make their first payment. You then earn on every payment after that.` },
+  { group: "affiliates", q: "Where do I see my referrals and earnings?", a: "In your affiliate dashboard, which shows your clicks, sign-ups, earnings and payouts." },
 ];
+
+/** The questions in some FAQ groups, in order: what a page shows and puts in its FAQ structured data. */
+export const faqsIn = (groups: FaqGroup[]) => faqs.filter((item) => groups.includes(item.group));
 
 export const roles = [
   { role: "Owner", text: "Everything: products, checkout links, sales, deals, team, commissions, invoices, awards, billing and integrations. Does not earn commissions." },

@@ -12,6 +12,7 @@ export const NAV_LINKS = [
   { label: "Product", to: v2Path("/features") },
   { label: "Pricing", to: v2Path("/pricing") },
   { label: "Integrations", to: v2Path("/integrations") },
+  { label: "Affiliates", to: v2Path("/affiliates") },
 ];
 
 export const Logo = () => (

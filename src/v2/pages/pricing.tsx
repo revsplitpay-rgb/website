@@ -22,7 +22,7 @@ import PlanCompare, { EveryPlan } from "../components/plan-compare";
 import PageHero from "../components/page-hero";
 import { Reveal } from "../components/motion";
 import { ButtonLink, Container, Grad, Panel, Section, SectionHeading } from "../components/ui";
-import { billingPoints, enterpriseLine, faqs, priceLine, trial } from "../content/copy";
+import { billingPoints, enterpriseLine, faqsIn, priceLine, trial, type FaqGroup } from "../content/copy";
 import { v2Path } from "../lib/paths";
 import { formatCents, parseSaleInput } from "../lib/split";
 import { providerPhrase } from "../content/providers";
@@ -237,13 +237,16 @@ const Billing = () => (
   </Section>
 );
 
+// The FAQ groups the pricing page shows; its FAQ structured data lists exactly these.
+const FAQ_GROUPS: FaqGroup[] = ["billing"];
+
 const Pricing = () => (
   <>
     <PageMeta
       title="Pricing | RevSplitPay"
       description={`${priceLine()}. Plans for teams of every size, with fees shown up front.`}
       path="/pricing"
-      jsonLd={[softwareLd(), faqLd(faqs.filter((item) => item.group === "billing")), breadcrumbLd([{ name: "Pricing", path: "/pricing" }])]}
+      jsonLd={[softwareLd(), faqLd(faqsIn(FAQ_GROUPS)), breadcrumbLd([{ name: "Pricing", path: "/pricing" }])]}
     />
     <PageHero
       eyebrow="Pricing"
@@ -269,7 +272,7 @@ const Pricing = () => (
     <PlanPicker />
     <Compare />
     <Billing />
-    <Faq groups={["billing"]} title="Billing questions." />
+    <Faq groups={FAQ_GROUPS} title="Billing questions." />
     <CtaBand />
   </>
 );

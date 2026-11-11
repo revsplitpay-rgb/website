@@ -19,6 +19,7 @@ export const STATIC_ROUTES: SeoRoute[] = [
   ...INTEGRATIONS.map((item) => ({ path: `/integrations/${item.slug}`, changefreq: "monthly" as const, priority: 0.6 })),
   { path: "/about", changefreq: "yearly", priority: 0.5 },
   { path: "/contact", changefreq: "yearly", priority: 0.5 },
+  { path: "/affiliates", changefreq: "monthly", priority: 0.5 },
   { path: "/blog", changefreq: "weekly", priority: 0.6 },
   { path: "/legal/terms", changefreq: "yearly", priority: 0.3 },
   { path: "/legal/privacy", changefreq: "yearly", priority: 0.3 },

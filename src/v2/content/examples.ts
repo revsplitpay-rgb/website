@@ -38,3 +38,10 @@ export const goalExamples = {
 
 // Invoice card in the product bento.
 export const invoiceExample = { amount: "$750.00" };
+
+// Affiliate dashboard panel on /affiliates. Earnings are computed on the page
+// from these counts and the real commission rate.
+export const affiliateDashboardExample = { clicks: 248, signUps: 9, payingTeams: 5, plan: "growth" as const };
+
+// The referral link in the /affiliates hero visual.
+export const referralLinkExample = "revsplitpay.com/?fpr=yourname";

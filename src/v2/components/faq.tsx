@@ -1,6 +1,6 @@
 import * as Accordion from "@radix-ui/react-accordion";
 import { Plus } from "lucide-react";
-import { faqs, type FaqGroup } from "../content/copy";
+import { faqsIn, type FaqGroup } from "../content/copy";
 import { Reveal } from "./motion";
 import { Container, Section, SectionHeading } from "./ui";
 
@@ -8,6 +8,7 @@ const groupTitles: Record<FaqGroup, string> = {
   payouts: "Payouts and commissions",
   billing: "Plans and billing",
   providers: "Payment providers",
+  affiliates: "Affiliate program",
 };
 
 /** Grouped FAQ with headings, no tabs, so every question is scannable. */
@@ -22,9 +23,7 @@ const Faq = ({ groups, title = "Questions owners ask first." }: { groups: FaqGro
           <Reveal key={group}>
             <h3 className="text-sm font-medium uppercase tracking-[0.12em] text-muted-foreground">{groupTitles[group]}</h3>
             <Accordion.Root type="multiple" className="mt-4 space-y-3">
-              {faqs
-                .filter((item) => item.group === group)
-                .map((item) => (
+              {faqsIn([group]).map((item) => (
                   <Accordion.Item
                     key={item.q}
                     value={item.q}

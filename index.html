@@ -38,6 +38,14 @@
       html[data-v2-theme="light"] { --background: 255 255 255; --foreground: 11 26 51; background: #fff; color: #0b1a33; color-scheme: light; }
       html[data-v2-theme="light"] body { background: #fff; }
     </style>
+    <!-- FirstPromoter affiliate tracking: records a visit from an affiliate's ?fpr= link so the sign-up in the app is
+         credited to them. Kept together here so a consent check can wrap both tags later (src/lib/tracking.test.ts). -->
+    <script id="fpr-init">
+      (function(w){w.fpr=w.fpr||function(){w.fpr.q=w.fpr.q||[];w.fpr.q[arguments[0]=='set'?'unshift':'push'](arguments);};})(window);
+      fpr("init", {cid:"hh05hbcg"});
+      fpr("click");
+    </script>
+    <script src="https://cdn.firstpromoter.com/fpr.js" async></script>
   </head>
 
   <body>

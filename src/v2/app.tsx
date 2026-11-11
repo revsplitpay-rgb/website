@@ -6,6 +6,7 @@ import { buttonClass } from "./components/ui";
 import V2Layout from "./layout";
 import { v2Path } from "./lib/paths";
 import About from "./pages/about";
+import Affiliates from "./pages/affiliates";
 import { BlogArticle, BlogIndex } from "./pages/blog";
 import Contact from "./pages/contact";
 import Feature from "./pages/feature";
@@ -69,6 +70,7 @@ const V2App = () => (
         <Route path="integration/*" element={<LegacyIntegrationRedirect />} />
         <Route path="about" element={<About />} />
         <Route path="contact" element={<Contact />} />
+        <Route path="affiliates" element={<Affiliates />} />
         <Route path="blog" element={<BlogIndex />} />
         <Route path="blog/:slug" element={<BlogArticle />} />
         <Route path="legal/terms" element={<LegalPage slug="terms" />} />

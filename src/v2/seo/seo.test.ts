@@ -1,7 +1,8 @@
+import { AFFILIATE_COMMISSION_LABEL, AFFILIATE_COOKIE_DAYS } from "@/lib/affiliate";
 import { INTEGRATIONS } from "@/lib/integrations";
 import { COMMISSION_FEE_LABEL, HOLD_DAYS, PLANS, TRIAL_DAYS, formatUsd } from "@/lib/pricing";
 import { describe, expect, it } from "vitest";
-import { faqs } from "../content/copy";
+import { faqs, faqsIn } from "../content/copy";
 import { breadcrumbLd, faqLd, graph, organizationLd, softwareLd } from "./jsonld";
 import { buildLlmsFullTxt, buildLlmsTxt } from "./llms";
 import { STATIC_ROUTES } from "./routes";
@@ -27,6 +28,15 @@ describe("structured data", () => {
     expect(ld.mainEntity[0].acceptedAnswer.text).toBe(faqs[0].a);
   });
 
+  it("keeps each page's FAQ structured data to the groups it shows", () => {
+    const home = faqsIn(["payouts", "providers"]);
+    expect(home.length).toBeGreaterThan(0);
+    expect(home.some((item) => item.group === "affiliates" || item.group === "billing")).toBe(false);
+    const affiliates = faqsIn(["affiliates"]);
+    expect(affiliates.length).toBeGreaterThan(0);
+    expect(affiliates.every((item) => item.group === "affiliates")).toBe(true);
+  });
+
   it("starts breadcrumbs at Home with absolute URLs", () => {
     const ld = breadcrumbLd([{ name: "Pricing", path: "/pricing" }]);
     expect(ld.itemListElement.map((item) => item.item)).toEqual([absoluteUrl("/"), absoluteUrl("/pricing")]);
@@ -45,10 +55,17 @@ describe("llms.txt", () => {
     expect(full).not.toMatch(/WELCOME50|0\.5%/);
   });
 
+  it("states the affiliate commission and referral window", () => {
+    const full = buildLlmsFullTxt();
+    expect(full).toContain(`${AFFILIATE_COMMISSION_LABEL} of every payment`);
+    expect(full).toContain(`${AFFILIATE_COOKIE_DAYS} days`);
+  });
+
   it("links every public page by its final URL", () => {
     const short = buildLlmsTxt();
     for (const item of INTEGRATIONS) expect(short).toContain(absoluteUrl(`/integrations/${item.slug}`));
     expect(short).toContain(absoluteUrl("/pricing"));
+    expect(short).toContain(absoluteUrl("/affiliates"));
     expect(short).not.toContain("/v2");
   });
 });
@@ -59,5 +76,6 @@ describe("routes", () => {
     expect(new Set(paths).size).toBe(paths.length);
     expect(paths.some((p) => p.startsWith("/v2"))).toBe(false);
     expect(paths).toContain("/integrations/stripe");
+    expect(paths).toContain("/affiliates");
   });
 });
